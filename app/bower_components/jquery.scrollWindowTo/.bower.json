@@ -1,0 +1,13 @@
+{
+  "name": "jquery.scrollWindowTo",
+  "_cacheHeaders": {
+    "ETag": "\"cd741057495d0fb19e545a0f9a098efba3bef9c8\"",
+    "Content-Length": "382",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:cd7410574",
+  "main": "index.js",
+  "_source": "https://gist.github.com/ajb/6519570/raw/cd741057495d0fb19e545a0f9a098efba3bef9c8/jquery.scrollWindowTo.js",
+  "_target": "*",
+  "_originalSource": "https://gist.github.com/ajb/6519570/raw/cd741057495d0fb19e545a0f9a098efba3bef9c8/jquery.scrollWindowTo.js"
+}
