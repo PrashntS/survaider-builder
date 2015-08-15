@@ -34,6 +34,7 @@
     "jquery.scrollWindowTo": "https://gist.github.com/ajb/6519570/raw/cd741057495d0fb19e545a0f9a098efba3bef9c8/jquery.scrollWindowTo.js",
     "underscore-deep-extend": "~0.0.5",
     "backbone-deep-model": "~0.10.4",
-    "cytoscape": "~2.4.5"
+    "cytoscape": "~2.4.5",
+    "cytoscape-edgehandles": "~2.0.0"
   }
 }
