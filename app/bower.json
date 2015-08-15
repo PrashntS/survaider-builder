@@ -1,0 +1,25 @@
+{
+  "name": "form-logic-builder",
+  "version": "0.0.0",
+  "homepage": "https://github.com/PrashntS/survaider-builder",
+  "authors": [
+    "Prashant Sinha <prashant@ducic.ac.in>"
+  ],
+  "description": "Extension of Form-Builder to include a conditional form builder.",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "form",
+    "builder"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "underscore.mixin.deepExtend",
+  "_cacheHeaders": {
+    "ETag": "\"63682037af9b10200b05c1a3d5890903397b2103\"",
+    "Content-Length": "3203",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:63682037a",
+  "main": "index.js",
+  "_source": "https://gist.github.com/ajb/6519561/raw/63682037af9b10200b05c1a3d5890903397b2103/underscore.mixin.deepExtend.js",
+  "_target": "*",
+  "_originalSource": "https://gist.github.com/ajb/6519561/raw/63682037af9b10200b05c1a3d5890903397b2103/underscore.mixin.deepExtend.js"
+}
