@@ -5,9 +5,47 @@ html, body {
 body {
   font-family: "Work Sans", sans-serif;
   position: relative;
-  z-index: 0; }
+  z-index: 0;
+  width: 80%;
+  margin: auto; }
 
 div.field-card {
-  border: 2px solid #000; }
+  max-width: 350px;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  position: relative; }
+  div.field-card .meta {
+    background: #3B479D;
+    border-radius: 5px 5px 0 0;
+    color: #FFFFFF;
+    padding: 10px 30px; }
+    div.field-card .meta p {
+      margin: 0; }
+      div.field-card .meta p.section {
+        font-size: 0.8em;
+        font-weight: 200; }
+      div.field-card .meta p.title {
+        font-size: 1.5em; }
+    div.field-card .meta button.target {
+      left: -1.25em;
+      top: 25px;
+      background: #3B479D; }
+  div.field-card .logic {
+    padding: 10px 30px; }
+  div.field-card button.target {
+    position: absolute;
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 50%;
+    border: 2px solid #000;
+    font-size: 0.1em;
+    cursor: pointer;
+    -webkit-transition: background 0.5s ease;
+    -moz-transition: background 0.5s ease;
+    transition: background 0.5s ease; }
+    div.field-card button.target:focus, div.field-card button.target:hover {
+      outline: none; }
+    div.field-card button.target:hover {
+      background: #000; }
 
 /*# sourceMappingURL=style.css.map */

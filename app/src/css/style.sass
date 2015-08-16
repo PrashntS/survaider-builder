@@ -8,7 +8,54 @@ body
     font-family: 'Work Sans', sans-serif
     position: relative
     z-index: 0
+    width: 80%
+    margin: auto
 
 div.field-card
-    border: 2px solid #000
-    
+    max-width: 350px
+    border: 2px solid #000000
+    border-radius: 8px
+    position: relative
+
+    $meta-bg: #3B479D
+
+    .meta
+        background: $meta-bg
+        border-radius: 5px 5px 0 0
+        color: #FFFFFF
+        padding: 10px 30px
+
+        p
+            margin: 0
+
+            &.section
+                font-size: 0.8em
+                font-weight: 200
+
+            &.title
+                font-size: 1.5em
+
+        button.target
+            left: -1.25em
+            top: 25px
+            background: $meta-bg
+
+    .logic
+        padding: 10px 30px
+
+    button.target
+        position: absolute
+        width: 2.5em
+        height: 2.5em
+        border-radius: 50%
+        border: 2px solid #000
+        font-size: 0.1em
+        cursor: pointer
+
+        @include transition(background 0.5s ease)
+
+        &:focus, &:hover
+            outline: none
+
+        &:hover
+            background: #000
