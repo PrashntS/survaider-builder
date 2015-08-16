@@ -31,7 +31,31 @@ div.field-card {
       top: 25px;
       background: #3B479D; }
   div.field-card .logic {
-    padding: 10px 30px; }
+    padding: 10px 0 10px 30px;
+    position: relative; }
+    div.field-card .logic p {
+      margin: 0; }
+      div.field-card .logic p.section {
+        font-size: 0.8em;
+        font-weight: 200; }
+    div.field-card .logic .line {
+      padding-right: 30px;
+      position: relative;
+      margin: 15px 0; }
+      div.field-card .logic .line p {
+        display: inline-block;
+        border: 2px solid;
+        padding: 2px 10px;
+        border-radius: 5px;
+        background: #FFF; }
+      div.field-card .logic .line button.target {
+        right: -1.25em;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%); }
   div.field-card button.target {
     position: absolute;
     width: 2.5em;
@@ -39,10 +63,7 @@ div.field-card {
     border-radius: 50%;
     border: 2px solid #000;
     font-size: 0.1em;
-    cursor: pointer;
-    -webkit-transition: background 0.5s ease;
-    -moz-transition: background 0.5s ease;
-    transition: background 0.5s ease; }
+    cursor: pointer; }
     div.field-card button.target:focus, div.field-card button.target:hover {
       outline: none; }
     div.field-card button.target:hover {
