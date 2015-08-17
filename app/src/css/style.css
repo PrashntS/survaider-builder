@@ -4,10 +4,16 @@ html, body {
 
 body {
   font-family: "Work Sans", sans-serif;
-  position: relative;
   z-index: 0;
   width: 80%;
   margin: auto; }
+
+div.canvas {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1; }
 
 div.field-card {
   max-width: 350px;
@@ -27,7 +33,7 @@ div.field-card {
       div.field-card .meta p.title {
         font-size: 1.5em; }
     div.field-card .meta button.target {
-      left: -1.25em;
+      right: -1.25em;
       top: 25px;
       background: #3B479D; }
   div.field-card .logic {
