@@ -35,6 +35,8 @@
     "underscore-deep-extend": "~0.0.5",
     "backbone-deep-model": "~0.10.4",
     "cytoscape": "~2.4.5",
-    "cytoscape-edgehandles": "~2.0.0"
+    "cytoscape-edgehandles": "~2.0.0",
+    "svg": "https://github.com/wout/svg.js",
+    "svg.js": "~2.0.5"
   }
 }
