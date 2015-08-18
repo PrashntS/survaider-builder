@@ -1,0 +1,36 @@
+{
+    "fields":[
+        {
+            "label":"Do you have a website?",
+            "field_type":"website",
+            "required":false,
+            "field_options":{
+
+            },
+            "cid":"c1",
+            "next": {
+                "ve": [
+                    ["9gag.com", "c18"],
+                    ["2gag.com", "c19"]
+                ],
+                "va": "c14"
+            }
+        },
+        {
+            "label":"Please enter your clearance number",
+            "field_type":"text",
+            "required":true,
+            "field_options":{
+
+            },
+            "cid":"c6",
+            "next": {
+                "vbi": [
+                    [100, 200, "c18"],
+                    [201, 300, "c19"],
+                ],
+                "va": "c14"
+            }
+        }
+    ]
+}
