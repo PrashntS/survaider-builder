@@ -100,8 +100,6 @@ var Links = {
                 target_mt.y
             );
 
-            console.log(path);
-
             Links.draw.path(path).stroke({width: 2}).fill({color: "transparent"});
         }
 
