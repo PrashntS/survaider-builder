@@ -7,7 +7,7 @@ Formbuilder.registerField 'group_rating',
       <div>
         <label class='fb-option'>
           <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
-          
+
           <input type='radio' value='00' onclick="javascript: return false;" />
           <input type='radio' value='01' onclick="javascript: return false;" />
           <input type='radio' value='02' onclick="javascript: return false;" />
@@ -22,7 +22,7 @@ Formbuilder.registerField 'group_rating',
   """
 
   edit: "
-    <%= Formbuilder.templates['edit/options']() %>
+    <%= Formbuilder.templates['edit/group_rating']() %>
   "
 
   addButton: """
