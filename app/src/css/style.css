@@ -13,7 +13,24 @@ div.canvas {
   position: absolute;
   left: 0;
   top: 0;
-  z-index: -1; }
+  z-index: -1;
+  -webkit-transition: filter 0.5s ease, -webkit-filter 0.5s ease;
+  -moz-transition: filter 0.5s ease, -webkit-filter 0.5s ease;
+  transition: filter 0.5s ease, -webkit-filter 0.5s ease; }
+  div.canvas.blur {
+    -webkit-filter: blur(10px);
+    filter: blur(10px); }
+
+div.field-card-container {
+  position: relative;
+  -webkit-transition: filter 0.5s ease, -webkit-filter 0.5s ease;
+  -moz-transition: filter 0.5s ease, -webkit-filter 0.5s ease;
+  transition: filter 0.5s ease, -webkit-filter 0.5s ease; }
+  div.field-card-container > div.field-card {
+    margin: 15px 0; }
+  div.field-card-container.blur {
+    -webkit-filter: blur(10px);
+    filter: blur(10px); }
 
 div.field-card {
   max-width: 350px;
@@ -57,7 +74,7 @@ div.field-card {
         position: relative; }
       div.field-card .logic .line span.link {
         width: 100%;
-        height: 3px;
+        height: 2px;
         background-color: #000;
         position: absolute;
         top: 50%;
@@ -70,6 +87,23 @@ div.field-card {
         -ms-transform: translateY(-50%);
         -o-transform: translateY(-50%);
         transform: translateY(-50%); }
+    div.field-card .logic button.add-logic {
+      border: 2px solid #000000;
+      padding: 2px 10px;
+      border-radius: 5px;
+      background: #FFFFFF;
+      font-size: 1em;
+      font-family: "Work Sans", sans-serif;
+      margin-top: 15px;
+      cursor: pointer;
+      -webkit-transition: background 0.2s ease, color 0.2s ease;
+      -moz-transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease; }
+      div.field-card .logic button.add-logic:hover {
+        background: #000000;
+        color: #FFFFFF; }
+      div.field-card .logic button.add-logic:hover, div.field-card .logic button.add-logic:focus {
+        outline: none; }
   div.field-card button.target {
     position: absolute;
     width: 2.5em;
@@ -82,5 +116,77 @@ div.field-card {
       outline: none; }
     div.field-card button.target:hover {
       background: #000; }
+
+div.logic-modal-container {
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 0.5s ease;
+  -moz-transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease; }
+  div.logic-modal-container.visible {
+    visibility: visible;
+    opacity: 1; }
+  div.logic-modal-container div.logic-modal {
+    width: 500px;
+    max-width: 80%;
+    height: 200px;
+    position: fixed;
+    margin: auto;
+    border: 2px solid #000;
+    border-radius: 5px;
+    background: #FFFFFF;
+    height: auto;
+    padding: 15px;
+    z-index: 10;
+    left: 0;
+    right: 0;
+    top: 20%;
+    opacity: 0;
+    -webkit-transform: translate(0, -250%) scale(0);
+    -moz-transform: translate(0, -250%) scale(0);
+    -ms-transform: translate(0, -250%) scale(0);
+    -o-transform: translate(0, -250%) scale(0);
+    transform: translate(0, -250%) scale(0);
+    -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+    -moz-transition: -moz-transform 0.5s ease, opacity 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease; }
+    div.logic-modal-container div.logic-modal h1 {
+      margin-top: 0; }
+    div.logic-modal-container div.logic-modal .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: "Work Sans", sans-serif; }
+    div.logic-modal-container div.logic-modal.visible {
+      -webkit-transform: translate(0, 0) scale(1);
+      -moz-transform: translate(0, 0) scale(1);
+      -ms-transform: translate(0, 0) scale(1);
+      -o-transform: translate(0, 0) scale(1);
+      transform: translate(0, 0) scale(1);
+      opacity: 1; }
+    div.logic-modal-container div.logic-modal.move-top {
+      -webkit-transform: translate(0, -200%) scale(0.1);
+      -moz-transform: translate(0, -200%) scale(0.1);
+      -ms-transform: translate(0, -200%) scale(0.1);
+      -o-transform: translate(0, -200%) scale(0.1);
+      transform: translate(0, -200%) scale(0.1);
+      opacity: 0; }
+    div.logic-modal-container div.logic-modal.move-bottom {
+      -webkit-transform: translate(0, 200%) scale(0.1);
+      -moz-transform: translate(0, 200%) scale(0.1);
+      -ms-transform: translate(0, 200%) scale(0.1);
+      -o-transform: translate(0, 200%) scale(0.1);
+      transform: translate(0, 200%) scale(0.1);
+      opacity: 0; }
 
 /*# sourceMappingURL=style.css.map */

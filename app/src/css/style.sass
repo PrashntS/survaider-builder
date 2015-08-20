@@ -17,6 +17,20 @@ div.canvas
     top: 0
     z-index: -1
 
+    @include transition(filter 0.5s ease, -webkit-filter 0.5s ease)
+
+    &.blur
+        @include filter(blur(10px))
+
+div.field-card-container
+    position: relative
+    & > div.field-card
+        margin: 15px 0
+
+    @include transition(filter 0.5s ease, -webkit-filter 0.5s ease)
+
+    &.blur
+        @include filter(blur(10px))
 
 div.field-card
     max-width: 350px
@@ -73,7 +87,7 @@ div.field-card
 
             span.link
                 width: 100%
-                height: 3px
+                height: 2px
                 background-color: #000
                 position: absolute
                 top: 50%
@@ -83,6 +97,24 @@ div.field-card
                 right: -1.25em
                 top: 50%
                 @include transform(translateY(-50%))
+
+        button.add-logic
+            border: 2px solid #000000
+            padding: 2px 10px
+            border-radius: 5px
+            background: #FFFFFF
+            font-size: 1em
+            font-family: 'Work Sans', sans-serif
+            margin-top: 15px
+            cursor: pointer
+            @include transition(background 0.2s ease, color 0.2s ease)
+
+            &:hover
+                background: #000000
+                color: #FFFFFF
+
+            &:hover, &:focus
+                outline: none
 
     button.target
         position: absolute
@@ -100,3 +132,63 @@ div.field-card
 
         &:hover
             background: #000
+
+div.logic-modal-container
+    background: rgba(0, 0, 0, 0.6)
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    z-index: 10
+    opacity: 0
+    visibility: hidden
+    @include transition(opacity 0.5s ease)
+
+    &.visible
+        visibility: visible
+        opacity: 1
+
+    div.logic-modal
+        width: 500px
+        max-width: 80%
+        height: 200px
+        position: fixed
+        margin: auto
+        border: 2px solid #000
+        border-radius: 5px
+        background: #FFFFFF
+        height: auto
+        padding: 15px
+        z-index: 10
+        left: 0
+        right: 0
+        top: 20%
+        opacity: 0
+
+        @include transform(translate(0, -250%) scale(0))
+        @include transition(transform 0.5s ease, opacity 0.5s ease)
+
+        h1
+            margin-top: 0
+
+        .close
+            position: absolute
+            right: 0
+            top: 0
+            background: transparent
+            border: none
+            outline: none
+            font-family: "Work Sans", sans-serif
+
+        &.visible
+            @include transform(translate(0, 0) scale(1))
+            opacity: 1
+
+        &.move-top
+            @include transform(translate(0, -200%) scale(0.1))
+            opacity: 0
+
+        &.move-bottom
+            @include transform(translate(0, 200%) scale(0.1))
+            opacity: 0
