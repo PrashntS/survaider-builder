@@ -1,3 +1,6 @@
+@import url(http://fonts.googleapis.com/css?family=Work+Sans:400,100,200,300,500,600)
+
+@import "bourbon/bourbon"
 //colors
 $color_niagara_approx: #16a085
 $white: #fff
@@ -14,7 +17,7 @@ $color_gallery_approx: #eee
 $red: #f00
 $color_storm_dust_approx: #666
 
-//fonts
+
 $font_0: 'Source Sans Pro'
 $font_1: 'Open Sans'
 $font_2: 'Tahoma'
@@ -22,21 +25,18 @@ $font_3: 'Source Sans Pro'
 $font_4: 'sans-serif'
 
 .fb-button 
+    font-family: 'Work Sans', sans-serif
     display: inline-block
-    margin: 0
-    padding: .563rem .844rem
-    border: 0 none
-    background: $color_niagara_approx
-    color: $white
+    margin: 0px
+    padding: 5px 15px
+    border: 2px solid #000000
+    border-radius: 5px
+    background: #FFFFFF
+    color: #000000
     text-align: center
     text-decoration: none
-    font-size: 12px
-    line-height: 1.5
+    font-size: 1em
     cursor: pointer
-    //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-    border-radius: .125rem
-    border: thin solid $color_mountain_meadow_approx
-    border-bottom: 2px solid $color_niagara_approx
 
 .fb-button[disabled] 
     background: $color_alto_approx !important
@@ -112,7 +112,6 @@ $font_4: 'sans-serif'
         font-size: 13px
         display: inline-block
         width: 48.5%
-        background-color: $color_mountain_meadow_approx
         margin-bottom: 9px
         //If you use compass, instead of the line below you could use + box-sizing($bs)
         box-sizing: border-box

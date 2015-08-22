@@ -1,4 +1,4 @@
-ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'stylus:all', 'clean:compiled']
+ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'sass:all', 'clean:compiled']
 
 # formbuilder.js must be compiled in this order:
 # 1. rivets-config
@@ -15,12 +15,12 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-concat')
   grunt.loadNpmTasks('grunt-contrib-cssmin')
   grunt.loadNpmTasks('grunt-contrib-jst')
-  grunt.loadNpmTasks('grunt-contrib-stylus')
+  grunt.loadNpmTasks('grunt-contrib-sass')
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-release')
-  grunt.loadNpmTasks('grunt-karma')
+  #grunt.loadNpmTasks('grunt-karma')
 
   grunt.initConfig
 
@@ -89,11 +89,15 @@ module.exports = (grunt) ->
           '<%= distFolder %>/formbuilder-min.css': '<%= distFolder %>/formbuilder.css'
           '<%= vendorFolder %>/css/vendor.css': 'bower_components/font-awesome/css/font-awesome.css'
 
-    stylus:
+    sass:
       all:
+        options:
+          quiet: false
+          trace:true
+          style: 'expanded'
+
         files:
-          '<%= compiledFolder %>/formbuilder.css': '<%= srcFolder %>/styles/**.styl'
-          '<%= distFolder %>/formbuilder.css': '<%= compiledFolder %>/**/*.css'
+          '<%= distFolder %>/formbuilder.css': '<%= srcFolder %>/styles/formbuilder.sass'
 
     clean:
       compiled:
@@ -106,19 +110,16 @@ module.exports = (grunt) ->
 
     watch:
       all:
-        files: ['<%= srcFolder %>/**/*.{coffee,styl,html}']
+        files: ['<%= srcFolder %>/**/*.{coffee,sass,html}']
         tasks: ALL_TASKS
 
     # To test, run `grunt --no-write -v release`
     release:
       npm: false
 
-    karma:
-      unit:
-        configFile: '<%= testFolder %>/karma.conf.coffee'
-
 
   grunt.registerTask 'default', ALL_TASKS
-  grunt.registerTask 'mobile_friendly', ['jst:all', 'coffee:all', 'concat:mobile_friendly', 'stylus:all', 'clean:compiled']
-  grunt.registerTask 'dist', ['cssmin:dist', 'uglify:dist']
-  grunt.registerTask 'test', ['dist', 'karma']
+  grunt.registerTask 'mobile_friendly', ['jst:all', 'coffee:all', 'concat:mobile_friendly', 'sass:all', 'clean:compiled']
+  # grunt.registerTask 'dist', ['cssmin:dist', 'uglify:dist']
+  grunt.registerTask 'dist', ['uglify:dist']
+  #grunt.registerTask 'test', ['dist', 'karma']
