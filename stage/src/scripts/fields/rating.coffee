@@ -1,4 +1,4 @@
-Formbuilder.registerField 'group_rating',
+Formbuilder.registerField 'rating',
 
   order: 52
 
@@ -26,5 +26,5 @@ Formbuilder.registerField 'group_rating',
   "
 
   addButton: """
-    <span class="symbol"><span class="fa fa-"></span></span> Group Rating
+    <span class="symbol"><span class="fa fa-"></span></span> Rating
   """
