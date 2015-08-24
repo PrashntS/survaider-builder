@@ -1,26 +1,17 @@
 <div class='subtemplate-wrapper'>
-  <div class='cover'></div>
-
-  <%= Formbuilder.templates['view/duplicate_remove']({rf: rf}) %>
-
+    <div class='cover'></div>
     <div class="field-card">
         <div class="meta">
-            <p class="section">Field Details</p>
+            <p class="section">Question</p>
 
             <%= Formbuilder.templates['view/label']({rf: rf}) %>
 
             <button class="target" id="O_1"></button>
         </div>
         <div class="logic">
-            <p class="section">Field Logic</p>
+            <p class="section">Response</p>
             <%= Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) %>
-            <button class="add-logic">Add Logic</button>
-            <div class="line">
-                <span class="link"></span>
-                <p>Any Answer</p>
-                <button class="target" id="T_1_2"></button>
-            </div>
         </div>
+        <%= Formbuilder.templates['view/duplicate_remove']({rf: rf}) %>
     </div>
-
 </div>

@@ -4,28 +4,16 @@ Formbuilder.registerField 'radio',
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
-      <div>
-        <label class='fb-option'>
-          <input type='radio' <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked && 'checked' %> onclick="javascript: return false;" />
-          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
-        </label>
-      </div>
-    <% } %>
-
-    <% if (rf.get(Formbuilder.options.mappings.INCLUDE_OTHER)) { %>
-      <div class='other-option'>
-        <label class='fb-option'>
-          <input type='radio' />
-          Other
-        </label>
-
-        <input type='text' />
+      <div class="line">
+          <span class="link"></span>
+          <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>
+          <button class="target" id="T_1_2"></button>
       </div>
     <% } %>
   """
 
   edit: """
-    <%= Formbuilder.templates['edit/options']({ includeOther: true }) %>
+    <%= Formbuilder.templates['edit/options']() %>
   """
 
   addButton: """

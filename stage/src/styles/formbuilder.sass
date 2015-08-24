@@ -52,10 +52,12 @@ $font_4: 'sans-serif'
 
 
 div.field-card
-    max-width: 350px
+    width: 350px
     border: 2px solid #000000
     border-radius: 8px
+    font-family: 'Work Sans', sans-serif
     position: relative
+    background: #FFFFFF
 
     $meta-bg: #3B479D
 
@@ -94,7 +96,7 @@ div.field-card
         .line
             padding-right: 30px
             position: relative
-            margin: 15px 0
+            margin: 10px 0
 
             p
                 display: inline-block
@@ -173,11 +175,6 @@ div.field-card
     position: relative
     font-family: $font_0, $font_1, $font_2
 
-.fb-save-wrapper 
-    position: absolute
-    right: 20px
-    top: 10px
-
 .fb-left 
     float: left
     width: 320px
@@ -229,64 +226,64 @@ div.field-card
 
 
 .fb-field-wrapper 
-    cursor: pointer
+    cursor: move
     position: relative
-    margin-bottom: 20px
-    input 
-        //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-        border-radius: 3px
-        border: thin solid $color_alto_approx
+    margin-bottom: 10px
+    display: inline-block
 
     &:hover 
         .actions-wrapper 
-            display: block
+            opacity: 1
+            visibility: visible
 
         .subtemplate-wrapper 
-            border-color: $color_alto_approx
-            //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-            border-radius: 3px
-
+            border-color: #000000
 
     &.editing 
-        background-color: $color_athens_gray_approx
-        //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-        border-radius: 3px
         .actions-wrapper 
-            display: block
-
-        .subtemplate-wrapper 
-            border-color: $color_geyser_approx
-            border-style: solid
-            margin: 0
-            //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-            border-radius: 3px
-
+            opacity: 1
+            visibility: visible
 
     .actions-wrapper 
-        display: none
+        visibility: hidden
         position: absolute
-        bottom: -7px
-        right: 5px
+        bottom: -12px
+        right: 10px
         z-index: 3
+        opacity: 0
+        @include transition(opacity 0.2s ease)
+
         a 
+            cursor: pointer
             display: inline-block
-            background-color: $color_celeste_approx
-            padding: 2px 8px
+            padding: 2px 4px
+            text-align: center
+            background-color: #FFFFFF
+            color: #FFFFFF
+            border: 2px solid #000
+            border-radius: 5px
+            height: 25px
+            width: auto
+            font-size: 14px
+            @include transition(background-color 0.2s ease)
+
             &.js-duplicate 
-                background-color: $color_emerald_approx
-                border: none
+                color: $color_emerald_approx
 
             &.js-clear 
-                background-color: $color_cinnabar_approx
-                border: none
+                color: $color_cinnabar_approx
 
+            &:hover
+                background-color: #000000
 
+    .subtemplate-wrapper
 
-    .subtemplate-wrapper 
-        border: 1px dashed transparent
-        margin-bottom: 10px
-        padding: 10px
+        border: 2px dashed transparent
+        border-radius: 8px
+        padding: 12px
         position: relative
+
+        @include transition(border-color 0.2s ease)
         .cover 
             position: absolute
             top: 0
@@ -294,41 +291,6 @@ div.field-card
             height: 100%
             width: 100%
             z-index: 2
-
-        abbr 
-            color: $red
-
-        > label 
-            display: block
-            border-bottom: thin solid $color_gallery_approx
-            padding-bottom: 3px
-            margin-bottom: 7px
-
-
-    .input-line 
-        clear: both
-        margin-bottom: 10px
-        .above-line 
-            margin-top: 7px
-
-        > span 
-            display: inline-block
-            vertical-align: top
-            input 
-                width: 100%
-
-            > label 
-                display: block
-                font-size: 13px
-                margin-left: 3px
-
-
-
-    .help-block 
-        display: block
-        font-size: 12px
-        margin-top: 5px
-
 
 .edit-response-field 
     input 
