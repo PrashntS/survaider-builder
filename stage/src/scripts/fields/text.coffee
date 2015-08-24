@@ -3,11 +3,13 @@ Formbuilder.registerField 'text',
   order: 0
 
   view: """
-    <input type='text' class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>' />
+    <div class="line">
+        <p>Any Response</p>
+        <button class="target" id="T_1_2"></button>
+    </div>
   """
 
   edit: """
-    <%= Formbuilder.templates['edit/size']() %>
     <%= Formbuilder.templates['edit/min_max_length']() %>
   """
 
