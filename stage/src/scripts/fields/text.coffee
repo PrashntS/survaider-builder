@@ -4,7 +4,7 @@ Formbuilder.registerField 'text',
 
   view: """
     <div class="line">
-        <p>Any Response</p>
+        <p>Any Response<%= Formbuilder.options.mappings.CID %></p>
         <button class="target" id="T_1_2"></button>
     </div>
   """
@@ -16,7 +16,3 @@ Formbuilder.registerField 'text',
   addButton: """
     <span class='symbol'><span class='fa fa-font'></span></span> Text
   """
-
-  defaultAttributes: (attrs) ->
-    attrs.field_options.size = 'small'
-    attrs
