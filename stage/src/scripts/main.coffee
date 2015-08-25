@@ -181,7 +181,7 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.fb-left')
     @$responseFields = @$el.find('.fb-response-fields')
 
-    @bindWindowScrollEvent()
+    # @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
@@ -263,7 +263,8 @@ class BuilderView extends Backbone.View
       helper: =>
         $helper = $("<div class='response-field-draggable-helper' />")
         $helper.css
-          width: @$responseFields.width() # hacky, won't get set without inline style
+          #width: @$responseFields.width() # hacky, won't get set without inline style
+          width: '374px'
           height: '80px'
 
         $helper
