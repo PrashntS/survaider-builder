@@ -315,8 +315,11 @@ body
             right: 22px
             top: 0
             bottom: 0
+            @include filter(blur(0px))
+            @include transition(all 0.5s ease)
 
-            //@include filter(blur(10px))
+            &.blur
+                @include filter(blur(9px))
 
 .fb-response-fields 
     //padding-bottom: 10px

@@ -258,10 +258,12 @@ class BuilderView extends Backbone.View
 
         @handleFormUpdate()
         Links.reload()
+        Links.un_blur()
         return true
       update: (e, ui) =>
         # ensureEditViewScrolled, unless we're updating from the draggable
         @ensureEditViewScrolled() unless ui.item.data('field-type')
+        #Links.un_blur()
         Links.reload()
     @setDraggable()
 
@@ -276,7 +278,7 @@ class BuilderView extends Backbone.View
           #width: @$responseFields.width() # hacky, won't get set without inline style
           width: '374px'
           height: '80px'
-
+        Links.blur()
         $helper
 
   addAll: ->

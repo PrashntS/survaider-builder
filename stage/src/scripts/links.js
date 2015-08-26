@@ -111,9 +111,22 @@ var Links = {
             $("#" + Links.hook_id).html("");
             Links.init();
             Links.grid_lines.draw_vertical();
+            Links.un_blur();
         } else {
             Links.init();
             Links.grid_lines.draw_vertical();
+            Links.un_blur();
         }
+    },
+
+    blur: function () {
+        "use strict";
+        $("#" + Links.hook_id).attr("class", "blur");
+    },
+
+    un_blur: function () {
+        "use strict";
+        $("#" + Links.hook_id).attr("class", "");
     }
+
 };
