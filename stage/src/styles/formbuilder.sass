@@ -316,7 +316,7 @@ body
             top: 0
             bottom: 0
             @include filter(blur(0px))
-            @include transition(all 0.5s ease)
+            @include transition(all 0.2s ease)
 
             &.blur
                 @include filter(blur(9px))
@@ -358,6 +358,9 @@ body
 
             .field-card .meta
                 background-color: royalblue
+
+            .field-card.blur
+                @include filter(blur(0px))
 
         .actions-wrapper 
             visibility: hidden
@@ -416,6 +419,9 @@ body
             background: #FFFFFF
 
             $meta-bg: #3B479D
+
+            &.blur
+                @include filter(blur(5px))
 
             .meta
                 background: $meta-bg

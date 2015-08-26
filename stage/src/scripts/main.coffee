@@ -40,6 +40,8 @@ class ViewFieldView extends Backbone.View
     return @
 
   focusEditView: ->
+    console.log("HERE")
+    $("#editField").addClass("active")
     @parentView.createAndShowEditView(@model)
 
   clear: (e) ->
@@ -320,6 +322,7 @@ class BuilderView extends Backbone.View
     $newEditEl = @editView.render().$el
     @$el.find(".fb-edit-field-wrapper").html $newEditEl
     #@$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
+    
     $("#editField").addClass("active")
 
     @scrollLeftWrapper($responseFieldEl)
