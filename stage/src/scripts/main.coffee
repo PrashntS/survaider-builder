@@ -6,7 +6,6 @@ class FormbuilderModel extends Backbone.DeepModel
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
 
-
 class FormbuilderCollection extends Backbone.Collection
   initialize: ->
     @on 'add', @copyCidToModel
@@ -18,7 +17,6 @@ class FormbuilderCollection extends Backbone.Collection
 
   copyCidToModel: (model) ->
     model.attributes.cid = model.cid
-
 
 class ViewFieldView extends Backbone.View
   className: "fb-field-wrapper"
@@ -67,8 +65,6 @@ class ViewFieldView extends Backbone.View
     delete attrs['id']
     attrs['label'] += ' Copy'
     @parentView.createField attrs, { position: @model.indexInDOM() + 1 }
-
-
 
 class EditFieldView extends Backbone.View
   className: "edit-response-field"
@@ -133,7 +129,6 @@ class EditFieldView extends Backbone.View
     Links.reload()
     @model.trigger('change')
 
-
 class BuilderView extends Backbone.View
   SUBVIEWS: []
 
@@ -178,6 +173,7 @@ class BuilderView extends Backbone.View
   reset: ->
     @$responseFields.html('')
     @addAll()
+    Links.reload()
     #Links.init()
 
   render: ->
@@ -217,6 +213,8 @@ class BuilderView extends Backbone.View
 
     if target == '#editField' && !@editView && (first_model = @collection.models[0])
       @createAndShowEditView(first_model)
+    else
+      Links.reload()
 
   addOne: (responseField, _, options) ->
     view = new ViewFieldView
@@ -247,7 +245,9 @@ class BuilderView extends Backbone.View
       @$responseFields.append view.render().el
 
   setSortable: ->
-    @$responseFields.sortable('destroy') if @$responseFields.hasClass('ui-sortable')
+    if @$responseFields.hasClass('ui-sortable')
+      @$responseFields.sortable('destroy')
+      Links.reload()
     @$responseFields.sortable
       forcePlaceholderSize: true
       placeholder: 'sortable-placeholder'
@@ -257,14 +257,15 @@ class BuilderView extends Backbone.View
           @createAndShowEditView(rf)
 
         @handleFormUpdate()
-        Links.reload()
-        Links.un_blur()
         return true
       update: (e, ui) =>
         # ensureEditViewScrolled, unless we're updating from the draggable
         @ensureEditViewScrolled() unless ui.item.data('field-type')
-        #Links.un_blur()
+      deactivate: (e, ui) =>
         Links.reload()
+      activate: (e, ui) =>
+        Links.blur()
+
     @setDraggable()
 
   setDraggable: ->
@@ -278,7 +279,6 @@ class BuilderView extends Backbone.View
           #width: @$responseFields.width() # hacky, won't get set without inline style
           width: '374px'
           height: '80px'
-        Links.blur()
         $helper
 
   addAll: ->
