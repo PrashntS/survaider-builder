@@ -4,12 +4,14 @@ Formbuilder.registerField 'text',
 
   view: """
     <div class="line">
-        <p>Any Response<%= Formbuilder.options.mappings.CID %></p>
-        <button class="target" id="T_1_2"></button>
+        <p>Any Response</p>
+        <button class="target" data-target="out"></button>
     </div>
   """
 
-  edit: """
+  edit: "No Options"
+  
+  ed:  """
     <%= Formbuilder.templates['edit/min_max_length']() %>
   """
 

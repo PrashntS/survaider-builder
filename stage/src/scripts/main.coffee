@@ -36,6 +36,7 @@ class ViewFieldView extends Backbone.View
   render: ->
     @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
         .data('cid', @model.cid)
+        .attr('data-cid', @model.cid)
         .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
 
     return @
@@ -153,7 +154,6 @@ class BuilderView extends Backbone.View
     @collection.bind 'change', @handleFormUpdate, @
     @collection.bind 'destroy add reset', @hideShowNoResponseFields, @
     @collection.bind 'destroy', @ensureEditViewScrolled, @
-
     @render()
     @collection.reset(@bootstrapData)
     @bindSaveEvent()
@@ -174,6 +174,7 @@ class BuilderView extends Backbone.View
   reset: ->
     @$responseFields.html('')
     @addAll()
+    #Links.init()
 
   render: ->
     @$el.html Formbuilder.templates['page']()
@@ -187,7 +188,8 @@ class BuilderView extends Backbone.View
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
     new subview({parentView: @}).render() for subview in @SUBVIEWS
-
+    
+    # Initialise the Linking SVG canvas.
     return @
 
   bindWindowScrollEvent: ->
@@ -202,8 +204,8 @@ class BuilderView extends Backbone.View
   showTab: (e) ->
     $el = $(e.currentTarget)
     target = $el.data('target')
-    $el.closest('li').addClass('active').siblings('li').removeClass('active')
-    $(target).addClass('active').siblings('.fb-field-options').removeClass('active')
+    #$el.closest('li').addClass('active').siblings('li').removeClass('active')
+    #$(target).addClass('active').siblings('.fb-field-options').removeClass('active')
 
     @unlockLeftWrapper() unless target == '#editField'
 
@@ -237,6 +239,9 @@ class BuilderView extends Backbone.View
     # Catch-all: add to bottom
     else
       @$responseFields.append view.render().el
+
+    Links.reload()
+
 
   setSortable: ->
     @$responseFields.sortable('destroy') if @$responseFields.hasClass('ui-sortable')
@@ -398,6 +403,7 @@ class Formbuilder
       MINLENGTH: 'field_options.minlength'
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
+      CID: 12
 
     dict:
       ALL_CHANGES_SAVED: 'Saved'
@@ -425,6 +431,7 @@ class Formbuilder
     _.extend @, Backbone.Events
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
+    Links.init()
 
 window.Formbuilder = Formbuilder
 

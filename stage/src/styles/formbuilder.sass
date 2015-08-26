@@ -109,12 +109,14 @@ body
                 padding: 10px 20px 20px 20px
                 .option
                     display: flex
+                    margin-bottom: 5px
 
                     input 
                         border: 2px solid #000000
                         border-radius: 5px 0 0 5px
                         padding: 5px 10px
                         font-size: 14px
+                        font-family: $font
                         display: inline-block
                         height: auto
                         vertical-align: middle
@@ -296,16 +298,18 @@ body
         width: 70%
         display: block
         min-height: 100%
-        overflow: hidden
+        //overflow: hidden
         position: relative
         z-index: 5
 
-        .svg-canvas
+        #svg-canvas
             position: absolute
             left: 0
-            right: 0
+            right: 22px
             top: 0
             bottom: 0
+
+            //@include filter(blur(10px))
 
 .fb-response-fields 
     //padding-bottom: 10px
@@ -450,6 +454,29 @@ body
                         background: #FFF
                         position: relative
 
+                        i
+                            &.fa-star
+                                color: #FEC84E
+                                margin-top: 10px
+
+                        span.digit
+                            background-color: #3C474D
+                            margin-top: 10px
+                            color: #FFFFFF
+                            width: 20px
+                            height: 20px
+                            font-size: 14px
+                            border-radius: 50%
+                            padding: 2px
+                            text-align: center
+                            display: inline-block
+
+                            &.spacer
+                                width: 25px
+                                border-radius: 5px
+
+
+
                     span.link
                         width: 100%
                         height: 2px
@@ -462,6 +489,11 @@ body
                         right: -1.25em
                         top: 50%
                         @include transform(translateY(-50%))
+
+                button.target.hanging
+                    right: -1.25em
+                    top: 50%
+                    @include transform(translateY(-50%))
 
                 button.add-logic
                     border: 2px solid #000000
@@ -497,9 +529,6 @@ body
 
                 &:hover
                     background: #000
-
-
-
 
 .response-field-draggable-helper 
     border: 2px dashed #000000
