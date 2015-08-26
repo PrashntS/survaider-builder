@@ -400,8 +400,8 @@ class Formbuilder
       LENGTH_UNITS: 'field_options.min_max_length_units'
 
     dict:
-      ALL_CHANGES_SAVED: 'All changes saved'
-      SAVE_FORM: 'Save form'
+      ALL_CHANGES_SAVED: 'Saved'
+      SAVE_FORM: 'Save'
       UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
 
   @fields: {}
