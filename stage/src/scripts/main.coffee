@@ -242,7 +242,6 @@ class BuilderView extends Backbone.View
     else
       @$responseFields.append view.render().el
 
-
   setSortable: ->
     @$responseFields.sortable('destroy') if @$responseFields.hasClass('ui-sortable')
     @$responseFields.sortable
@@ -258,6 +257,7 @@ class BuilderView extends Backbone.View
       update: (e, ui) =>
         # ensureEditViewScrolled, unless we're updating from the draggable
         @ensureEditViewScrolled() unless ui.item.data('field-type')
+        Links.reload()
 
     @setDraggable()
 
