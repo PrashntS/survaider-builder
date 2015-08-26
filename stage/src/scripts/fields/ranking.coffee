@@ -3,26 +3,48 @@ Formbuilder.registerField 'ranking',
   order: 51
 
   view: """
-    <div>
-      <label class='fb-optdion'>
-        <input type='radio' value='00' onclick="javascript: return false;" />
-        <input type='radio' value='01' onclick="javascript: return false;" />
-        <input type='radio' value='02' onclick="javascript: return false;" />
-        <input type='radio' value='03' onclick="javascript: return false;" />
-        <input type='radio' value='04' onclick="javascript: return false;" />
-        <input type='radio' value='05' onclick="javascript: return false;" />
-        <input type='radio' value='06' onclick="javascript: return false;" />
-        <input type='radio' value='07' onclick="javascript: return false;" />
-        <input type='radio' value='08' onclick="javascript: return false;" />
-        <input type='radio' value='09' onclick="javascript: return false;" />
-        <input type='radio' value='10' onclick="javascript: return false;" />
-        0 -- 10
-      </label>
-    </div>
+    <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
+      <div class="line">
+        <label class='fb-option'>
+          <p>
+              <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
+              <br>
+              <span class="digit">1</span>
+              <span class="digit">2</span>
+              <span class="digit">3</span>
+              <span class="digit">4</span>
+              <span class="digit spacer">...</span>
+              <span class="digit">8</span>
+              <span class="digit">9</span>
+              <span class="digit">10</span>
+          </p>
+        </label>
+      </div>
+    <% } %>
+    <button class="target hanging"
+            data-target = "out"
+            data-target-index = "0"
+    ></button>
   """
 
-  edit: ""
+  edit: """
+    <%= Formbuilder.templates['edit/options']() %>
+  """
 
   addButton: """
-    <span class="symbol"><span class="fa fa-sort"></span></span> Ranking
+    <span class="symbol"><span class="fa fa-bars"></span></span> Ranking
   """
+
+
+  defaultAttributes: (attrs) ->
+    # @todo
+    attrs.field_options.options = [
+      label: "Field One Goes here",
+      checked: false
+    ,
+      label: "Field Two Goes here",
+      checked: false
+    ]
+
+    attrs
+

@@ -3,28 +3,26 @@ Formbuilder.registerField 'rating',
   order: 52
 
   view: """
-    <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
-      <div>
-        <label class='fb-option'>
-          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
-
-          <input type='radio' value='00' onclick="javascript: return false;" />
-          <input type='radio' value='01' onclick="javascript: return false;" />
-          <input type='radio' value='02' onclick="javascript: return false;" />
-          <input type='radio' value='03' onclick="javascript: return false;" />
-          <input type='radio' value='04' onclick="javascript: return false;" />
-          <input type='radio' value='05' onclick="javascript: return false;" />
-
-          1 -- 5
-        </label>
-      </div>
-    <% } %>
+    <div class="line">
+      <label class='fb-option'>
+        <p>
+            Any Response <br>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </p>
+      </label>
+    </div>
+    <button class="target hanging"
+            data-target = "out"
+            data-target-index = "0"
+    ></button>
   """
 
-  edit: "
-    <%= Formbuilder.templates['edit/group_rating']() %>
-  "
+  edit: ""
 
   addButton: """
-    <span class="symbol"><span class="fa fa-"></span></span> Rating
+    <span class="symbol"><span class="fa fa-star"></span></span> Rating
   """

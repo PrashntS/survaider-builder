@@ -1,8 +1,24 @@
 <div class='fb-left'>
-      <button class='js-save-form <%= Formbuilder.options.BUTTON_CLASS %>'></button>
+    <div class="header">
+        <h2>Demo Project #1</h2>
+        <button class='js-save-form'></button>
+        <button class='play-now'>Play Now!</button>
+    </div>
 
-  <div class='fb-tab-content'>
-    <%= Formbuilder.templates['partials/add_field']() %>
-    <%= Formbuilder.templates['partials/edit_field']() %>
-  </div>
+    <div class="content">
+        <h2>Fields</h2>
+        <div class='fb-tab-content'>
+            <%= Formbuilder.templates['partials/add_field']() %>
+            <%= Formbuilder.templates['partials/edit_field']() %>
+        </div>
+
+        <h3>Generic Help Text here</h3>
+        <p>Hey! You know what? I love you! &lt;3 </p>
+    </div>
+
+    <div class="footer">
+        <p><img src="vendor/img/survaider.png">Survaider Builder</p>
+        <p>v0.1.2 Pre-Alpha</p>
+        <p><a href="https://github.com/PrashntS/survaider-builder">GitHub</a></p>
+    </div>
 </div>

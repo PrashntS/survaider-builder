@@ -2,9 +2,10 @@ ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'sass:all', 'clean:compiled'
 
 # formbuilder.js must be compiled in this order:
 # 1. rivets-config
-# 2. main
-# 3. fields js
-# 4. fields templates
+# 2. Links SVG builder
+# 3. main
+# 4. fields js
+# 5. fields templates
 
 module.exports = (grunt) ->
 
@@ -55,7 +56,10 @@ module.exports = (grunt) ->
     concat:
       all:
         files:
-          '<%= distFolder %>/formbuilder.js': '<%= compiledFolder %>/*.js'
+          '<%= distFolder %>/formbuilder.js': [
+            '<%= srcFolder %>/scripts/links.js'
+            '<%= compiledFolder %>/*.js'
+          ]
           '<%= vendorFolder %>/js/vendor.js': [
             'bower_components/ie8-node-enum/index.js'
             'bower_components/jquery/jquery.js'
@@ -71,6 +75,7 @@ module.exports = (grunt) ->
             'bower_components/rivets/dist/rivets.js'
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
+            'bower_components/svg.js/dist/svg.min.js'
           ]
       mobile_friendly:
         files:
@@ -110,7 +115,7 @@ module.exports = (grunt) ->
 
     watch:
       all:
-        files: ['<%= srcFolder %>/**/*.{coffee,sass,html}']
+        files: ['<%= srcFolder %>/**/*.{coffee,sass,html,js}']
         tasks: ALL_TASKS
 
     # To test, run `grunt --no-write -v release`

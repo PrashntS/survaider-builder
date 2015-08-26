@@ -1,20 +1,23 @@
 Formbuilder.registerField 'paragraph',
 
-  order: 5
+  order: 1
 
   view: """
-    <textarea class='rf-size-<%= rf.get(Formbuilder.options.mappings.SIZE) %>'></textarea>
+    <div class="line">
+        <p>Any Response</p>
+        <button class="target" data-target="out"></button>
+    </div>
+  """
+
+  edit2: """
+    <%= Formbuilder.templates['edit/size']() %>
+    <%= Formbuilder.templates['edit/min_max_length']() %>
   """
 
   edit: """
-    <%= Formbuilder.templates['edit/size']() %>
-    <%= Formbuilder.templates['edit/min_max_length']() %>
+    This is a Paragraph Question.
   """
 
   addButton: """
     <span class="symbol">&#182;</span> Paragraph
   """
-
-  defaultAttributes: (attrs) ->
-    attrs.field_options.size = 'small'
-    attrs

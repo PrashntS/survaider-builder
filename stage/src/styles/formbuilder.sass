@@ -23,6 +23,15 @@ $font_1: 'Open Sans'
 $font_2: 'Tahoma'
 $font_3: 'Source Sans Pro'
 $font_4: 'sans-serif'
+$font: 'Work Sans', sans-serif
+
+body
+    margin: 0
+    background-color: #2E3A4E
+    position: relative
+
+*
+    box-sizing: border-box
 
 .fb-button 
     font-family: 'Work Sans', sans-serif
@@ -39,348 +48,504 @@ $font_4: 'sans-serif'
     display: block
     width: 200px
 
+    @include transition(background-color 0.2s, color 0.2s)
+
     span
         position: absolute
         left: 0
         top: 0
-        height: 30px
+        height: 100%
         width: 33px
         background: #000000
         padding-top: 8px
         text-align: center
         color: #FFF
 
-
-div.field-card
-    width: 350px
-    border: 2px solid #000000
-    border-radius: 8px
-    font-family: 'Work Sans', sans-serif
-    position: relative
-    background: #FFFFFF
-
-    $meta-bg: #3B479D
-
-    .meta
-        background: $meta-bg
-        border-radius: 5px 5px 0 0
+    &:hover
+        background-color: #000000
         color: #FFFFFF
-        padding: 10px 30px
-
-        p
-            margin: 0
-
-            &.section
-                font-size: 0.8em
-                font-weight: 200
-
-            &.title
-                font-size: 1.5em
-
-        button.target
-            right: -1.25em
-            top: 25px
-            background: $meta-bg
-
-    .logic
-        padding: 10px 0 10px 30px
-        position: relative
-
-        p
-            margin: 0
-
-            &.section
-                font-size: 0.8em
-                font-weight: 200
-
-        .line
-            padding-right: 30px
-            position: relative
-            margin: 10px 0
-
-            p
-                display: inline-block
-                border: 2px solid
-                padding: 2px 10px
-                border-radius: 5px
-                background: #FFF
-                position: relative
-
-            span.link
-                width: 100%
-                height: 2px
-                background-color: #000
-                position: absolute
-                top: 50%
-                transform: translateY(-50%)
-
-            button.target
-                right: -1.25em
-                top: 50%
-                @include transform(translateY(-50%))
-
-        button.add-logic
-            border: 2px solid #000000
-            padding: 2px 10px
-            border-radius: 5px
-            background: #FFFFFF
-            font-size: 1em
-            font-family: 'Work Sans', sans-serif
-            margin-top: 15px
-            cursor: pointer
-            @include transition(background 0.2s ease, color 0.2s ease)
-
-            &:hover
-                background: #000000
-                color: #FFFFFF
-
-            &:hover, &:focus
-                outline: none
-
-    button.target
-        position: absolute
-        width: 2.5em
-        height: 2.5em
-        border-radius: 50%
-        border: 2px solid #000
-        font-size: 0.1em
-        cursor: pointer
-
-        //@include transition(background 0.5s ease)
-
-        &:focus, &:hover
-            outline: none
-
-        &:hover
-            background: #000
-
-
-
-.fb-button[disabled] 
-    background: $color_alto_approx !important
-    border: thin solid $color_celeste_approx
-    color: $color_tapa_approx !important
-    //If you use compass, instead of the line below you could use + text-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-    text-shadow: none !important
-    opacity: .65
-    cursor: default
 
 .fb-clear 
     clear: both
 
-.fb-main 
-    max-width: 1000px
+.fb-main
+    width: 80%
     margin: 0 auto
-    padding: 0 20px 0 0
     position: relative
-    font-family: $font_0, $font_1, $font_2
+    padding: 0
+    font-family: $font
 
-.fb-left 
-    float: left
-    width: 320px
-    padding-top: 30px
+    .fb-left
+        width: 30%
+        height: 100%
+        float: left
+        position: relative
+        margin-top: 20px
+        margin-bottom: 20px
+        border-radius: 4px 0 0 5px
 
-.fb-right 
-    padding-top: 70px
-    margin-left: 320px
-    border-left: 1px solid $color_alto_approx
-    padding-left: 20px
-    min-height: 100%
-    overflow: hidden
+        .fb-field-options
+            padding-bottom: 40px
+            position: fixed
+            top: 50%
+            left: 12%
+            width: 20%
+            background: #FFFFFF
+            border: 2px solid #000000
+            border-radius: 5px
+            font-family: $font
+            height: 70%
+            opacity: 0
+            @include transform(translate(120%, -50%))
+            @include transition(transform 0.2s ease, opacity 0.1s)
 
-.fb-no-response-fields 
-    color: $color_mountain_mist_approx
+            &.active
+                opacity: 1
+                @include transform(translate(0, -50%))
 
-.fb-tabs 
-    list-style: none
-    margin: 0 0 20px 0
-    padding: 0 0 0 20px
-    border-bottom: 1px solid $color_celeste_approx
-    li 
-        display: inline-block
-        a 
-            display: block
-            padding: 10px
-            //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-            border-radius: 5px 5px 0 0
-            font-size: 13px
-            cursor: pointer
-            border-left: 1px solid transparent
-            border-right: 1px solid transparent
+            .fb-edit-field-wrapper
+                height: 100%
+                overflow: auto
+                padding: 10px 20px 20px 20px
 
-        &.active a 
-            border: 1px solid $color_celeste_approx
-            margin-bottom: -1px
-            border-bottom-color: $white
+                .edit-response-field
+                    .fb-edit-section-header 
+                        border-bottom: 1px solid $color_alto_approx
+                        margin-top: 25px
+                        margin-bottom: 10px
+                        padding-bottom: 5px
+                        clear: both
+                        font-weight: 700
+
+                    .fb-label-description
+                        input
+                            border-radius: 5px
+                            width: 100%
+
+                    .option
+                        display: flex
+                        margin-bottom: 5px
+
+                        input
+                            border-radius: 5px 0 0 5px
+                            display: inline-block
+
+                        .js-remove-option 
+                            background-color: #FFFFFF
+                            color: $color_cinnabar_approx
+                            border: 2px solid #000
+                            border-radius: 0 5px 5px 0
+                            display: inline-block
+                            width: 31px
+                            height: 31px
+                            font-size: 20px
+                            padding: 1px 7px
+                            cursor: pointer
+                            margin-left: -2px
+
+                            @include transition(background-color 0.2s ease)
+
+                            &:hover
+                                background-color: #000000
+
+                    .fb-field-label
+                        font-weight: normal
+                        background: $color_gallery_approx
+                        padding: .75em
+                        color: $color_storm_dust_approx
+                        font-size: 1.25em
+                        .field-type 
+                            margin-top: .5em
+                            display: block
+                            font-family: $font_3, $font_4
+                            font-size: 1em
+                            &:before 
+                                content: 'Type: '
+                                color: $color_mountain_mist_approx
 
 
+                        .fa.fa-arrow-right 
+                            display: none
+
+                    .fb-bottom-add 
+                        margin-top: 8px
+
+                    input
+                        border: 2px solid #000000
+                        padding: 5px 10px
+                        font-size: 14px
+                        font-family: $font
+                        height: auto
+                        vertical-align: middle
+
+            .fb-field-options-done
+                background-color: #D8D8D8
+                position: absolute
+                left: 0
+                bottom: 0
+                width: 100%
+                height: 40px
+                padding: 6px 20px
+
+                button
+                    background-color: #119462
+                    border-radius: 5px
+                    border: 2px solid #000
+                    color: #FFFFFF
+                    font-family: $font
+                    text-decoration: none
+                    font-size: 14px
+                    padding: 5px 10px
+                    @include transition(background-color 0.2s ease)
+
+                    &:hover
+                        outline: none
+                        background-color: #000
+
+                    &:focus
+                        outline: none
+
+
+            textarea 
+                border: thin solid $color_alto_approx
+                //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+                border-radius: .25em
+                padding: .5em
+                display: inline-block
+                height: auto
+                vertical-align: middle
+                &:focus 
+                    outline: none
+                    border: thin solid $color_mountain_meadow_approx
+
+
+            select 
+                border: thin solid $color_alto_approx
+                //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+                border-radius: .25em
+                padding: .5em
+                display: inline-block
+                height: auto
+                vertical-align: middle
+                font-size: 14px
+                &:focus 
+                    outline: none
+                    border: thin solid $color_mountain_meadow_approx
+
+        .header
+            background-color: #CCD7DD
+            border-radius: 5px 0 0 0
+            border: 2px solid #000000
+            margin-right: -2px
+            padding: 20px 10px 5px 20px
+
+            h2
+                margin: 0 0 10px 0
+
+            button
+                font-family: $font
+                padding: 5px 20px
+                font-size: 14px
+                border: 2px solid
+                border-radius: 5px
+                margin: 5px 0
+                width: 120px
+                color: #FFFFFF
+                background-color: #119462
+                border-color: #000000
+                @include transition(background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease)
+
+                &:hover
+                    background-color: #000000
+
+                &[disabled]
+                    background-color: #599D74
+                    border-color: #637079
+                    color: #637079
+
+                &.play-now
+                    background-color: #2165AE
+                    &:hover
+                        background-color: #000000
+
+        .content
+            background-color: #E0E7ED
+            padding: 20px 10px 5px 20px
+            margin-right: -2px
+            border: 2px solid #000000
+            border-top: none
+            border-bottom: none
+
+            h1, h2, h3, h4
+                margin-top: 0px
+                font-weight: 300
+
+        .footer
+            background-color: #3C474D
+            padding: 5px 20px
+            border: 2px solid #000000
+            margin-right: -2px
+            border-radius: 0 0 0 5px
+            height: 80px
+
+            a, p
+                color: #FFFFFF
+
+            img
+                float: left
+                height: 60px
+                margin-right: 20px
+
+            p
+                margin: 0
+
+
+    .fb-right
+        float: right
+        width: 70%
+        display: block
+        min-height: 100%
+        //overflow: hidden
+        position: relative
+        z-index: 5
+
+        #svg-canvas
+            position: absolute
+            left: 0
+            right: 22px
+            top: 0
+            bottom: 0
+            @include filter(blur(0px))
+            @include transition(all 0.5s ease)
+
+            &.blur
+                @include filter(blur(9px))
 
 .fb-response-fields 
-    padding-bottom: 150px
+    //padding-bottom: 10px
+    margin: 20px 20px 20px 0
+    border: 2px solid #000
+    border-radius: 0px 5px 5px 0
+    background-color: #FFFFFF
+    padding: 0 0 0 20px
+
     a.sortable-placeholder 
         display: block
-        border: 1px dashed $color_alto_approx
+        border: 2px dashed #000000
+        border-radius: 5px
         min-height: 80px
         height: 80px
-        width: 100%
+        width: 374px
 
-
-.fb-field-wrapper 
-    cursor: move
-    position: relative
-    margin-bottom: 10px
-    display: inline-block
-
-    &:hover 
-        .actions-wrapper 
-            opacity: 1
-            visibility: visible
-
-        .subtemplate-wrapper 
-            border-color: #000000
-
-    &.editing 
-        .actions-wrapper 
-            opacity: 1
-            visibility: visible
-
-    .actions-wrapper 
-        visibility: hidden
-        position: absolute
-        bottom: -12px
-        right: 10px
-        z-index: 3
-        opacity: 0
-        @include transition(opacity 0.2s ease)
-
-        a 
-            cursor: pointer
-            display: inline-block
-            padding: 2px 4px
-            text-align: center
-            background-color: #FFFFFF
-            color: #FFFFFF
-            border: 2px solid #000
-            border-radius: 5px
-            height: 25px
-            width: auto
-            font-size: 14px
-            @include transition(background-color 0.2s ease)
-
-            &.js-duplicate 
-                color: $color_emerald_approx
-
-            &.js-clear 
-                color: $color_cinnabar_approx
-
-            &:hover
-                background-color: #000000
-
-    .subtemplate-wrapper
-
-        border: 2px dashed transparent
-        border-radius: 8px
-        padding: 12px
+    .fb-field-wrapper 
+        cursor: move
         position: relative
-
-        @include transition(border-color 0.2s ease)
-        .cover 
-            position: absolute
-            top: 0
-            left: 0
-            height: 100%
-            width: 100%
-            z-index: 2
-
-.edit-response-field 
-    input 
-        border: thin solid $color_alto_approx
-        //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-        border-radius: .25em
-        padding: .5em
-        display: inline-block
-        height: auto
-        vertical-align: middle
-        &:focus 
-            outline: none
-            border: thin solid $color_mountain_meadow_approx
-
-
-    textarea 
-        border: thin solid $color_alto_approx
-        //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-        border-radius: .25em
-        padding: .5em
-        display: inline-block
-        height: auto
-        vertical-align: middle
-        &:focus 
-            outline: none
-            border: thin solid $color_mountain_meadow_approx
-
-
-    select 
-        border: thin solid $color_alto_approx
-        //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-        border-radius: .25em
-        padding: .5em
-        display: inline-block
-        height: auto
-        vertical-align: middle
-        font-size: 14px
-        &:focus 
-            outline: none
-            border: thin solid $color_mountain_meadow_approx
-
-
-
-.fb-edit-field-wrapper 
-    font-size: 13px
-    .js-add-option 
-        background-color: $color_emerald_approx
-        border: none
-        padding: 3px 6px
-
-    .js-remove-option 
-        background-color: $color_cinnabar_approx
-        border: none
-        padding: 3px 6px
-
-    .fb-field-label 
-        font-weight: normal
-        background: $color_gallery_approx
-        padding: .75em
-        color: $color_storm_dust_approx
-        font-size: 1.25em
-        .field-type 
-            margin-top: .5em
-            display: block
-            font-family: $font_3, $font_4
-            font-size: 1em
-            &:before 
-                content: 'Type: '
-                color: $color_mountain_mist_approx
-
-
-        .fa.fa-arrow-right 
-            display: none
-
-
-    .fb-edit-section-header 
-        border-bottom: 1px solid $color_alto_approx
-        margin-top: 25px
         margin-bottom: 10px
-        padding-bottom: 5px
-        clear: both
-        font-weight: 700
+        display: table
 
-    .fb-bottom-add 
-        margin-top: 8px
+        &:hover 
+            .actions-wrapper 
+                opacity: 1
+                visibility: visible
 
+            .subtemplate-wrapper 
+                border-color: #000000
+
+        &.editing 
+            .actions-wrapper 
+                opacity: 1
+                visibility: visible
+
+            .field-card .meta
+                background-color: royalblue
+
+        .actions-wrapper 
+            visibility: hidden
+            position: absolute
+            bottom: -12px
+            right: 10px
+            z-index: 3
+            opacity: 0
+            @include transition(opacity 0.2s ease)
+
+            a 
+                cursor: pointer
+                display: inline-block
+                padding: 2px 4px
+                text-align: center
+                background-color: #FFFFFF
+                color: #FFFFFF
+                border: 2px solid #000
+                border-radius: 5px
+                height: 25px
+                width: auto
+                font-size: 14px
+                @include transition(background-color 0.2s ease)
+
+                &.js-duplicate 
+                    background-color: $color_emerald_approx
+
+                &.js-clear 
+                    background-color: $color_cinnabar_approx
+
+                &:hover
+                    background-color: #000000
+
+        .subtemplate-wrapper
+
+            border: 2px dashed transparent
+            border-radius: 8px
+            padding: 12px
+            position: relative
+
+            @include transition(border-color 0.2s ease)
+            .cover 
+                position: absolute
+                top: 0
+                left: 0
+                height: 100%
+                width: 100%
+                z-index: 2
+
+        div.field-card
+            width: 350px
+            border: 2px solid #000000
+            border-radius: 8px
+            font-family: 'Work Sans', sans-serif
+            position: relative
+            background: #FFFFFF
+
+            $meta-bg: #3B479D
+
+            .meta
+                background: $meta-bg
+                border-radius: 5px 5px 0 0
+                color: #FFFFFF
+                padding: 10px 30px
+
+                @include transition(background-color 0.2s ease)
+
+                p
+                    margin: 0
+
+                    &.section
+                        font-size: 0.8em
+                        font-weight: 200
+
+                    &.title
+                        font-size: 1.5em
+
+                button.target
+                    right: -1.25em
+                    top: 25px
+                    background: $meta-bg
+
+            .logic
+                padding: 10px 0 10px 30px
+                position: relative
+
+                p
+                    margin: 0
+
+                    &.section
+                        font-size: 0.8em
+                        font-weight: 200
+
+                .line
+                    padding-right: 30px
+                    position: relative
+                    margin: 10px 0
+
+                    p
+                        display: inline-block
+                        border: 2px solid
+                        padding: 2px 10px
+                        border-radius: 5px
+                        background: #FFF
+                        position: relative
+
+                        i
+                            &.fa-star
+                                color: #FEC84E
+                                margin-top: 10px
+
+                        span.digit
+                            background-color: #3C474D
+                            margin-top: 10px
+                            color: #FFFFFF
+                            width: 20px
+                            height: 20px
+                            font-size: 14px
+                            border-radius: 50%
+                            padding: 2px
+                            text-align: center
+                            display: inline-block
+
+                            &.spacer
+                                width: 25px
+                                border-radius: 5px
+
+
+
+                    span.link
+                        width: 100%
+                        height: 2px
+                        background-color: #000
+                        position: absolute
+                        top: 50%
+                        transform: translateY(-50%)
+
+                    button.target
+                        right: -1.25em
+                        top: 50%
+                        @include transform(translateY(-50%))
+
+                button.target.hanging
+                    right: -1.25em
+                    top: 50%
+                    @include transform(translateY(-50%))
+
+                button.add-logic
+                    border: 2px solid #000000
+                    padding: 2px 10px
+                    border-radius: 5px
+                    background: #FFFFFF
+                    font-size: 1em
+                    font-family: 'Work Sans', sans-serif
+                    margin-top: 15px
+                    cursor: pointer
+                    @include transition(background 0.2s ease, color 0.2s ease)
+
+                    &:hover
+                        background: #000000
+                        color: #FFFFFF
+
+                    &:hover, &:focus
+                        outline: none
+
+            button.target
+                position: absolute
+                width: 2.5em
+                height: 2.5em
+                border-radius: 50%
+                border: 2px solid #000
+                font-size: 0.1em
+                cursor: pointer
+
+                //@include transition(background 0.5s ease)
+
+                &:focus, &:hover
+                    outline: none
+
+                &:hover
+                    background: #000
 
 .response-field-draggable-helper 
-    border: 1px dashed $color_alto_approx
-    background: $color_gallery_approx
+    border: 2px dashed #000000
+    background: transparent
+    border-radius: 5px
+    width: 374px
+    z-index: 10
 
 .response-field-address 
     .street 
@@ -419,24 +584,6 @@ div.field-card
 
     .seconds 
         width: 50px
-
-
-.fb-tab-content .fb-tab-pane 
-    padding: 0 20px
-    display: none
-    &.active 
-        display: block
-
-
-.fb-common-wrapper .fb-label-description 
-    margin-bottom: 10px
-    input 
-        width: 100%
-
-    textarea 
-        width: 100%
-        min-height: 5em
-
 
 .response-field-text input 
     &.rf-size-small 

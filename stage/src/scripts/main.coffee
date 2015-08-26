@@ -6,7 +6,6 @@ class FormbuilderModel extends Backbone.DeepModel
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
 
-
 class FormbuilderCollection extends Backbone.Collection
   initialize: ->
     @on 'add', @copyCidToModel
@@ -18,7 +17,6 @@ class FormbuilderCollection extends Backbone.Collection
 
   copyCidToModel: (model) ->
     model.attributes.cid = model.cid
-
 
 class ViewFieldView extends Backbone.View
   className: "fb-field-wrapper"
@@ -36,8 +34,9 @@ class ViewFieldView extends Backbone.View
   render: ->
     @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
         .data('cid', @model.cid)
+        .attr('data-cid', @model.cid)
         .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
-
+    Links.reload()
     return @
 
   focusEditView: ->
@@ -67,7 +66,6 @@ class ViewFieldView extends Backbone.View
     attrs['label'] += ' Copy'
     @parentView.createField attrs, { position: @model.indexInDOM() + 1 }
 
-
 class EditFieldView extends Backbone.View
   className: "edit-response-field"
 
@@ -84,11 +82,14 @@ class EditFieldView extends Backbone.View
   render: ->
     @$el.html(Formbuilder.templates["edit/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
     rivets.bind @$el, { model: @model }
+    Links.reload()
     return @
 
   remove: ->
     @parentView.editView = undefined
-    @parentView.$el.find("[data-target=\"#addField\"]").click()
+    $("#editField").removeClass("active")
+    Links.reload()
+    #@parentView.$el.find("[data-target=\"#addField\"]").click()
     super
 
   # @todo this should really be on the model, not the view
@@ -125,8 +126,8 @@ class EditFieldView extends Backbone.View
     @forceRender()
 
   forceRender: ->
+    Links.reload()
     @model.trigger('change')
-
 
 class BuilderView extends Backbone.View
   SUBVIEWS: []
@@ -152,7 +153,6 @@ class BuilderView extends Backbone.View
     @collection.bind 'change', @handleFormUpdate, @
     @collection.bind 'destroy add reset', @hideShowNoResponseFields, @
     @collection.bind 'destroy', @ensureEditViewScrolled, @
-
     @render()
     @collection.reset(@bootstrapData)
     @bindSaveEvent()
@@ -173,6 +173,8 @@ class BuilderView extends Backbone.View
   reset: ->
     @$responseFields.html('')
     @addAll()
+    Links.reload()
+    #Links.init()
 
   render: ->
     @$el.html Formbuilder.templates['page']()
@@ -181,12 +183,15 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.fb-left')
     @$responseFields = @$el.find('.fb-response-fields')
 
-    @bindWindowScrollEvent()
+    # @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
     new subview({parentView: @}).render() for subview in @SUBVIEWS
-
+    
+    # Initialise the Linking SVG canvas.
+    Links.reload()
+    
     return @
 
   bindWindowScrollEvent: ->
@@ -201,13 +206,15 @@ class BuilderView extends Backbone.View
   showTab: (e) ->
     $el = $(e.currentTarget)
     target = $el.data('target')
-    $el.closest('li').addClass('active').siblings('li').removeClass('active')
-    $(target).addClass('active').siblings('.fb-tab-pane').removeClass('active')
+    #$el.closest('li').addClass('active').siblings('li').removeClass('active')
+    #$(target).addClass('active').siblings('.fb-field-options').removeClass('active')
 
     @unlockLeftWrapper() unless target == '#editField'
 
     if target == '#editField' && !@editView && (first_model = @collection.models[0])
       @createAndShowEditView(first_model)
+    else
+      Links.reload()
 
   addOne: (responseField, _, options) ->
     view = new ViewFieldView
@@ -238,7 +245,9 @@ class BuilderView extends Backbone.View
       @$responseFields.append view.render().el
 
   setSortable: ->
-    @$responseFields.sortable('destroy') if @$responseFields.hasClass('ui-sortable')
+    if @$responseFields.hasClass('ui-sortable')
+      @$responseFields.sortable('destroy')
+      Links.reload()
     @$responseFields.sortable
       forcePlaceholderSize: true
       placeholder: 'sortable-placeholder'
@@ -252,6 +261,10 @@ class BuilderView extends Backbone.View
       update: (e, ui) =>
         # ensureEditViewScrolled, unless we're updating from the draggable
         @ensureEditViewScrolled() unless ui.item.data('field-type')
+      deactivate: (e, ui) =>
+        Links.reload()
+      activate: (e, ui) =>
+        Links.blur()
 
     @setDraggable()
 
@@ -263,14 +276,15 @@ class BuilderView extends Backbone.View
       helper: =>
         $helper = $("<div class='response-field-draggable-helper' />")
         $helper.css
-          width: @$responseFields.width() # hacky, won't get set without inline style
+          #width: @$responseFields.width() # hacky, won't get set without inline style
+          width: '374px'
           height: '80px'
-
         $helper
 
   addAll: ->
     @collection.each @addOne, @
     @setSortable()
+    Links.reload()
 
   hideShowNoResponseFields: ->
     @$el.find(".fb-no-response-fields")[if @collection.length > 0 then 'hide' else 'show']()
@@ -288,6 +302,8 @@ class BuilderView extends Backbone.View
     $responseFieldEl = @$el.find(".fb-field-wrapper").filter( -> $(@).data('cid') == model.cid )
     $responseFieldEl.addClass('editing').siblings('.fb-field-wrapper').removeClass('editing')
 
+    #$(".fb-field-options").attr('class', 'fb-field-options active')
+
     if @editView
       if @editView.model.cid is model.cid
         @$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
@@ -295,6 +311,7 @@ class BuilderView extends Backbone.View
         return
 
       @editView.remove()
+      $("#editField").removeClass("active")
 
     @editView = new EditFieldView
       model: model
@@ -302,7 +319,9 @@ class BuilderView extends Backbone.View
 
     $newEditEl = @editView.render().$el
     @$el.find(".fb-edit-field-wrapper").html $newEditEl
-    @$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
+    #@$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
+    $("#editField").addClass("active")
+
     @scrollLeftWrapper($responseFieldEl)
     return @
 
@@ -358,7 +377,7 @@ class Formbuilder
   @helpers:
     defaultFieldAttrs: (field_type) ->
       attrs = {}
-      attrs[Formbuilder.options.mappings.LABEL] = 'Untitled'
+      attrs[Formbuilder.options.mappings.LABEL] = 'Question Title'
       attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type
       attrs[Formbuilder.options.mappings.REQUIRED] = true
       attrs['field_options'] = {}
@@ -391,10 +410,11 @@ class Formbuilder
       MINLENGTH: 'field_options.minlength'
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
+      CID: 12
 
     dict:
-      ALL_CHANGES_SAVED: 'All changes saved'
-      SAVE_FORM: 'Save form'
+      ALL_CHANGES_SAVED: 'Saved'
+      SAVE_FORM: 'Save'
       UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
 
   @fields: {}
@@ -418,6 +438,7 @@ class Formbuilder
     _.extend @, Backbone.Events
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
+    Links.reload()
 
 window.Formbuilder = Formbuilder
 

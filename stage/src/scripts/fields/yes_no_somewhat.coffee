@@ -1,6 +1,6 @@
-Formbuilder.registerField 'radio',
+Formbuilder.registerField 'yes_no_somewhat',
 
-  order: 15
+  order: 3
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
@@ -20,17 +20,23 @@ Formbuilder.registerField 'radio',
     <%= Formbuilder.templates['edit/options']() %>
   """
 
+  edit: "No options"
+
+
   addButton: """
-    <span class="symbol"><span class="fa fa-circle-o"></span></span> Multiple Choice
+    <span class="symbol"><span class="fa fa-dot-circle-o"></span></span> Yes \/ No Somewhat
   """
 
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Choice One",
+      label: "Yes",
       checked: false
     ,
-      label: "Choice Two",
+      label: "No",
+      checked: false
+    ,
+      label: "Somewhat",
       checked: false
     ]
 
