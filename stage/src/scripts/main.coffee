@@ -190,6 +190,8 @@ class BuilderView extends Backbone.View
     new subview({parentView: @}).render() for subview in @SUBVIEWS
     
     # Initialise the Linking SVG canvas.
+    Links.reload()
+    
     return @
 
   bindWindowScrollEvent: ->
@@ -239,8 +241,6 @@ class BuilderView extends Backbone.View
     # Catch-all: add to bottom
     else
       @$responseFields.append view.render().el
-
-    Links.reload()
 
 
   setSortable: ->
