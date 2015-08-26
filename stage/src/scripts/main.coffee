@@ -38,7 +38,7 @@ class ViewFieldView extends Backbone.View
         .data('cid', @model.cid)
         .attr('data-cid', @model.cid)
         .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
-
+    Links.reload()
     return @
 
   focusEditView: ->
@@ -69,6 +69,7 @@ class ViewFieldView extends Backbone.View
     @parentView.createField attrs, { position: @model.indexInDOM() + 1 }
 
 
+
 class EditFieldView extends Backbone.View
   className: "edit-response-field"
 
@@ -85,11 +86,13 @@ class EditFieldView extends Backbone.View
   render: ->
     @$el.html(Formbuilder.templates["edit/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
     rivets.bind @$el, { model: @model }
+    Links.reload()
     return @
 
   remove: ->
     @parentView.editView = undefined
     $("#editField").removeClass("active")
+    Links.reload()
     #@parentView.$el.find("[data-target=\"#addField\"]").click()
     super
 
@@ -127,6 +130,7 @@ class EditFieldView extends Backbone.View
     @forceRender()
 
   forceRender: ->
+    Links.reload()
     @model.trigger('change')
 
 
@@ -253,12 +257,12 @@ class BuilderView extends Backbone.View
           @createAndShowEditView(rf)
 
         @handleFormUpdate()
+        Links.reload()
         return true
       update: (e, ui) =>
         # ensureEditViewScrolled, unless we're updating from the draggable
         @ensureEditViewScrolled() unless ui.item.data('field-type')
         Links.reload()
-
     @setDraggable()
 
   setDraggable: ->
@@ -278,6 +282,7 @@ class BuilderView extends Backbone.View
   addAll: ->
     @collection.each @addOne, @
     @setSortable()
+    Links.reload()
 
   hideShowNoResponseFields: ->
     @$el.find(".fb-no-response-fields")[if @collection.length > 0 then 'hide' else 'show']()
@@ -370,7 +375,7 @@ class Formbuilder
   @helpers:
     defaultFieldAttrs: (field_type) ->
       attrs = {}
-      attrs[Formbuilder.options.mappings.LABEL] = 'Untitled'
+      attrs[Formbuilder.options.mappings.LABEL] = 'Question Title'
       attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type
       attrs[Formbuilder.options.mappings.REQUIRED] = true
       attrs['field_options'] = {}
@@ -431,7 +436,7 @@ class Formbuilder
     _.extend @, Backbone.Events
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
-    Links.init()
+    Links.reload()
 
 window.Formbuilder = Formbuilder
 

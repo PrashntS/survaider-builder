@@ -111,6 +111,9 @@ var Links = {
             $("#" + Links.hook_id).html("");
             Links.init();
             Links.grid_lines.draw_vertical();
+        } else {
+            Links.init();
+            Links.grid_lines.draw_vertical();
         }
     }
 };
