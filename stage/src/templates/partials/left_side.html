@@ -1,8 +1,19 @@
 <div class='fb-left'>
-      <button class='js-save-form <%= Formbuilder.options.BUTTON_CLASS %>'></button>
+    <h2>Demo Project #1</h2>
+    <button class='js-save-form <%= Formbuilder.options.BUTTON_CLASS %>'></button>
 
-  <div class='fb-tab-content'>
-    <%= Formbuilder.templates['partials/add_field']() %>
-    <%= Formbuilder.templates['partials/edit_field']() %>
-  </div>
+    <h2>Add Question</h2>
+    <div class='fb-tab-content'>
+        <%= Formbuilder.templates['partials/add_field']() %>
+        <%= Formbuilder.templates['partials/edit_field']() %>
+    </div>
+
+    <h3>Generic Help Text here</h3>
+    <p>Hey! You know what? I love you! &lt;3 </p>
+
+    <div class="footer">
+        <p>Survaider Builder</p>
+        <p>v0.1.2 Pre-Alpha &bullet; GitHub</p>
+        <img src="vendor/img/survaider.png">
+    </div>
 </div>

@@ -88,7 +88,8 @@ class EditFieldView extends Backbone.View
 
   remove: ->
     @parentView.editView = undefined
-    @parentView.$el.find("[data-target=\"#addField\"]").click()
+    $("#editField").removeClass("active")
+    #@parentView.$el.find("[data-target=\"#addField\"]").click()
     super
 
   # @todo this should really be on the model, not the view
@@ -202,7 +203,7 @@ class BuilderView extends Backbone.View
     $el = $(e.currentTarget)
     target = $el.data('target')
     $el.closest('li').addClass('active').siblings('li').removeClass('active')
-    $(target).addClass('active').siblings('.fb-tab-pane').removeClass('active')
+    $(target).addClass('active').siblings('.fb-field-options').removeClass('active')
 
     @unlockLeftWrapper() unless target == '#editField'
 
@@ -289,6 +290,8 @@ class BuilderView extends Backbone.View
     $responseFieldEl = @$el.find(".fb-field-wrapper").filter( -> $(@).data('cid') == model.cid )
     $responseFieldEl.addClass('editing').siblings('.fb-field-wrapper').removeClass('editing')
 
+    #$(".fb-field-options").attr('class', 'fb-field-options active')
+
     if @editView
       if @editView.model.cid is model.cid
         @$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
@@ -296,6 +299,7 @@ class BuilderView extends Backbone.View
         return
 
       @editView.remove()
+      $("#editField").removeClass("active")
 
     @editView = new EditFieldView
       model: model
@@ -303,7 +307,9 @@ class BuilderView extends Backbone.View
 
     $newEditEl = @editView.render().$el
     @$el.find(".fb-edit-field-wrapper").html $newEditEl
-    @$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
+    #@$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
+    $("#editField").addClass("active")
+
     @scrollLeftWrapper($responseFieldEl)
     return @
 

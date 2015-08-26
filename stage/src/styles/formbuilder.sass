@@ -71,21 +71,29 @@ body
     .fb-left
         width: 20%
         height: 100%
-        position: fixed
+        position: relative
 
         .fb-field-options
-            padding: 0 20px
+            padding-bottom: 40px
             position: absolute
-            top: 0
+            top: 50%
+            left: 50%
             width: 100%
             background: #FFFFFF
             border: 2px solid #000000
             border-radius: 5px
             font-family: $font
-            height: 40%
-            @include transition(all 0.5s ease)
+            height: 70%
+            @include transform(translate(100%, -50%))
+            @include transition(transform 0.2s ease)
+
+            &.active
+                @include transform(translate(-50%, -50%))
 
             .fb-edit-field-wrapper
+                height: 100%
+                overflow: auto
+                padding: 10px 20px 20px 20px
                 .option
                     display: flex
 
@@ -147,6 +155,34 @@ body
                 .fb-bottom-add 
                     margin-top: 8px
 
+            .fb-field-options-done
+                background-color: #D8D8D8
+                position: absolute
+                left: 0
+                bottom: 0
+                width: 100%
+                height: 40px
+                padding: 6px 20px
+
+                button
+                    background-color: #119462
+                    border-radius: 5px
+                    border: 2px solid #000
+                    color: #FFFFFF
+                    font-family: $font
+                    text-decoration: none
+                    font-size: 14px
+                    padding: 5px 10px
+                    @include transition(background-color 0.2s ease)
+
+                    &:hover
+                        outline: none
+                        background-color: #000
+
+                    &:focus
+                        outline: none
+
+
         .edit-response-field 
 
             textarea 
@@ -184,6 +220,8 @@ body
         overflow: hidden
         padding: 20px 10px
         background-color: #FFFFFF
+        position: relative
+        z-index: 5
 
 
 .fb-response-fields 
@@ -215,6 +253,9 @@ body
                 opacity: 1
                 visibility: visible
 
+            .field-card .meta
+                background-color: royalblue
+
         .actions-wrapper 
             visibility: hidden
             position: absolute
@@ -239,10 +280,10 @@ body
                 @include transition(background-color 0.2s ease)
 
                 &.js-duplicate 
-                    color: $color_emerald_approx
+                    background-color: $color_emerald_approx
 
                 &.js-clear 
-                    color: $color_cinnabar_approx
+                    background-color: $color_cinnabar_approx
 
                 &:hover
                     background-color: #000000
@@ -278,6 +319,8 @@ body
                 border-radius: 5px 5px 0 0
                 color: #FFFFFF
                 padding: 10px 30px
+
+                @include transition(background-color 0.2s ease)
 
                 p
                     margin: 0
@@ -374,6 +417,7 @@ body
     background: transparent
     border-radius: 5px
     width: 374px
+    z-index: 10
 
 .response-field-address 
     .street 
