@@ -14,9 +14,7 @@ Formbuilder.registerField 'paragraph',
     <%= Formbuilder.templates['edit/min_max_length']() %>
   """
 
-  edit: """
-    This is a Paragraph Question.
-  """
+  edit: """"""
 
   addButton: """
     <span class="symbol">&#182;</span> Paragraph

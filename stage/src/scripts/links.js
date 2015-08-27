@@ -6,8 +6,8 @@ var Links = {
     init: function () {
         "use strict";
         this.draw = SVG(this.hook_id);
-        this.vp_o_x = $("#" + this.hook_id).offset().left
-        this.vp_o_y = $("#" + this.hook_id).offset().top
+        this.vp_o_x = $("#" + this.hook_id).offset().left;
+        this.vp_o_y = $("#" + this.hook_id).offset().top;
         this.sub();
     },
     update_height: function (height) {
@@ -57,12 +57,6 @@ var Links = {
                 pos_y = targets.eq(i).offset().top  + offset - Links.vp_o_y;
 
                 this.lines[i] = Links.draw.line(pos_x, pos_y, max_x, pos_y).stroke(this.style);
-
-                if (pos_y >= Links.max_draw) {
-                    Links.max_draw = pos_y + 10;
-                }
-
-                Links.update_height();
             }
         },
 
@@ -107,16 +101,10 @@ var Links = {
 
     reload: function() {
         "use strict";
-        if (Links.draw) {
-            $("#" + Links.hook_id).html("");
-            Links.init();
-            Links.grid_lines.draw_vertical();
-            Links.un_blur();
-        } else {
-            Links.init();
-            Links.grid_lines.draw_vertical();
-            Links.un_blur();
-        }
+        $("#" + Links.hook_id).html("");
+        Links.init();
+        Links.grid_lines.draw_vertical();
+        Links.un_blur();
     },
 
     blur: function () {

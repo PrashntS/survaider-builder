@@ -40,7 +40,6 @@ class ViewFieldView extends Backbone.View
     return @
 
   focusEditView: ->
-    console.log("HERE")
     $("#editField").addClass("active")
     @parentView.createAndShowEditView(@model)
 
@@ -53,6 +52,8 @@ class ViewFieldView extends Backbone.View
       @model.destroy()
 
     x = Formbuilder.options.CLEAR_FIELD_CONFIRM
+
+    Links.reload()
 
     switch typeof x
       when 'string'
@@ -76,6 +77,7 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
+    'click .fb-label-description': 'prepareLabel'
 
   initialize: (options) ->
     {@parentView} = options
@@ -99,7 +101,24 @@ class EditFieldView extends Backbone.View
     $el = $(e.currentTarget)
     i = @$el.find('.option').index($el.closest('.option'))
     options = @model.get(Formbuilder.options.mappings.OPTIONS) || []
-    newOption = {label: "", checked: false}
+    newOption = {label: "Option Value", checked: false}
+
+    op_len = $el.parent().parent().find('.option').length
+
+    field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
+
+    if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
+
+      ol_val = $el.eq(0).html()
+      new_val = ol_val + "<br>No more than " + op_len + " options!"
+      $el.eq(0).html(new_val)
+      $el.eq(0).addClass("err")
+      setTimeout ( ->
+        $el.eq(0).html(ol_val)
+        $el.eq(0).removeClass("err")
+      ), 2500
+
+      return
 
     if i > -1
       options.splice(i + 1, 0, newOption)
@@ -113,6 +132,17 @@ class EditFieldView extends Backbone.View
   removeOption: (e) ->
     $el = $(e.currentTarget)
     index = @$el.find(".js-remove-option").index($el)
+    op_len = $el.parent().parent().find('.option').length
+
+    field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
+
+    if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
+      $el.eq(0).addClass("err")
+      setTimeout ( ->
+        $el.eq(0).removeClass("err")
+      ), 2500
+      return
+
     options = @model.get Formbuilder.options.mappings.OPTIONS
     options.splice index, 1
     @model.set Formbuilder.options.mappings.OPTIONS, options
@@ -130,6 +160,10 @@ class EditFieldView extends Backbone.View
   forceRender: ->
     Links.reload()
     @model.trigger('change')
+
+  prepareLabel: (e) ->
+    $el = $(e.currentTarget).find("input").eq(0)
+    $el.val("") if $el.val().indexOf("\x1e") > -1
 
 class BuilderView extends Backbone.View
   SUBVIEWS: []
@@ -176,7 +210,6 @@ class BuilderView extends Backbone.View
     @$responseFields.html('')
     @addAll()
     Links.reload()
-    #Links.init()
 
   render: ->
     @$el.html Formbuilder.templates['page']()
@@ -185,7 +218,7 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.fb-left')
     @$responseFields = @$el.find('.fb-response-fields')
 
-    # @bindWindowScrollEvent()
+    @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
@@ -198,12 +231,13 @@ class BuilderView extends Backbone.View
 
   bindWindowScrollEvent: ->
     $(window).on 'scroll', =>
-      return if @$fbLeft.data('locked') == true
-      newMargin = Math.max(0, $(window).scrollTop() - @$el.offset().top)
+      #return if @$fbLeft.data('locked') == true
+      element   = $(".fb-tab-pane")
+      newMargin = Math.max(0, $(window).scrollTop() - element.offset().top)
       maxMargin = @$responseFields.height()
 
-      @$fbLeft.css
-        'margin-top': Math.min(maxMargin, newMargin)
+      element.css
+        'padding-top': Math.min(maxMargin, newMargin)
 
   showTab: (e) ->
     $el = $(e.currentTarget)
@@ -380,7 +414,7 @@ class Formbuilder
   @helpers:
     defaultFieldAttrs: (field_type) ->
       attrs = {}
-      attrs[Formbuilder.options.mappings.LABEL] = 'Question Title'
+      attrs[Formbuilder.options.mappings.LABEL] = Formbuilder.options.dict.DEFAULT_LABEL
       attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type
       attrs[Formbuilder.options.mappings.REQUIRED] = true
       attrs['field_options'] = {}
@@ -415,8 +449,26 @@ class Formbuilder
       LENGTH_UNITS: 'field_options.min_max_length_units'
       CID: 12
 
+    limit_map:
+      yes_no:
+        min: 2
+        max: 3
+      check_boxes:
+        min: 2
+        max: 5
+      multiple_choice:
+        min: 2
+        max: 5
+      ranking:
+        min: 2
+        max: 6
+      group_rating:
+        min: 2
+        max: 3
+
     dict:
       ALL_CHANGES_SAVED: 'Saved'
+      DEFAULT_LABEL: 'Question Title\x1e'
       SAVE_FORM: 'Save'
       UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
 

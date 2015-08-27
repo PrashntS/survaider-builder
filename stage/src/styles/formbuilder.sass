@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Work+Sans:400,100,200,300,500,600)
+@import url(//fonts.googleapis.com/css?family=Work+Sans:400,100,200,300,500,600)
 
 @import "bourbon/bourbon"
 //colors
@@ -123,54 +123,95 @@ body
                             width: 100%
 
                     .option
-                        display: flex
+                        position: relative
                         margin-bottom: 5px
 
                         input
-                            border-radius: 5px 0 0 5px
-                            display: inline-block
+                            margin: 0
+                            padding-right: 30px
+                            border-radius: 5px
+                            width: 100%
 
                         .js-remove-option 
-                            background-color: #FFFFFF
-                            color: $color_cinnabar_approx
-                            border: 2px solid #000
-                            border-radius: 0 5px 5px 0
-                            display: inline-block
-                            width: 31px
-                            height: 31px
-                            font-size: 20px
-                            padding: 1px 7px
+                            position: absolute
+                            right: 0
+                            top: 0
+                            width: 30px
+                            height: 30px
+                            font-size: 16px
+                            padding: 5px 7px
                             cursor: pointer
                             margin-left: -2px
+                            color: #e74c3c
+                            text-align: right
+                            display: flex
+                            overflow: hidden
 
-                            @include transition(background-color 0.2s ease)
+                            .fa
+                                line-height: auto
+                                font-size: 18px
+
+                            @include transition(all 0.5s ease)
 
                             &:hover
-                                background-color: #000000
+                                color: #000000
 
-                    .fb-field-label
-                        font-weight: normal
-                        background: $color_gallery_approx
-                        padding: .75em
-                        color: $color_storm_dust_approx
-                        font-size: 1.25em
-                        .field-type 
-                            margin-top: .5em
-                            display: block
-                            font-family: $font_3, $font_4
-                            font-size: 1em
-                            &:before 
-                                content: 'Type: '
-                                color: $color_mountain_mist_approx
+                            &.err
+                                color: #FFFFFF
+                                width: 100%
+                                background: #000
+                                border-radius: 5px
 
+                                &:after
+                                    content: "Minimum 2 options!"
+                                    margin-left: 5px
 
-                        .fa.fa-arrow-right 
-                            display: none
+                                &:hover
+                                    color: #FFFFFF
+
+                    .js-add-option
+                        cursor: pointer
+                        color: #000000
+                        border: 2px solid transparent
+                        width: 100%
+                        height: 33px
+                        padding: 5px 10px
+                        border-radius: 5px
+                        display: block
+                        margin-top: 5px
+                        overflow: hidden
+
+                        @include transition(all 0.5s ease)
+
+                        &.err
+                            background-color: #000000
+                            border-color: #000000
+                            height: 60px
+                            color: #FFFFFF
+
+                            &:hover
+                                color: #FFFFFF
+
+                        &:hover
+                            color: #3B479D
 
                     .fb-bottom-add 
                         margin-top: 8px
 
-                    input
+                    .fb-nah-bro
+                        background: #000
+                        opacity: 0
+                        color: #FFFFFF
+                        visibility: hidden
+                        @include animation(flash 10s ease)
+
+                    @include keyframes(flash)
+                        0%, 100%
+                            opacity: 0
+                        10%, 90%
+                            opacity: 1
+
+                    input, .button
                         border: 2px solid #000000
                         padding: 5px 10px
                         font-size: 14px
@@ -194,6 +235,7 @@ body
                     color: #FFFFFF
                     font-family: $font
                     text-decoration: none
+                    text-align: center
                     font-size: 14px
                     padding: 5px 10px
                     @include transition(background-color 0.2s ease)
@@ -204,33 +246,6 @@ body
 
                     &:focus
                         outline: none
-
-
-            textarea 
-                border: thin solid $color_alto_approx
-                //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-                border-radius: .25em
-                padding: .5em
-                display: inline-block
-                height: auto
-                vertical-align: middle
-                &:focus 
-                    outline: none
-                    border: thin solid $color_mountain_meadow_approx
-
-
-            select 
-                border: thin solid $color_alto_approx
-                //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-                border-radius: .25em
-                padding: .5em
-                display: inline-block
-                height: auto
-                vertical-align: middle
-                font-size: 14px
-                &:focus 
-                    outline: none
-                    border: thin solid $color_mountain_meadow_approx
 
         .header
             background-color: #CCD7DD
@@ -357,7 +372,7 @@ body
                 visibility: visible
 
             .field-card .meta
-                background-color: royalblue
+                background-color: #00B6B9
 
             .field-card.blur
                 @include filter(blur(0px))
@@ -440,6 +455,13 @@ body
 
                     &.title
                         font-size: 1.5em
+                        &:empty
+                            &:after
+                                content: "Untitled Question"
+                                color: #FFFFFF
+
+                    &.type
+                        text-transform: capitalize
 
                 button.target
                     right: -1.25em
@@ -477,7 +499,7 @@ body
 
                         span.digit
                             background-color: #3C474D
-                            margin-top: 10px
+                            //margin-top: 10px
                             color: #FFFFFF
                             width: 20px
                             height: 20px
@@ -487,11 +509,19 @@ body
                             text-align: center
                             display: inline-block
 
+                            &.up
+                                //background-color: #14B37D
+
+                            &.down, &.up
+                                background-color: #7F74B6
+
                             &.spacer
                                 width: 25px
                                 border-radius: 5px
-
-
+                        &:empty
+                            &:after
+                                content: "Meta Missing!"
+                                color: #e74c3c
 
                     span.link
                         width: 100%

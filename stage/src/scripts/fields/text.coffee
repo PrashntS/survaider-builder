@@ -9,12 +9,12 @@ Formbuilder.registerField 'text',
     </div>
   """
 
-  edit: "No Options"
+  edit: """"""
   
   ed:  """
     <%= Formbuilder.templates['edit/min_max_length']() %>
   """
 
   addButton: """
-    <span class='symbol'><span class='fa fa-font'></span></span> Text
+    <span class='symbol'><span class='fa fa-font'></span></span> Short Text
   """
