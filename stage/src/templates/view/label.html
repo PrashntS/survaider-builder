@@ -1,6 +1,7 @@
 <p class="title"><%= Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.LABEL)) %></p>
 <p class="type">
-    <strong>Type</strong>: <%= Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.FIELD_TYPE)) %>
+    <!--<strong>Type</strong>: --><small><%= Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.FIELD_TYPE)) %></small>
+    <!--
     &bullet;
     <strong>CID:</strong> <%= Formbuilder.attributes %>
     &bullet;
@@ -9,4 +10,5 @@
     <% } else { %>
     Optional
     <% } %>
+    -->
 </p>

@@ -40,7 +40,6 @@ class ViewFieldView extends Backbone.View
     return @
 
   focusEditView: ->
-    console.log("HERE")
     $("#editField").addClass("active")
     @parentView.createAndShowEditView(@model)
 
@@ -53,6 +52,8 @@ class ViewFieldView extends Backbone.View
       @model.destroy()
 
     x = Formbuilder.options.CLEAR_FIELD_CONFIRM
+
+    Links.reload()
 
     switch typeof x
       when 'string'
@@ -185,7 +186,7 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.fb-left')
     @$responseFields = @$el.find('.fb-response-fields')
 
-    # @bindWindowScrollEvent()
+    @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
@@ -198,12 +199,15 @@ class BuilderView extends Backbone.View
 
   bindWindowScrollEvent: ->
     $(window).on 'scroll', =>
-      return if @$fbLeft.data('locked') == true
-      newMargin = Math.max(0, $(window).scrollTop() - @$el.offset().top)
+      #return if @$fbLeft.data('locked') == true
+      element   = $(".fb-tab-pane")
+      newMargin = Math.max(0, $(window).scrollTop() - element.offset().top)
       maxMargin = @$responseFields.height()
 
-      @$fbLeft.css
-        'margin-top': Math.min(maxMargin, newMargin)
+      element.css
+        'padding-top': Math.min(maxMargin, newMargin)
+
+
 
   showTab: (e) ->
     $el = $(e.currentTarget)

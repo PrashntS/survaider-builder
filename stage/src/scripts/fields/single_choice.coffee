@@ -1,6 +1,6 @@
-Formbuilder.registerField 'yes_no_somewhat',
+Formbuilder.registerField 'single_choice',
 
-  order: 3
+  order: 15
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
@@ -20,23 +20,17 @@ Formbuilder.registerField 'yes_no_somewhat',
     <%= Formbuilder.templates['edit/options']() %>
   """
 
-  edit: "No options"
-
-
   addButton: """
-    <span class="symbol"><span class="fa fa-dot-circle-o"></span></span> Yes \/ No Somewhat
+    <span class="symbol"><span class="fa fa-circle-o"></span></span> Single Choice
   """
 
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Yes",
+      label: "Choice One",
       checked: false
     ,
-      label: "No",
-      checked: false
-    ,
-      label: "Somewhat",
+      label: "Choice Two",
       checked: false
     ]
 

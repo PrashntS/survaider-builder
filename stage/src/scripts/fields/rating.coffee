@@ -6,12 +6,14 @@ Formbuilder.registerField 'rating',
     <div class="line">
       <label class='fb-option'>
         <p>
-            Any Response <br>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
+              <span class="digit">1</span>
+              <span class="digit">2</span>
+              <span class="digit">3</span>
+              <span class="digit">4</span>
+              <span class="digit spacer">...</span>
+              <span class="digit">8</span>
+              <span class="digit">9</span>
+              <span class="digit">10</span>
         </p>
       </label>
     </div>

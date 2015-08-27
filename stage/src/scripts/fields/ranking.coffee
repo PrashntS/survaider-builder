@@ -9,14 +9,8 @@ Formbuilder.registerField 'ranking',
           <p>
               <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
               <br>
-              <span class="digit">1</span>
-              <span class="digit">2</span>
-              <span class="digit">3</span>
-              <span class="digit">4</span>
-              <span class="digit spacer">...</span>
-              <span class="digit">8</span>
-              <span class="digit">9</span>
-              <span class="digit">10</span>
+              <span class="digit up"><i class="fa fa-arrow-up"></i></span>
+              <span class="digit down"><i class="fa fa-arrow-down"></i></span>
           </p>
         </label>
       </div>

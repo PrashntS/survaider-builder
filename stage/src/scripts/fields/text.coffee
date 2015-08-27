@@ -9,7 +9,7 @@ Formbuilder.registerField 'text',
     </div>
   """
 
-  edit: "No Options"
+  edit: """"""
   
   ed:  """
     <%= Formbuilder.templates['edit/min_max_length']() %>

@@ -1,4 +1,4 @@
-Formbuilder.registerField 'yesNo',
+Formbuilder.registerField 'yes_no',
 
   order: 3
 
@@ -19,9 +19,6 @@ Formbuilder.registerField 'yesNo',
   edit: """
     <%= Formbuilder.templates['edit/options']() %>
   """
-
-  edit: "No options"
-
 
   addButton: """
     <span class="symbol"><span class="fa fa-dot-circle-o"></span></span> Yes \/ No

@@ -1,6 +1,6 @@
-Formbuilder.registerField 'radio',
+Formbuilder.registerField 'multiple_choice',
 
-  order: 15
+  order: 10
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
@@ -21,16 +21,15 @@ Formbuilder.registerField 'radio',
   """
 
   addButton: """
-    <span class="symbol"><span class="fa fa-circle-o"></span></span> Multiple Choice
+    <span class="symbol"><span class="fa fa-square-o"></span></span> Multiple Choice
   """
 
   defaultAttributes: (attrs) ->
-    # @todo
     attrs.field_options.options = [
-      label: "Choice One",
+      label: "",
       checked: false
     ,
-      label: "Choice Two",
+      label: "",
       checked: false
     ]
 
