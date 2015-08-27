@@ -366,7 +366,7 @@ var Links = {
         $el.eq(0).addClass("err");
         setTimeout((function() {
           return $el.eq(0).removeClass("err");
-        }), 2000);
+        }), 2500);
         return;
       }
       options = this.model.get(Formbuilder.options.mappings.OPTIONS);

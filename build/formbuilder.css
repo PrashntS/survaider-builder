@@ -133,9 +133,9 @@ body {
   text-align: right;
   display: flex;
   overflow: hidden;
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  transition: all 0.2s ease;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 .fb-main .fb-left .fb-field-options .fb-edit-field-wrapper .edit-response-field .option .js-remove-option .fa {
   line-height: auto;
