@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Work+Sans:400,100,200,300,500,600)
+@import url(//fonts.googleapis.com/css?family=Work+Sans:400,100,200,300,500,600)
 
 @import "bourbon/bourbon"
 //colors
@@ -149,29 +149,10 @@ body
                             &:hover
                                 color: #000000
 
-                    .fb-field-label
-                        font-weight: normal
-                        background: $color_gallery_approx
-                        padding: .75em
-                        color: $color_storm_dust_approx
-                        font-size: 1.25em
-                        .field-type 
-                            margin-top: .5em
-                            display: block
-                            font-family: $font_3, $font_4
-                            font-size: 1em
-                            &:before 
-                                content: 'Type: '
-                                color: $color_mountain_mist_approx
-
-
-                        .fa.fa-arrow-right 
-                            display: none
-
                     .fb-bottom-add 
                         margin-top: 8px
 
-                    input
+                    input, .button
                         border: 2px solid #000000
                         padding: 5px 10px
                         font-size: 14px
@@ -332,7 +313,7 @@ body
                 visibility: visible
 
             .field-card .meta
-                background-color: royalblue
+                background-color: #00B6B9
 
             .field-card.blur
                 @include filter(blur(0px))
@@ -420,6 +401,9 @@ body
                                 content: "Untitled Question"
                                 color: #FFFFFF
 
+                    &.type
+                        text-transform: capitalize
+
                 button.target
                     right: -1.25em
                     top: 25px
@@ -471,7 +455,6 @@ body
 
                             &.down
                                 background-color: #7F74B6
-
 
                             &.spacer
                                 width: 25px

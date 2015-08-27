@@ -77,6 +77,7 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
+    'click .fb-label-description': 'prepareLabel'
 
   initialize: (options) ->
     {@parentView} = options
@@ -147,6 +148,10 @@ class EditFieldView extends Backbone.View
   forceRender: ->
     Links.reload()
     @model.trigger('change')
+
+  prepareLabel: (e) ->
+    $el = $(e.currentTarget).find("input").eq(0)
+    $el.val("") if $el.val() == Formbuilder.options.dict.DEFAULT_LABEL
 
 class BuilderView extends Backbone.View
   SUBVIEWS: []
@@ -397,7 +402,7 @@ class Formbuilder
   @helpers:
     defaultFieldAttrs: (field_type) ->
       attrs = {}
-      attrs[Formbuilder.options.mappings.LABEL] = 'Question Title'
+      attrs[Formbuilder.options.mappings.LABEL] = Formbuilder.options.dict.DEFAULT_LABEL
       attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type
       attrs[Formbuilder.options.mappings.REQUIRED] = true
       attrs['field_options'] = {}
@@ -451,6 +456,7 @@ class Formbuilder
 
     dict:
       ALL_CHANGES_SAVED: 'Saved'
+      DEFAULT_LABEL: 'Question Title\x1e'
       SAVE_FORM: 'Save'
       UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
 
