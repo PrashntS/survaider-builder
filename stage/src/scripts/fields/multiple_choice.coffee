@@ -5,15 +5,13 @@ Formbuilder.registerField 'multiple_choice',
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
       <div class="line">
-          <span class="link"></span>
           <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>
-          <button class="target"
-                  data-target = "out"
-                  data-target-index = "<%= i %>"
-                  data-target-value = "<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>"
-          ></button>
       </div>
     <% } %>
+    <button class="target hanging"
+            data-target = "out"
+            data-target-index = "0"
+    ></button>
   """
 
   edit: """
@@ -26,10 +24,10 @@ Formbuilder.registerField 'multiple_choice',
 
   defaultAttributes: (attrs) ->
     attrs.field_options.options = [
-      label: "",
+      label: "Option One",
       checked: false
     ,
-      label: "",
+      label: "Option Two",
       checked: false
     ]
 

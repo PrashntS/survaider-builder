@@ -100,7 +100,15 @@ class EditFieldView extends Backbone.View
     $el = $(e.currentTarget)
     i = @$el.find('.option').index($el.closest('.option'))
     options = @model.get(Formbuilder.options.mappings.OPTIONS) || []
-    newOption = {label: "", checked: false}
+    newOption = {label: "Option Value", checked: false}
+
+    op_len = $el.parent().parent().find('.option').length
+
+    field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
+
+    if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
+      alert("NO MAN!")
+      return
 
     if i > -1
       options.splice(i + 1, 0, newOption)
@@ -114,6 +122,14 @@ class EditFieldView extends Backbone.View
   removeOption: (e) ->
     $el = $(e.currentTarget)
     index = @$el.find(".js-remove-option").index($el)
+    op_len = $el.parent().parent().find('.option').length
+
+    field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
+
+    if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
+      alert("NO MAN!")
+      return
+
     options = @model.get Formbuilder.options.mappings.OPTIONS
     options.splice index, 1
     @model.set Formbuilder.options.mappings.OPTIONS, options
@@ -177,7 +193,6 @@ class BuilderView extends Backbone.View
     @$responseFields.html('')
     @addAll()
     Links.reload()
-    #Links.init()
 
   render: ->
     @$el.html Formbuilder.templates['page']()
@@ -206,8 +221,6 @@ class BuilderView extends Backbone.View
 
       element.css
         'padding-top': Math.min(maxMargin, newMargin)
-
-
 
   showTab: (e) ->
     $el = $(e.currentTarget)
@@ -418,6 +431,23 @@ class Formbuilder
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
       CID: 12
+
+    limit_map:
+      yes_no:
+        min: 2
+        max: 3
+      check_boxes:
+        min: 2
+        max: 5
+      multiple_choice:
+        min: 2
+        max: 5
+      ranking:
+        min: 2
+        max: 6
+      group_rating:
+        min: 2
+        max: 3
 
     dict:
       ALL_CHANGES_SAVED: 'Saved'
