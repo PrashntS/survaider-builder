@@ -9,7 +9,7 @@
 
 <div class='option' data-rv-each-option='model.<%= Formbuilder.options.mappings.OPTIONS %>'>
   <input type="text" data-rv-input="option:label" class='option-label-input' />
-  <a class="js-remove-option" title="Remove Option">&times;</a>
+  <a class="js-remove-option" title="Remove Option"><i class="fa fa-times-circle"></i></a>
 </div>
 
 <% if (typeof includeOther !== 'undefined'){ %>
@@ -20,5 +20,5 @@
 <% } %>
 
 <div class='fb-bottom-add'>
-  <a class="js-add-option <%= Formbuilder.options.BUTTON_CLASS %>">Add option</a>
+  <a class="js-add-option"><i class="fa fa-plus-circle"></i>&nbsp;Add Response</a>
 </div>

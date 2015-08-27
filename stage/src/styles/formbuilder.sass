@@ -123,30 +123,31 @@ body
                             width: 100%
 
                     .option
-                        display: flex
+                        position: relative
                         margin-bottom: 5px
 
                         input
-                            border-radius: 5px 0 0 5px
-                            display: inline-block
+                            margin: 0
+                            padding-right: 30px
+                            border-radius: 5px
+                            width: 100%
 
                         .js-remove-option 
-                            background-color: #FFFFFF
-                            color: $color_cinnabar_approx
-                            border: 2px solid #000
-                            border-radius: 0 5px 5px 0
-                            display: inline-block
-                            width: 31px
-                            height: 31px
+                            position: absolute
+                            right: 0
+                            top: 0
+                            width: 30px
+                            height: 30px
                             font-size: 20px
-                            padding: 1px 7px
+                            padding: 3px 7px
                             cursor: pointer
                             margin-left: -2px
+                            color: #e74c3c
 
-                            @include transition(background-color 0.2s ease)
+                            @include transition(color 0.2s ease)
 
                             &:hover
-                                background-color: #000000
+                                color: #000000
 
                     .fb-field-label
                         font-weight: normal
@@ -194,6 +195,7 @@ body
                     color: #FFFFFF
                     font-family: $font
                     text-decoration: none
+                    text-align: center
                     font-size: 14px
                     padding: 5px 10px
                     @include transition(background-color 0.2s ease)
@@ -204,33 +206,6 @@ body
 
                     &:focus
                         outline: none
-
-
-            textarea 
-                border: thin solid $color_alto_approx
-                //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-                border-radius: .25em
-                padding: .5em
-                display: inline-block
-                height: auto
-                vertical-align: middle
-                &:focus 
-                    outline: none
-                    border: thin solid $color_mountain_meadow_approx
-
-
-            select 
-                border: thin solid $color_alto_approx
-                //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-                border-radius: .25em
-                padding: .5em
-                display: inline-block
-                height: auto
-                vertical-align: middle
-                font-size: 14px
-                &:focus 
-                    outline: none
-                    border: thin solid $color_mountain_meadow_approx
 
         .header
             background-color: #CCD7DD
@@ -440,6 +415,10 @@ body
 
                     &.title
                         font-size: 1.5em
+                        &:empty
+                            &:after
+                                content: "Untitled Question"
+                                color: #FFFFFF
 
                 button.target
                     right: -1.25em
@@ -497,8 +476,10 @@ body
                             &.spacer
                                 width: 25px
                                 border-radius: 5px
-
-
+                        &:empty
+                            &:after
+                                content: "Meta Missing!"
+                                color: #e74c3c
 
                     span.link
                         width: 100%
