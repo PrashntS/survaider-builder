@@ -131,7 +131,7 @@ class EditFieldView extends Backbone.View
       $el.eq(0).addClass("err")
       setTimeout ( ->
         $el.eq(0).removeClass("err")
-      ), 2000
+      ), 2500
       return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
