@@ -363,7 +363,10 @@ var Links = {
       op_len = $el.parent().parent().find('.option').length;
       field_type = this.model.get(Formbuilder.options.mappings.FIELD_TYPE);
       if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min) {
-        alert("NO MAN!");
+        $el.eq(0).addClass("err");
+        setTimeout((function() {
+          return $el.eq(0).removeClass("err");
+        }), 2000);
         return;
       }
       options = this.model.get(Formbuilder.options.mappings.OPTIONS);
@@ -1123,7 +1126,7 @@ __p += '\n  <label>\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.INCLUDE_OTHER )) == null ? '' : __t) +
 '\' />\n    Include "other"\n  </label>\n';
  } ;
-__p += '\n\n<div class=\'fb-bottom-add\'>\n  <a class="js-add-option .button"><i class="fa fa-plus-circle"></i>&nbsp;Add Response</a>\n</div>\n';
+__p += '\n\n<div class="fb-nah-bro">\n  Sorry! Cannot go lower than x options for this question type!\n</div>\n\n<div class=\'fb-bottom-add\'>\n  <a class="js-add-option .button"><i class="fa fa-plus-circle"></i>&nbsp;Add Option</a>\n</div>\n';
 
 }
 return __p
