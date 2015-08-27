@@ -7,10 +7,8 @@ Formbuilder.registerField 'ranking',
       <div class="line">
         <label class='fb-option'>
           <p>
+              <span class="digit up"><i class="fa fa-arrow-up"></i></span><span class="digit down"><i class="fa fa-arrow-down"></i></span>
               <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
-              <br>
-              <span class="digit up"><i class="fa fa-arrow-up"></i></span>
-              <span class="digit down"><i class="fa fa-arrow-down"></i></span>
           </p>
         </label>
       </div>
