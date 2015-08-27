@@ -163,7 +163,7 @@ class EditFieldView extends Backbone.View
 
   prepareLabel: (e) ->
     $el = $(e.currentTarget).find("input").eq(0)
-    $el.val("") if $el.val() == Formbuilder.options.dict.DEFAULT_LABEL
+    $el.val("") if $el.val().indexOf("\x1e") > -1
 
 class BuilderView extends Backbone.View
   SUBVIEWS: []
