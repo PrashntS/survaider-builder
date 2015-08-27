@@ -332,7 +332,7 @@ var Links = {
     };
 
     EditFieldView.prototype.addOption = function(e) {
-      var $el, field_type, i, newOption, op_len, options;
+      var $el, field_type, i, newOption, new_val, ol_val, op_len, options;
       $el = $(e.currentTarget);
       i = this.$el.find('.option').index($el.closest('.option'));
       options = this.model.get(Formbuilder.options.mappings.OPTIONS) || [];
@@ -343,7 +343,14 @@ var Links = {
       op_len = $el.parent().parent().find('.option').length;
       field_type = this.model.get(Formbuilder.options.mappings.FIELD_TYPE);
       if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max) {
-        alert("NO MAN!");
+        ol_val = $el.eq(0).html();
+        new_val = ol_val + "<br>No more than " + op_len + " options!";
+        $el.eq(0).html(new_val);
+        $el.eq(0).addClass("err");
+        setTimeout((function() {
+          $el.eq(0).html(ol_val);
+          return $el.eq(0).removeClass("err");
+        }), 2500);
         return;
       }
       if (i > -1) {
@@ -898,7 +905,7 @@ var Links = {
 (function() {
   Formbuilder.registerField('ranking', {
     order: 51,
-    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='fb-option'>\n      <p>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n          <br>\n          <span class=\"digit up\"><i class=\"fa fa-arrow-up\"></i></span>\n          <span class=\"digit down\"><i class=\"fa fa-arrow-down\"></i></span>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
+    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='fb-option'>\n      <p>\n          <span class=\"digit up\"><i class=\"fa fa-arrow-up\"></i></span><span class=\"digit down\"><i class=\"fa fa-arrow-down\"></i></span>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-bars\"></span></span> Ranking",
     defaultAttributes: function(attrs) {
@@ -1126,7 +1133,7 @@ __p += '\n  <label>\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.INCLUDE_OTHER )) == null ? '' : __t) +
 '\' />\n    Include "other"\n  </label>\n';
  } ;
-__p += '\n\n<div class="fb-nah-bro">\n  Sorry! Cannot go lower than x options for this question type!\n</div>\n\n<div class=\'fb-bottom-add\'>\n  <a class="js-add-option .button"><i class="fa fa-plus-circle"></i>&nbsp;Add Option</a>\n</div>\n';
+__p += '\n\n<a class="js-add-option .button"><i class="fa fa-plus-circle"></i>&nbsp;Add Option</a>\n';
 
 }
 return __p
