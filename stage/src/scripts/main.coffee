@@ -128,7 +128,10 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
-      alert("NO MAN!")
+      $el.eq(0).addClass("err")
+      setTimeout ( ->
+        $el.eq(0).removeClass("err")
+      ), 2000
       return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
