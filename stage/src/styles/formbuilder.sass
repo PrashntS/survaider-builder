@@ -172,8 +172,25 @@ body
                     .js-add-option
                         cursor: pointer
                         color: #000000
+                        border: 2px solid transparent
+                        width: 100%
+                        height: 33px
+                        padding: 5px 10px
+                        border-radius: 5px
+                        display: block
+                        margin-top: 5px
+                        overflow: hidden
 
-                        @include transition(color 0.2s ease)
+                        @include transition(all 0.5s ease)
+
+                        &.err
+                            background-color: #000000
+                            border-color: #000000
+                            height: 60px
+                            color: #FFFFFF
+
+                            &:hover
+                                color: #FFFFFF
 
                         &:hover
                             color: #3B479D
