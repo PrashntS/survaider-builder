@@ -304,7 +304,8 @@ var Links = {
       'click .js-add-option': 'addOption',
       'click .js-remove-option': 'removeOption',
       'click .js-default-updated': 'defaultUpdated',
-      'input .option-label-input': 'forceRender'
+      'input .option-label-input': 'forceRender',
+      'click .fb-label-description': 'prepareLabel'
     };
 
     EditFieldView.prototype.initialize = function(options) {
@@ -384,6 +385,14 @@ var Links = {
     EditFieldView.prototype.forceRender = function() {
       Links.reload();
       return this.model.trigger('change');
+    };
+
+    EditFieldView.prototype.prepareLabel = function(e) {
+      var $el;
+      $el = $(e.currentTarget).find("input").eq(0);
+      if ($el.val() === Formbuilder.options.dict.DEFAULT_LABEL) {
+        return $el.val("");
+      }
     };
 
     return EditFieldView;
@@ -713,7 +722,7 @@ var Links = {
       defaultFieldAttrs: function(field_type) {
         var attrs, base;
         attrs = {};
-        attrs[Formbuilder.options.mappings.LABEL] = 'Question Title';
+        attrs[Formbuilder.options.mappings.LABEL] = Formbuilder.options.dict.DEFAULT_LABEL;
         attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type;
         attrs[Formbuilder.options.mappings.REQUIRED] = true;
         attrs['field_options'] = {};
@@ -773,6 +782,7 @@ var Links = {
       },
       dict: {
         ALL_CHANGES_SAVED: 'Saved',
+        DEFAULT_LABEL: 'Question Title\x1e',
         SAVE_FORM: 'Save',
         UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
       }
@@ -1303,8 +1313,8 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<p class="title">' +
 ((__t = ( Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.LABEL)) )) == null ? '' : __t) +
-'</p>\n<p class="type">\n    <!--<strong>Type</strong>: --><small>' +
-((__t = ( Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.FIELD_TYPE)) )) == null ? '' : __t) +
+'</p>\n<p class="type">\n    <!--<strong>Type</strong>: -->\n    <small>' +
+((__t = ( Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.FIELD_TYPE)).replace(/_/, " ") )) == null ? '' : __t) +
 '</small>\n    <!--\n    &bullet;\n    <strong>CID:</strong> ' +
 ((__t = ( Formbuilder.attributes )) == null ? '' : __t) +
 '\n    &bullet;\n    ';

@@ -306,7 +306,7 @@ body {
   visibility: visible;
 }
 .fb-response-fields .fb-field-wrapper.editing .field-card .meta {
-  background-color: royalblue;
+  background-color: #00B6B9;
 }
 .fb-response-fields .fb-field-wrapper.editing .field-card.blur {
   -webkit-filter: blur(0px);
@@ -399,6 +399,9 @@ body {
 .fb-response-fields .fb-field-wrapper div.field-card .meta p.title:empty:after {
   content: "Untitled Question";
   color: #FFFFFF;
+}
+.fb-response-fields .fb-field-wrapper div.field-card .meta p.type {
+  text-transform: capitalize;
 }
 .fb-response-fields .fb-field-wrapper div.field-card .meta button.target {
   right: -1.25em;
