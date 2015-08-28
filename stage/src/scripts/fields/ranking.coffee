@@ -1,6 +1,6 @@
 Formbuilder.registerField 'ranking',
 
-  order: 51
+  order: 6
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>

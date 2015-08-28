@@ -1,6 +1,6 @@
 Formbuilder.registerField 'group_rating',
 
-  order: 53
+  order: 8
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>

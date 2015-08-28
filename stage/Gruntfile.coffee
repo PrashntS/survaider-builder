@@ -58,6 +58,7 @@ module.exports = (grunt) ->
         files:
           '<%= distFolder %>/formbuilder.js': [
             '<%= srcFolder %>/scripts/links.js'
+            '<%= srcFolder %>/scripts/router.js'
             '<%= compiledFolder %>/*.js'
           ]
           '<%= vendorFolder %>/js/vendor.js': [

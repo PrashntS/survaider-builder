@@ -1,6 +1,6 @@
 Formbuilder.registerField 'multiple_choice',
 
-  order: 10
+  order: 5
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>

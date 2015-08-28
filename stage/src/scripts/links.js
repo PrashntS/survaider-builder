@@ -40,7 +40,7 @@ var Links = {
          * Finds the buttons with classes "target" and draws a reference
          * grid-line on canvas.
          */
-        draw_vertical: function () {
+        draw_horizontal: function () {
             "use strict";
             // Find the "target buttons" and draw lines.
             var targets = $(Links.target_hook),
@@ -67,21 +67,21 @@ var Links = {
          * @param  {string} origin Element ID of the origin.
          * @param  {string} target Element ID of the target.
          */
-        draw_link: function (origin, target, grid_space) {
+        draw_link: function (target, origin, grid_space) {
             "use strict";
-            var origin_el = $("#" + origin),
-                target_el = $("#" + target),
+            var origin_el = origin,
+                target_el = target,
                 offset    = {
                     origin: origin_el.outerHeight() / 2,
                     target: target_el.outerHeight() / 2
                 },
                 origin_mt = {
-                    x: origin_el.offset().left + offset.origin,
-                    y: origin_el.offset().top + offset.origin
+                    x: origin_el.offset().left + offset.origin - Links.vp_o_x,
+                    y: origin_el.offset().top  + offset.origin - Links.vp_o_y
                 },
                 target_mt = {
-                    x: target_el.offset().left + offset.target,
-                    y: target_el.offset().top + offset.target
+                    x: target_el.offset().left + offset.target - Links.vp_o_x,
+                    y: target_el.offset().top + offset.target - Links.vp_o_y
                 };
 
             var path = "M{0},{1} L{2},{3} L{4},{5} L{6},{7}".format(
@@ -96,6 +96,13 @@ var Links = {
             );
 
             Links.draw.path(path).stroke({width: 2}).fill({color: "transparent"});
+        },
+
+        link_routine: function () {
+            "use strict";
+            var cards = $("div[data-cid]");
+            var card_num = cards.length;
+            cid = $("div[data-cid]").attr("data-cid")
         }
     },
 
@@ -103,7 +110,7 @@ var Links = {
         "use strict";
         $("#" + Links.hook_id).html("");
         Links.init();
-        Links.grid_lines.draw_vertical();
+        Links.grid_lines.draw_horizontal();
         Links.un_blur();
     },
 
@@ -118,3 +125,7 @@ var Links = {
     }
 
 };
+
+
+// Links.grid_lines.draw_link($("div[data-cid] button[data-target=in]").eq(1), $("div[data-cid] button[data-target=out]").eq(1), 40)
+

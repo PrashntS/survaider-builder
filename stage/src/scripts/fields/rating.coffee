@@ -1,6 +1,6 @@
 Formbuilder.registerField 'rating',
 
-  order: 52
+  order: 7
 
   view: """
     <div class="line">
