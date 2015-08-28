@@ -96,5 +96,9 @@ var Router = {
     get: function () {
         Router.process.field();
         return Router.dat;
+    },
+    play: function() {
+        var json = JSON.stringify(Router.get());
+        window.open('localhost:9000?json=' + json, '_blank');
     }
 };
