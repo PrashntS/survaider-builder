@@ -31,10 +31,10 @@ Formbuilder.registerField 'ranking',
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Field One Goes here",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ,
-      label: "Field Two Goes here",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ]
 

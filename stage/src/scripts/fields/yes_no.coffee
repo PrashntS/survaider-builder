@@ -27,10 +27,10 @@ Formbuilder.registerField 'yes_no',
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Yes",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ,
-      label: "No",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ]
 

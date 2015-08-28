@@ -24,10 +24,10 @@ Formbuilder.registerField 'multiple_choice',
 
   defaultAttributes: (attrs) ->
     attrs.field_options.options = [
-      label: "Option One",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ,
-      label: "Option Two",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ]
 

@@ -78,6 +78,7 @@ class EditFieldView extends Backbone.View
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
     'click .fb-label-description': 'prepareLabel'
+    'click .option': 'prepareLabel'
 
   initialize: (options) ->
     {@parentView} = options
@@ -101,14 +102,13 @@ class EditFieldView extends Backbone.View
     $el = $(e.currentTarget)
     i = @$el.find('.option').index($el.closest('.option'))
     options = @model.get(Formbuilder.options.mappings.OPTIONS) || []
-    newOption = {label: "Option Value", checked: false}
+    newOption = {label: Formbuilder.options.dict.DEFAULT_OPTION, checked: false}
 
     op_len = $el.parent().parent().find('.option').length
 
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
-
       ol_val = $el.eq(0).html()
       new_val = ol_val + "<br>No more than " + op_len + " options!"
       $el.eq(0).html(new_val)
@@ -409,7 +409,6 @@ class BuilderView extends Backbone.View
 
         @updatingBatch = undefined
 
-
 class Formbuilder
   @helpers:
     defaultFieldAttrs: (field_type) ->
@@ -469,6 +468,10 @@ class Formbuilder
     dict:
       ALL_CHANGES_SAVED: 'Saved'
       DEFAULT_LABEL: 'Question Title\x1e'
+      DEFAULT_OPTION: 'Option\x1e'
+      DEFAULT_YES: 'Yes\x1e'
+      DEFAULT_NO: 'No\x1e'
+      DEFAULT_MAYBE: 'Maybe\x1e'
       SAVE_FORM: 'Save'
       UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
       FIELDS:
@@ -478,6 +481,7 @@ class Formbuilder
         multiple_choice: "Your responder selects many or all options here!"
         single_choice: "For questions to which you want only one answer"
         ranking: "Users can drag and drop the following options according to their preference!"
+        rating: "This question asks to rate on a scale of 1 to 10.<br>eg. How much do you like the design of our product?"
         group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
 
   @fields: {}
