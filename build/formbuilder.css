@@ -535,7 +535,7 @@ body {
   border-radius: 5px;
 }
 .fb-response-fields .fb-field-wrapper div.field-card .logic .line p:empty:after {
-  content: "Meta Missing!";
+  content: "Option";
   color: #e74c3c;
 }
 .fb-response-fields .fb-field-wrapper div.field-card .logic .line span.link {

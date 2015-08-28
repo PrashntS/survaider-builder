@@ -40,7 +40,7 @@ var Links = {
          * Finds the buttons with classes "target" and draws a reference
          * grid-line on canvas.
          */
-        draw_vertical: function () {
+        draw_horizontal: function () {
             "use strict";
             // Find the "target buttons" and draw lines.
             var targets = $(Links.target_hook),
@@ -67,21 +67,21 @@ var Links = {
          * @param  {string} origin Element ID of the origin.
          * @param  {string} target Element ID of the target.
          */
-        draw_link: function (origin, target, grid_space) {
+        draw_link: function (target, origin, grid_space) {
             "use strict";
-            var origin_el = $("#" + origin),
-                target_el = $("#" + target),
+            var origin_el = origin,
+                target_el = target,
                 offset    = {
                     origin: origin_el.outerHeight() / 2,
                     target: target_el.outerHeight() / 2
                 },
                 origin_mt = {
-                    x: origin_el.offset().left + offset.origin,
-                    y: origin_el.offset().top + offset.origin
+                    x: origin_el.offset().left + offset.origin - Links.vp_o_x,
+                    y: origin_el.offset().top  + offset.origin - Links.vp_o_y
                 },
                 target_mt = {
-                    x: target_el.offset().left + offset.target,
-                    y: target_el.offset().top + offset.target
+                    x: target_el.offset().left + offset.target - Links.vp_o_x,
+                    y: target_el.offset().top + offset.target - Links.vp_o_y
                 };
 
             var path = "M{0},{1} L{2},{3} L{4},{5} L{6},{7}".format(
@@ -96,6 +96,13 @@ var Links = {
             );
 
             Links.draw.path(path).stroke({width: 2}).fill({color: "transparent"});
+        },
+
+        link_routine: function () {
+            "use strict";
+            var cards = $("div[data-cid]");
+            var card_num = cards.length;
+            cid = $("div[data-cid]").attr("data-cid")
         }
     },
 
@@ -103,7 +110,7 @@ var Links = {
         "use strict";
         $("#" + Links.hook_id).html("");
         Links.init();
-        Links.grid_lines.draw_vertical();
+        Links.grid_lines.draw_horizontal();
         Links.un_blur();
     },
 
@@ -119,6 +126,13 @@ var Links = {
 
 };
 
+
+// Links.grid_lines.draw_link($("div[data-cid] button[data-target=in]").eq(1), $("div[data-cid] button[data-target=out]").eq(1), 40)
+
+
+var Router = {
+
+};
 (function() {
   rivets.binders.input = {
     publishes: true,
@@ -305,7 +319,8 @@ var Links = {
       'click .js-remove-option': 'removeOption',
       'click .js-default-updated': 'defaultUpdated',
       'input .option-label-input': 'forceRender',
-      'click .fb-label-description': 'prepareLabel'
+      'click .fb-label-description': 'prepareLabel',
+      'click .option': 'prepareLabel'
     };
 
     EditFieldView.prototype.initialize = function(options) {
@@ -337,7 +352,7 @@ var Links = {
       i = this.$el.find('.option').index($el.closest('.option'));
       options = this.model.get(Formbuilder.options.mappings.OPTIONS) || [];
       newOption = {
-        label: "Option Value",
+        label: Formbuilder.options.dict.DEFAULT_OPTION,
         checked: false
       };
       op_len = $el.parent().parent().find('.option').length;
@@ -400,7 +415,7 @@ var Links = {
     EditFieldView.prototype.prepareLabel = function(e) {
       var $el;
       $el = $(e.currentTarget).find("input").eq(0);
-      if ($el.val() === Formbuilder.options.dict.DEFAULT_LABEL) {
+      if ($el.val().indexOf("\x1e") > -1) {
         return $el.val("");
       }
     };
@@ -773,7 +788,7 @@ var Links = {
           min: 2,
           max: 3
         },
-        check_boxes: {
+        single_choice: {
           min: 2,
           max: 5
         },
@@ -793,8 +808,22 @@ var Links = {
       dict: {
         ALL_CHANGES_SAVED: 'Saved',
         DEFAULT_LABEL: 'Question Title\x1e',
+        DEFAULT_OPTION: 'Option\x1e',
+        DEFAULT_YES: 'Yes\x1e',
+        DEFAULT_NO: 'No\x1e',
+        DEFAULT_MAYBE: 'Maybe\x1e',
         SAVE_FORM: 'Save',
-        UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
+        UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!',
+        FIELDS: {
+          short_text: "Short and quick answers to short and quick questions!<br>eg. What is your name?",
+          long_text: "Longer, detailed responses.<br>eg. What do you REALLY feel about our product?",
+          yes_no: "The quick opinion question.",
+          multiple_choice: "Your responder selects many or all options here!",
+          single_choice: "For questions to which you want only one answer",
+          ranking: "Users can drag and drop the following options according to their preference!",
+          rating: "This question asks to rate on a scale of 1 to 10.<br>eg. How much do you like the design of our product?",
+          group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
+        }
       }
     };
 
@@ -849,17 +878,17 @@ var Links = {
 
 (function() {
   Formbuilder.registerField('group_rating', {
-    order: 53,
+    order: 8,
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='fb-option'>\n      <p>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n          <br>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-star\"></span></span> Group Rating",
     defaultAttributes: function(attrs) {
       attrs.field_options.options = [
         {
-          label: "Field One Goes here",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }, {
-          label: "Field Two Goes here",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }
       ];
@@ -871,17 +900,17 @@ var Links = {
 
 (function() {
   Formbuilder.registerField('multiple_choice', {
-    order: 10,
+    order: 5,
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n      <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-square-o\"></span></span> Multiple Choice",
     defaultAttributes: function(attrs) {
       attrs.field_options.options = [
         {
-          label: "Option One",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }, {
-          label: "Option Two",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }
       ];
@@ -892,29 +921,29 @@ var Links = {
 }).call(this);
 
 (function() {
-  Formbuilder.registerField('paragraph', {
+  Formbuilder.registerField('long_text', {
     order: 1,
     view: "<div class=\"line\">\n    <p>Any Response</p>\n    <button class=\"target\" data-target=\"out\"></button>\n</div>",
     edit2: "<%= Formbuilder.templates['edit/size']() %>\n<%= Formbuilder.templates['edit/min_max_length']() %>",
     edit: "",
-    addButton: "<span class=\"symbol\">&#182;</span> Paragraph"
+    addButton: "<span class=\"symbol\">&#182;</span> Long Text"
   });
 
 }).call(this);
 
 (function() {
   Formbuilder.registerField('ranking', {
-    order: 51,
+    order: 6,
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='fb-option'>\n      <p>\n          <span class=\"digit up\"><i class=\"fa fa-arrow-up\"></i></span><span class=\"digit down\"><i class=\"fa fa-arrow-down\"></i></span>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-bars\"></span></span> Ranking",
     defaultAttributes: function(attrs) {
       attrs.field_options.options = [
         {
-          label: "Field One Goes here",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }, {
-          label: "Field Two Goes here",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }
       ];
@@ -926,7 +955,7 @@ var Links = {
 
 (function() {
   Formbuilder.registerField('rating', {
-    order: 52,
+    order: 7,
     view: "<div class=\"line\">\n  <label class='fb-option'>\n    <p>\n          <span class=\"digit\">1</span>\n          <span class=\"digit\">2</span>\n          <span class=\"digit\">3</span>\n          <span class=\"digit\">4</span>\n          <span class=\"digit spacer\">...</span>\n          <span class=\"digit\">8</span>\n          <span class=\"digit\">9</span>\n          <span class=\"digit\">10</span>\n    </p>\n  </label>\n</div>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-star\"></span></span> Rating"
@@ -935,29 +964,7 @@ var Links = {
 }).call(this);
 
 (function() {
-  Formbuilder.registerField('single_choice', {
-    order: 15,
-    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n      <span class=\"link\"></span>\n      <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>\n      <button class=\"target\"\n              data-target = \"out\"\n              data-target-index = \"<%= i %>\"\n              data-target-value = \"<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\"\n      ></button>\n  </div>\n<% } %>",
-    edit: "<%= Formbuilder.templates['edit/options']() %>",
-    addButton: "<span class=\"symbol\"><span class=\"fa fa-circle-o\"></span></span> Single Choice",
-    defaultAttributes: function(attrs) {
-      attrs.field_options.options = [
-        {
-          label: "Choice One",
-          checked: false
-        }, {
-          label: "Choice Two",
-          checked: false
-        }
-      ];
-      return attrs;
-    }
-  });
-
-}).call(this);
-
-(function() {
-  Formbuilder.registerField('text', {
+  Formbuilder.registerField('short_text', {
     order: 0,
     view: "<div class=\"line\">\n    <p>Any Response</p>\n    <button class=\"target\" data-target=\"out\"></button>\n</div>",
     edit: "",
@@ -968,18 +975,40 @@ var Links = {
 }).call(this);
 
 (function() {
+  Formbuilder.registerField('single_choice', {
+    order: 4,
+    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n      <span class=\"link\"></span>\n      <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>\n      <button class=\"target\"\n              data-target = \"out\"\n              data-target-index = \"<%= i %>\"\n              data-target-value = \"<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\"\n      ></button>\n  </div>\n<% } %>",
+    edit: "<%= Formbuilder.templates['edit/options']() %>",
+    addButton: "<span class=\"symbol\"><span class=\"fa fa-circle-o\"></span></span> Single Choice",
+    defaultAttributes: function(attrs) {
+      attrs.field_options.options = [
+        {
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
+          checked: false
+        }, {
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
+          checked: false
+        }
+      ];
+      return attrs;
+    }
+  });
+
+}).call(this);
+
+(function() {
   Formbuilder.registerField('yes_no', {
-    order: 3,
+    order: 2,
     view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n      <span class=\"link\"></span>\n      <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>\n      <button class=\"target\"\n              data-target = \"out\"\n              data-target-index = \"<%= i %>\"\n              data-target-value = \"<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\"\n      ></button>\n  </div>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-dot-circle-o\"></span></span> Yes \/ No",
     defaultAttributes: function(attrs) {
       attrs.field_options.options = [
         {
-          label: "Yes",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }, {
-          label: "No",
+          label: Formbuilder.options.dict.DEFAULT_OPTION,
           checked: false
         }
       ];
@@ -997,7 +1026,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '\n' +
-((__t = ( Formbuilder.templates['edit/common']() )) == null ? '' : __t) +
+((__t = ( Formbuilder.templates['edit/common']({rf: rf}) )) == null ? '' : __t) +
 '\n' +
 ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].edit({rf: rf}) )) == null ? '' : __t) +
 '\n';
@@ -1051,7 +1080,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class=\'fb-edit-section-header\'>Edit Question</div>\n\n<div class=\'fb-common-wrapper\'>\n  <div class=\'fb-label-description\'>\n    ' +
-((__t = ( Formbuilder.templates['edit/label_description']() )) == null ? '' : __t) +
+((__t = ( Formbuilder.templates['edit/label_description']({rf: rf}) )) == null ? '' : __t) +
 '\n  </div>\n  <div class=\'fb-common-checkboxes\'>\n    ' +
 ((__t = ( Formbuilder.templates['edit/checkboxes']() )) == null ? '' : __t) +
 '\n  </div>\n  <div class=\'fb-clear\'></div>\n</div>\n';
@@ -1078,7 +1107,9 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<h3>What question do you want to ask?</h3>\n<input type=\'text\' data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
-'\' placeholder="Question" />';
+'\' placeholder="Question" />\n<p>\n' +
+((__t = ( Formbuilder.options.dict.FIELDS[rf.get(Formbuilder.options.mappings.FIELD_TYPE)] )) == null ? '' : __t) +
+'\n</p>';
 
 }
 return __p
@@ -1240,7 +1271,7 @@ __p += '<div class=\'fb-left\'>\n    <div class="header">\n        <h2>Sample Su
 ((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
 '\n            ' +
 ((__t = ( Formbuilder.templates['partials/edit_field']() )) == null ? '' : __t) +
-'\n        </div>\n\n        <h3>Generic Help Text here</h3>\n        <p>Hey! You know what? I love you! &lt;3 </p>\n    </div>\n\n    <div class="footer">\n        <p><img src="vendor/img/survaider.png">Survaider Builder</p>\n        <p>v0.1.2 Pre-Alpha</p>\n        <p><a href="https://github.com/PrashntS/survaider-builder">GitHub</a></p>\n    </div>\n</div>';
+'\n        </div>\n\n        <!--h3>Generic Help Text here</h3-->\n        <p>Go ahead, build your survey. Then click "Play Now" to see the magic.</p>\n    </div>\n\n    <div class="footer">\n        <p><img src="vendor/img/survaider.png">Survaider Builder</p>\n        <p>v0.1.2 Pre-Alpha</p>\n        <p><a href="https://github.com/PrashntS/survaider-builder">GitHub</a></p>\n    </div>\n</div>';
 
 }
 return __p
@@ -1274,7 +1305,7 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class=\'subtemplate-wrapper\'>\n    <div class=\'cover\'></div>\n    <div class="field-card">\n        <div class="meta">\n            <p class="section">Question</p>\n\n            ' +
 ((__t = ( Formbuilder.templates['view/label']({rf: rf}) )) == null ? '' : __t) +
-'\n\n            <button class="target" id="O_1"></button>\n        </div>\n        <div class="logic">\n            <p class="section">Options</p>\n            ' +
+'\n\n            <button class="target" data-target="in"></button>\n        </div>\n        <div class="logic">\n            <p class="section">Options</p>\n            ' +
 ((__t = ( Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) )) == null ? '' : __t) +
 '\n        </div>\n        ' +
 ((__t = ( Formbuilder.templates['view/duplicate_remove']({rf: rf}) )) == null ? '' : __t) +
