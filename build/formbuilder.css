@@ -352,15 +352,99 @@ body {
   -webkit-filter: blur(9px);
   filter: blur(9px);
 }
-
-.fb-response-fields {
-  margin: 20px 20px 20px 0;
-  border: 2px solid #000;
-  border-radius: 0px 5px 5px 0;
-  background-color: #FFFFFF;
-  padding: 0 0 0 20px;
+.fb-main .fb-right .fb-survey-description {
+  position: relative;
+  z-index: 2;
+  background-color: #3B479D;
+  padding: 10px 30px 20px 30px;
+  border: 2px solid;
 }
-.fb-response-fields a.sortable-placeholder {
+.fb-main .fb-right .fb-survey-description.header {
+  margin: 20px 20px 0 0;
+  border-bottom-width: 0;
+  border-radius: 0 5px 0 0;
+}
+.fb-main .fb-right .fb-survey-description.header button.target {
+  bottom: -10px;
+}
+.fb-main .fb-right .fb-survey-description.footer {
+  margin: 0 20px 20px 0;
+  border-top-width: 0;
+  border-radius: 0 0 5px 0;
+}
+.fb-main .fb-right .fb-survey-description.footer button.target {
+  top: -10px;
+}
+.fb-main .fb-right .fb-survey-description p.section {
+  margin-bottom: 0;
+  color: #FFFFFF;
+  margin-left: 30px;
+  font-weight: 300;
+}
+.fb-main .fb-right .fb-survey-description input {
+  font-size: 30px;
+  margin: 0 10px 0 0;
+  color: #FFF;
+  margin-bottom: 10px;
+}
+.fb-main .fb-right .fb-survey-description textarea {
+  resize: none;
+  font-size: 20px;
+  color: #FFFFFF;
+  font-weight: 300;
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 60px;
+  max-height: 60px;
+  margin: 0px;
+}
+.fb-main .fb-right .fb-survey-description input, .fb-main .fb-right .fb-survey-description textarea {
+  display: block;
+  border-radius: 5px;
+  padding: 5px 30px;
+  width: 100%;
+  font-family: "Work Sans", sans-serif;
+  background-color: transparent;
+  border: 2px solid transparent;
+  -webkit-transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  -moz-transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.fb-main .fb-right .fb-survey-description input:hover, .fb-main .fb-right .fb-survey-description input:focus, .fb-main .fb-right .fb-survey-description textarea:hover, .fb-main .fb-right .fb-survey-description textarea:focus {
+  background-color: #FFFFFF;
+  border-color: #000000;
+  color: #000000;
+  outline: none;
+}
+.fb-main .fb-right .fb-survey-description button.target {
+  position: absolute;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  border: 2px solid #000;
+  font-size: 0.1em;
+  cursor: pointer;
+  right: 40px;
+  background-color: #3B479D;
+  -webkit-transition: background 0.2s ease;
+  -moz-transition: background 0.2s ease;
+  transition: background 0.2s ease;
+}
+.fb-main .fb-right .fb-survey-description button.target:focus, .fb-main .fb-right .fb-survey-description button.target:hover {
+  outline: none;
+}
+.fb-main .fb-right .fb-survey-description button.target:hover {
+  background: #000;
+}
+.fb-main .fb-right .fb-response-fields {
+  margin: 0 20px 0 0;
+  border: 2px solid #000;
+  border-radius: 0;
+  background-color: #FFFFFF;
+  min-height: 200px;
+  padding: 20px 0 0 20px;
+}
+.fb-main .fb-right .fb-response-fields a.sortable-placeholder {
   display: block;
   border: 2px dashed #000000;
   border-radius: 5px;
@@ -368,31 +452,34 @@ body {
   height: 80px;
   width: 374px;
 }
-.fb-response-fields .fb-field-wrapper {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper {
   cursor: move;
   position: relative;
   margin-bottom: 10px;
   display: table;
 }
-.fb-response-fields .fb-field-wrapper:hover .actions-wrapper {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper:empty {
+  margin: 0;
+}
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper:hover .actions-wrapper {
   opacity: 1;
   visibility: visible;
 }
-.fb-response-fields .fb-field-wrapper:hover .subtemplate-wrapper {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper:hover .subtemplate-wrapper {
   border-color: #000000;
 }
-.fb-response-fields .fb-field-wrapper.editing .actions-wrapper {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper.editing .actions-wrapper {
   opacity: 1;
   visibility: visible;
 }
-.fb-response-fields .fb-field-wrapper.editing .field-card .meta {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper.editing .field-card .meta {
   background-color: #00B6B9;
 }
-.fb-response-fields .fb-field-wrapper.editing .field-card.blur {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper.editing .field-card.blur {
   -webkit-filter: blur(0px);
   filter: blur(0px);
 }
-.fb-response-fields .fb-field-wrapper .actions-wrapper {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper .actions-wrapper {
   visibility: hidden;
   position: absolute;
   bottom: -12px;
@@ -403,7 +490,7 @@ body {
   -moz-transition: opacity 0.2s ease;
   transition: opacity 0.2s ease;
 }
-.fb-response-fields .fb-field-wrapper .actions-wrapper a {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper .actions-wrapper a {
   cursor: pointer;
   display: inline-block;
   padding: 2px 4px;
@@ -419,16 +506,16 @@ body {
   -moz-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease;
 }
-.fb-response-fields .fb-field-wrapper .actions-wrapper a.js-duplicate {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper .actions-wrapper a.js-duplicate {
   background-color: #2ecc71;
 }
-.fb-response-fields .fb-field-wrapper .actions-wrapper a.js-clear {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper .actions-wrapper a.js-clear {
   background-color: #e74c3c;
 }
-.fb-response-fields .fb-field-wrapper .actions-wrapper a:hover {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper .actions-wrapper a:hover {
   background-color: #000000;
 }
-.fb-response-fields .fb-field-wrapper .subtemplate-wrapper {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper .subtemplate-wrapper {
   border: 2px dashed transparent;
   border-radius: 8px;
   padding: 12px;
@@ -437,7 +524,7 @@ body {
   -moz-transition: border-color 0.2s ease;
   transition: border-color 0.2s ease;
 }
-.fb-response-fields .fb-field-wrapper .subtemplate-wrapper .cover {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper .subtemplate-wrapper .cover {
   position: absolute;
   top: 0;
   left: 0;
@@ -445,7 +532,7 @@ body {
   width: 100%;
   z-index: 2;
 }
-.fb-response-fields .fb-field-wrapper div.field-card {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card {
   width: 350px;
   border: 2px solid #000000;
   border-radius: 8px;
@@ -453,11 +540,11 @@ body {
   position: relative;
   background: #FFFFFF;
 }
-.fb-response-fields .fb-field-wrapper div.field-card.blur {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card.blur {
   -webkit-filter: blur(5px);
   filter: blur(5px);
 }
-.fb-response-fields .fb-field-wrapper div.field-card .meta {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .meta {
   background: #3B479D;
   border-radius: 5px 5px 0 0;
   color: #FFFFFF;
@@ -466,45 +553,45 @@ body {
   -moz-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .meta p {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .meta p {
   margin: 0;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .meta p.section {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .meta p.section {
   font-size: 0.8em;
   font-weight: 200;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .meta p.title {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .meta p.title {
   font-size: 1.5em;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .meta p.title:empty:after {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .meta p.title:empty:after {
   content: "Untitled Question";
   color: #FFFFFF;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .meta p.type {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .meta p.type {
   text-transform: capitalize;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .meta button.target {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .meta button.target {
   right: -1.25em;
   top: 25px;
   background: #3B479D;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic {
   padding: 10px 0 10px 30px;
   position: relative;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic p {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic p {
   margin: 0;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic p.section {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic p.section {
   font-size: 0.8em;
   font-weight: 200;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line {
   padding-right: 30px;
   position: relative;
   margin: 10px 0;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line p {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line p {
   display: inline-block;
   border: 2px solid;
   padding: 2px 10px;
@@ -512,11 +599,11 @@ body {
   background: #FFF;
   position: relative;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line p i.fa-star {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line p i.fa-star {
   color: #FEC84E;
   margin-top: 10px;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit {
   background-color: #3C474D;
   color: #FFFFFF;
   width: 20px;
@@ -527,18 +614,18 @@ body {
   text-align: center;
   display: inline-block;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit.down, .fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit.up {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit.down, .fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit.up {
   background-color: #7F74B6;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit.spacer {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line p span.digit.spacer {
   width: 25px;
   border-radius: 5px;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line p:empty:after {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line p:empty:after {
   content: "Option";
   color: #e74c3c;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line span.link {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line span.link {
   width: 100%;
   height: 2px;
   background-color: #000;
@@ -546,7 +633,7 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic .line button.target {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic .line button.target {
   right: -1.25em;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -555,7 +642,7 @@ body {
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic button.target.hanging {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic button.target.hanging {
   right: -1.25em;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -564,7 +651,7 @@ body {
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic {
   border: 2px solid #000000;
   padding: 2px 10px;
   border-radius: 5px;
@@ -577,14 +664,14 @@ body {
   -moz-transition: background 0.2s ease, color 0.2s ease;
   transition: background 0.2s ease, color 0.2s ease;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic:hover {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic:hover {
   background: #000000;
   color: #FFFFFF;
 }
-.fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic:hover, .fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic:focus {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic:hover, .fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card .logic button.add-logic:focus {
   outline: none;
 }
-.fb-response-fields .fb-field-wrapper div.field-card button.target {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card button.target {
   position: absolute;
   width: 2.5em;
   height: 2.5em;
@@ -593,10 +680,10 @@ body {
   font-size: 0.1em;
   cursor: pointer;
 }
-.fb-response-fields .fb-field-wrapper div.field-card button.target:focus, .fb-response-fields .fb-field-wrapper div.field-card button.target:hover {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card button.target:focus, .fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card button.target:hover {
   outline: none;
 }
-.fb-response-fields .fb-field-wrapper div.field-card button.target:hover {
+.fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card button.target:hover {
   background: #000;
 }
 
