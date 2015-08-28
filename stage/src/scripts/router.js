@@ -99,6 +99,6 @@ var Router = {
     },
     play: function() {
         var json = JSON.stringify(Router.get());
-        window.open('localhost:9000?json=' + json, '_blank');
+        window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + json, '_blank');
     }
 };
