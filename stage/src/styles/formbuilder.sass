@@ -336,228 +336,67 @@ body
             &.blur
                 @include filter(blur(9px))
 
-.fb-response-fields 
-    //padding-bottom: 10px
-    margin: 20px 20px 20px 0
-    border: 2px solid #000
-    border-radius: 0px 5px 5px 0
-    background-color: #FFFFFF
-    padding: 0 0 0 20px
-
-    a.sortable-placeholder 
-        display: block
-        border: 2px dashed #000000
-        border-radius: 5px
-        min-height: 80px
-        height: 80px
-        width: 374px
-
-    .fb-field-wrapper 
-        cursor: move
-        position: relative
-        margin-bottom: 10px
-        display: table
-
-        &:hover 
-            .actions-wrapper 
-                opacity: 1
-                visibility: visible
-
-            .subtemplate-wrapper 
-                border-color: #000000
-
-        &.editing 
-            .actions-wrapper 
-                opacity: 1
-                visibility: visible
-
-            .field-card .meta
-                background-color: #00B6B9
-
-            .field-card.blur
-                @include filter(blur(0px))
-
-        .actions-wrapper 
-            visibility: hidden
-            position: absolute
-            bottom: -12px
-            right: 10px
-            z-index: 3
-            opacity: 0
-            @include transition(opacity 0.2s ease)
-
-            a 
-                cursor: pointer
-                display: inline-block
-                padding: 2px 4px
-                text-align: center
-                background-color: #FFFFFF
-                color: #FFFFFF
-                border: 2px solid #000
-                border-radius: 5px
-                height: 25px
-                width: auto
-                font-size: 14px
-                @include transition(background-color 0.2s ease)
-
-                &.js-duplicate 
-                    background-color: $color_emerald_approx
-
-                &.js-clear 
-                    background-color: $color_cinnabar_approx
-
-                &:hover
-                    background-color: #000000
-
-        .subtemplate-wrapper
-
-            border: 2px dashed transparent
-            border-radius: 8px
-            padding: 12px
+        .fb-survey-description
             position: relative
+            z-index: 2
+            background-color: #3B479D
+            padding: 10px 30px 20px 30px
+            border: 2px solid
 
-            @include transition(border-color 0.2s ease)
-            .cover 
-                position: absolute
-                top: 0
-                left: 0
-                height: 100%
-                width: 100%
-                z-index: 2
-
-        div.field-card
-            width: 350px
-            border: 2px solid #000000
-            border-radius: 8px
-            font-family: 'Work Sans', sans-serif
-            position: relative
-            background: #FFFFFF
-
-            $meta-bg: #3B479D
-
-            &.blur
-                @include filter(blur(5px))
-
-            .meta
-                background: $meta-bg
-                border-radius: 5px 5px 0 0
-                color: #FFFFFF
-                padding: 10px 30px
-
-                @include transition(background-color 0.2s ease)
-
-                p
-                    margin: 0
-
-                    &.section
-                        font-size: 0.8em
-                        font-weight: 200
-
-                    &.title
-                        font-size: 1.5em
-                        &:empty
-                            &:after
-                                content: "Untitled Question"
-                                color: #FFFFFF
-
-                    &.type
-                        text-transform: capitalize
+            &.header
+                margin: 20px 20px 0 0
+                border-bottom-width: 0
+                border-radius: 0 5px 0 0
 
                 button.target
-                    right: -1.25em
-                    top: 25px
-                    background: $meta-bg
+                    bottom: -10px
 
-            .logic
-                padding: 10px 0 10px 30px
-                position: relative
+            &.footer
+                margin: 0 20px 20px 0
+                border-top-width: 0
+                border-radius: 0 0 5px 0
 
-                p
-                    margin: 0
+                button.target
+                    top: -10px
 
-                    &.section
-                        font-size: 0.8em
-                        font-weight: 200
+            p.section
+                margin-bottom: 0
+                color: #FFFFFF
+                margin-left: 30px
+                font-weight: 300
 
-                .line
-                    padding-right: 30px
-                    position: relative
-                    margin: 10px 0
+            input
+                font-size: 30px
+                margin: 0 10px 0 0
+                color: #FFF
+                margin-bottom: 10px
 
-                    p
-                        display: inline-block
-                        border: 2px solid
-                        padding: 2px 10px
-                        border-radius: 5px
-                        background: #FFF
-                        position: relative
+            textarea
+                resize: none
+                font-size: 20px
+                color: #FFFFFF
+                font-weight: 300
+                max-width: 100%
+                min-width: 100%
+                min-height: 60px
+                max-height: 60px
+                margin: 0px
 
-                        i
-                            &.fa-star
-                                color: #FEC84E
-                                margin-top: 10px
+            input, textarea
+                display: block
+                border-radius: 5px
+                padding: 5px 30px
+                width: 100%
+                font-family: $font
+                background-color: transparent
+                border: 2px solid transparent
+                @include transition(background-color 0.2s, border-color 0.2s, color 0.2s)
 
-                        span.digit
-                            background-color: #3C474D
-                            //margin-top: 10px
-                            color: #FFFFFF
-                            width: 20px
-                            height: 20px
-                            font-size: 14px
-                            border-radius: 50%
-                            padding: 2px
-                            text-align: center
-                            display: inline-block
-
-                            &.up
-                                //background-color: #14B37D
-
-                            &.down, &.up
-                                background-color: #7F74B6
-
-                            &.spacer
-                                width: 25px
-                                border-radius: 5px
-                        &:empty
-                            &:after
-                                content: "Option"
-                                color: #e74c3c
-
-                    span.link
-                        width: 100%
-                        height: 2px
-                        background-color: #000
-                        position: absolute
-                        top: 50%
-                        transform: translateY(-50%)
-
-                    button.target
-                        right: -1.25em
-                        top: 50%
-                        @include transform(translateY(-50%))
-
-                button.target.hanging
-                    right: -1.25em
-                    top: 50%
-                    @include transform(translateY(-50%))
-
-                button.add-logic
-                    border: 2px solid #000000
-                    padding: 2px 10px
-                    border-radius: 5px
-                    background: #FFFFFF
-                    font-size: 1em
-                    font-family: 'Work Sans', sans-serif
-                    margin-top: 15px
-                    cursor: pointer
-                    @include transition(background 0.2s ease, color 0.2s ease)
-
-                    &:hover
-                        background: #000000
-                        color: #FFFFFF
-
-                    &:hover, &:focus
-                        outline: none
+                &:hover, &:focus
+                    background-color: #FFFFFF
+                    border-color: #000000
+                    color: #000000
+                    outline: none
 
             button.target
                 position: absolute
@@ -567,14 +406,255 @@ body
                 border: 2px solid #000
                 font-size: 0.1em
                 cursor: pointer
+                right: 40px
+                background-color: #3B479D
 
-                //@include transition(background 0.5s ease)
+                @include transition(background 0.2s ease)
 
                 &:focus, &:hover
                     outline: none
 
                 &:hover
                     background: #000
+
+        .fb-response-fields 
+            margin: 0 20px 0 0
+            border: 2px solid #000
+            border-radius: 0
+            background-color: #FFFFFF
+            padding: 20px 0 0 20px
+
+            a.sortable-placeholder 
+                display: block
+                border: 2px dashed #000000
+                border-radius: 5px
+                min-height: 80px
+                height: 80px
+                width: 374px
+
+            .fb-field-wrapper 
+                cursor: move
+                position: relative
+                margin-bottom: 10px
+                display: table
+
+                &:hover 
+                    .actions-wrapper 
+                        opacity: 1
+                        visibility: visible
+
+                    .subtemplate-wrapper 
+                        border-color: #000000
+
+                &.editing 
+                    .actions-wrapper 
+                        opacity: 1
+                        visibility: visible
+
+                    .field-card .meta
+                        background-color: #00B6B9
+
+                    .field-card.blur
+                        @include filter(blur(0px))
+
+                .actions-wrapper 
+                    visibility: hidden
+                    position: absolute
+                    bottom: -12px
+                    right: 10px
+                    z-index: 3
+                    opacity: 0
+                    @include transition(opacity 0.2s ease)
+
+                    a 
+                        cursor: pointer
+                        display: inline-block
+                        padding: 2px 4px
+                        text-align: center
+                        background-color: #FFFFFF
+                        color: #FFFFFF
+                        border: 2px solid #000
+                        border-radius: 5px
+                        height: 25px
+                        width: auto
+                        font-size: 14px
+                        @include transition(background-color 0.2s ease)
+
+                        &.js-duplicate 
+                            background-color: $color_emerald_approx
+
+                        &.js-clear 
+                            background-color: $color_cinnabar_approx
+
+                        &:hover
+                            background-color: #000000
+
+                .subtemplate-wrapper
+
+                    border: 2px dashed transparent
+                    border-radius: 8px
+                    padding: 12px
+                    position: relative
+
+                    @include transition(border-color 0.2s ease)
+                    .cover 
+                        position: absolute
+                        top: 0
+                        left: 0
+                        height: 100%
+                        width: 100%
+                        z-index: 2
+
+                div.field-card
+                    width: 350px
+                    border: 2px solid #000000
+                    border-radius: 8px
+                    font-family: 'Work Sans', sans-serif
+                    position: relative
+                    background: #FFFFFF
+
+                    $meta-bg: #3B479D
+
+                    &.blur
+                        @include filter(blur(5px))
+
+                    .meta
+                        background: $meta-bg
+                        border-radius: 5px 5px 0 0
+                        color: #FFFFFF
+                        padding: 10px 30px
+
+                        @include transition(background-color 0.2s ease)
+
+                        p
+                            margin: 0
+
+                            &.section
+                                font-size: 0.8em
+                                font-weight: 200
+
+                            &.title
+                                font-size: 1.5em
+                                &:empty
+                                    &:after
+                                        content: "Untitled Question"
+                                        color: #FFFFFF
+
+                            &.type
+                                text-transform: capitalize
+
+                        button.target
+                            right: -1.25em
+                            top: 25px
+                            background: $meta-bg
+
+                    .logic
+                        padding: 10px 0 10px 30px
+                        position: relative
+
+                        p
+                            margin: 0
+
+                            &.section
+                                font-size: 0.8em
+                                font-weight: 200
+
+                        .line
+                            padding-right: 30px
+                            position: relative
+                            margin: 10px 0
+
+                            p
+                                display: inline-block
+                                border: 2px solid
+                                padding: 2px 10px
+                                border-radius: 5px
+                                background: #FFF
+                                position: relative
+
+                                i
+                                    &.fa-star
+                                        color: #FEC84E
+                                        margin-top: 10px
+
+                                span.digit
+                                    background-color: #3C474D
+                                    //margin-top: 10px
+                                    color: #FFFFFF
+                                    width: 20px
+                                    height: 20px
+                                    font-size: 14px
+                                    border-radius: 50%
+                                    padding: 2px
+                                    text-align: center
+                                    display: inline-block
+
+                                    &.up
+                                        //background-color: #14B37D
+
+                                    &.down, &.up
+                                        background-color: #7F74B6
+
+                                    &.spacer
+                                        width: 25px
+                                        border-radius: 5px
+                                &:empty
+                                    &:after
+                                        content: "Option"
+                                        color: #e74c3c
+
+                            span.link
+                                width: 100%
+                                height: 2px
+                                background-color: #000
+                                position: absolute
+                                top: 50%
+                                transform: translateY(-50%)
+
+                            button.target
+                                right: -1.25em
+                                top: 50%
+                                @include transform(translateY(-50%))
+
+                        button.target.hanging
+                            right: -1.25em
+                            top: 50%
+                            @include transform(translateY(-50%))
+
+                        button.add-logic
+                            border: 2px solid #000000
+                            padding: 2px 10px
+                            border-radius: 5px
+                            background: #FFFFFF
+                            font-size: 1em
+                            font-family: 'Work Sans', sans-serif
+                            margin-top: 15px
+                            cursor: pointer
+                            @include transition(background 0.2s ease, color 0.2s ease)
+
+                            &:hover
+                                background: #000000
+                                color: #FFFFFF
+
+                            &:hover, &:focus
+                                outline: none
+
+                    button.target
+                        position: absolute
+                        width: 2.5em
+                        height: 2.5em
+                        border-radius: 50%
+                        border: 2px solid #000
+                        font-size: 0.1em
+                        cursor: pointer
+
+                        //@include transition(background 0.5s ease)
+
+                        &:focus, &:hover
+                            outline: none
+
+                        &:hover
+                            background: #000
 
 .response-field-draggable-helper 
     border: 2px dashed #000000
