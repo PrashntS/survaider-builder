@@ -1,6 +1,6 @@
 Formbuilder.registerField 'yes_no',
 
-  order: 3
+  order: 2
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
@@ -27,10 +27,10 @@ Formbuilder.registerField 'yes_no',
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Yes",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ,
-      label: "No",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ]
 

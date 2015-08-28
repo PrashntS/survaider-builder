@@ -1,6 +1,6 @@
 Formbuilder.registerField 'ranking',
 
-  order: 51
+  order: 6
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
@@ -31,10 +31,10 @@ Formbuilder.registerField 'ranking',
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Field One Goes here",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ,
-      label: "Field Two Goes here",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ]
 

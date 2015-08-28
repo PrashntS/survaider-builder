@@ -1,6 +1,6 @@
 Formbuilder.registerField 'single_choice',
 
-  order: 15
+  order: 4
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
@@ -27,10 +27,10 @@ Formbuilder.registerField 'single_choice',
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Choice One",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ,
-      label: "Choice Two",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ]
 

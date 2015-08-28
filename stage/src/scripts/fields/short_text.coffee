@@ -1,4 +1,4 @@
-Formbuilder.registerField 'text',
+Formbuilder.registerField 'short_text',
 
   order: 0
 

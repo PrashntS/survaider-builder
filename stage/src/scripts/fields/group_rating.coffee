@@ -1,6 +1,6 @@
 Formbuilder.registerField 'group_rating',
 
-  order: 53
+  order: 8
 
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
@@ -35,10 +35,10 @@ Formbuilder.registerField 'group_rating',
   defaultAttributes: (attrs) ->
     # @todo
     attrs.field_options.options = [
-      label: "Field One Goes here",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ,
-      label: "Field Two Goes here",
+      label: Formbuilder.options.dict.DEFAULT_OPTION,
       checked: false
     ]
 

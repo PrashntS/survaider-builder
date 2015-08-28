@@ -92,3 +92,26 @@ The "logics" are serialized through following convention:
 - Conflicting rules which have equal precedence would be evaluated on the basis of first rule encountered.
 - These rules are not inferred - These MUST be defined explicitly.
 - Rule `va` CAN be empty (has to be defined nevertheless). In case no user input matches any rule (and, is correct syntactically), survey end would be called. Hence, Rule `va` SHOULD be defined wherever applicable.
+
+# Standard Identifiers
+
+short_text
+    text_scene
+long_text
+    suggestions
+yes_no
+    car: [2, 2]
+    happy_or_sad: [2, 3]
+single_choice
+    catapult: [2, 4]
+    fish_scene_one: [2, 5]
+    bird_tunnel: [2, 4]
+multiple_choice
+    balloon: [2, 5]
+    fish_scene_two: [2, 5]
+ranking
+    stairs: [2, 6]
+rating
+    scroll_scene:
+group_rating
+    star_game: [2, 3]
