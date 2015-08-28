@@ -1,4 +1,4 @@
-Formbuilder.registerField 'paragraph',
+Formbuilder.registerField 'long_text',
 
   order: 1
 
@@ -17,5 +17,5 @@ Formbuilder.registerField 'paragraph',
   edit: """"""
 
   addButton: """
-    <span class="symbol">&#182;</span> Paragraph
+    <span class="symbol">&#182;</span> Long Text
   """

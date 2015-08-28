@@ -453,7 +453,7 @@ class Formbuilder
       yes_no:
         min: 2
         max: 3
-      check_boxes:
+      single_choice:
         min: 2
         max: 5
       multiple_choice:
@@ -471,6 +471,14 @@ class Formbuilder
       DEFAULT_LABEL: 'Question Title\x1e'
       SAVE_FORM: 'Save'
       UNSAVED_CHANGES: 'You have unsaved changes. If you leave this page, you will lose those changes!'
+      FIELDS:
+        short_text: "Short and quick answers to short and quick questions!<br>eg. What is your name?"
+        long_text: "Longer, detailed responses.<br>eg. What do you REALLY feel about our product?"
+        yes_no: "The quick opinion question."
+        multiple_choice: "Your responder selects many or all options here!"
+        single_choice: "For questions to which you want only one answer"
+        ranking: "Users can drag and drop the following options according to their preference!"
+        group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
 
   @fields: {}
   @inputFields: {}
