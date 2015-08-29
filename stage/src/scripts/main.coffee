@@ -197,6 +197,7 @@ class BuilderView extends Backbone.View
     setTimeout =>
       @formSaved = false
       @saveForm.call(@)
+      Links.reload()
     , 1500
 
   bindSaveEvent: ->
