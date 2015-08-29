@@ -193,6 +193,12 @@ class BuilderView extends Backbone.View
     @collection.reset(@bootstrapData)
     @bindSaveEvent()
 
+    # STUPID HACK. :(
+    setTimeout =>
+      @formSaved = false
+      @saveForm.call(@)
+    , 1500
+
   bindSaveEvent: ->
     @formSaved = true
     @saveFormButton = @$el.find(".js-save-form")
