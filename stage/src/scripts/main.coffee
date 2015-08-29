@@ -53,8 +53,6 @@ class ViewFieldView extends Backbone.View
 
     x = Formbuilder.options.CLEAR_FIELD_CONFIRM
 
-    Links.reload()
-
     switch typeof x
       when 'string'
         if confirm(x) then cb()
@@ -62,6 +60,8 @@ class ViewFieldView extends Backbone.View
         x(cb)
       else
         cb()
+
+    Links.reload()
 
   duplicate: ->
     attrs = _.clone(@model.attributes)
@@ -446,7 +446,6 @@ class Formbuilder
       MINLENGTH: 'field_options.minlength'
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
-      CID: 12
 
     limit_map:
       yes_no:
