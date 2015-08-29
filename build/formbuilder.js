@@ -379,18 +379,19 @@ var Router = {
         };
       })(this);
       x = Formbuilder.options.CLEAR_FIELD_CONFIRM;
-      Links.reload();
       switch (typeof x) {
         case 'string':
           if (confirm(x)) {
-            return cb();
+            cb();
           }
           break;
         case 'function':
-          return x(cb);
+          x(cb);
+          break;
         default:
-          return cb();
+          cb();
       }
+      return Links.reload();
     };
 
     ViewFieldView.prototype.duplicate = function() {
@@ -557,7 +558,14 @@ var Router = {
       this.collection.bind('destroy', this.ensureEditViewScrolled, this);
       this.render();
       this.collection.reset(this.bootstrapData);
-      return this.bindSaveEvent();
+      this.bindSaveEvent();
+      return setTimeout((function(_this) {
+        return function() {
+          _this.formSaved = false;
+          _this.saveForm.call(_this);
+          return Links.reload();
+        };
+      })(this), 1500);
     };
 
     BuilderView.prototype.bindSaveEvent = function() {
@@ -882,8 +890,7 @@ var Router = {
         MAX: 'field_options.max',
         MINLENGTH: 'field_options.minlength',
         MAXLENGTH: 'field_options.maxlength',
-        LENGTH_UNITS: 'field_options.min_max_length_units',
-        CID: 12
+        LENGTH_UNITS: 'field_options.min_max_length_units'
       },
       limit_map: {
         yes_no: {
@@ -1383,7 +1390,7 @@ this["Formbuilder"]["templates"]["partials/right_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="fb-survey-description header">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target"\n              data-target = "out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'fb-response-fields\'>\n  </div>\n  <div class="fb-survey-description footer">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target"\n              data-target = "out"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
+__p += '<div class=\'fb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="fb-survey-description header">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target_O"\n              data-target = "top_out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'fb-response-fields\'>\n  </div>\n  <div class="fb-survey-description footer">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target_O"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
 
 }
 return __p
