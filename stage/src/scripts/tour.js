@@ -43,7 +43,7 @@ tour.addStep('add-question', {
 
 tour.addStep('add-question', {
   title: 'Time for the Magic to happen!',
-  text: 'Once youre done, go and eat some food.',
+  text: "Once you're done, watch your survey turning into a game!",
   attachTo: '.play-now bottom',
   buttons: [
     {
