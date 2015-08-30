@@ -8,7 +8,7 @@ var Router = {
         },
         yes_no: {
             car: [2, 2],
-            happy_or_sad: [2, 3]
+            happy_or_sad: [3, 3]
         },
         single_choice: {
             catapult: [2, 4],
@@ -82,7 +82,7 @@ var Router = {
     dat: {},
     helper: {
         between: function (number, list) {
-            if (list[0] == list[1]) {
+            if (list[0] == list[1] && number == list[0]) {
                 return true;
             }
             else if (number >= list[0] || number <= list[1]) {
@@ -98,7 +98,78 @@ var Router = {
         return Router.dat;
     },
     play: function() {
-        var json = JSON.stringify(Router.get());
-        window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + json, '_blank');
+        swal({
+            title: "Ready for the Magic?!",
+            text: "Click on Build to built your Survey. If you wish to make more changes, click on Cancel.",
+            type: "info",
+            confirmButtonText: "Build",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function() {
+
+            $.ajax({
+                type: "POST",
+                url:  "https://api.github.com/gists",
+                data: JSON.stringify({
+                    files: {
+                        json_dat: {
+                            content: JSON.stringify(Router.get())
+                        }
+                    }
+                }),
+                contentType: 'application/json'
+            }).done(function (data) {
+                swal({
+                    title: "Built!",
+                    text:  "Your game has been built. Click Play Now!",
+                    type:  "success",
+                    confirmButtonText: "Play Now!",
+                    closeOnConfirm: true
+                }, function () {
+                    window.open('//play.survaider.com?json=' + data.files.json_dat.raw_url, '_blank');
+                });
+            }).fail(function (data) {
+                console.log(data);
+                swal({
+                    title: "We're Sorry!",
+                    text:  "There's been some problem with the Server. Please try again in a little while.",
+                    type:  "error",
+                    closeOnConfirm: true
+                });
+            });
+
+        });
+
+        return;
+
+        Router.working = true;
+
+        $(".play-now").html("Working!");
+        $(".play-now").css("background", "#2DB98A");
+
+        $.ajax({
+            type: "POST",
+            url:  "https://api.github.com/gists",
+            data: JSON.stringify({
+                files: {
+                    json_dat: {
+                        content: JSON.stringify(Router.get())
+                    }
+                }
+            }),
+            contentType: 'application/json'
+        }).done(function (data) {
+            $(".play-now").html("Play Now!");
+            $(".play-now").css("background", "#2165AE");
+            Router.working = false;
+            window.open('//play.survaider.com?json=' + data.files.json_dat.raw_url, '_new');
+        }).fail(function (data) {
+            $(".play-now").html("Play Now!");
+            $(".play-now").css("background", "#2165AE");
+            Router.working = false;
+            console.log(data);
+            alert("We're facing a temporary service problem. Please try again later.");
+        });
     }
 };

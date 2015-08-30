@@ -1,0 +1,172 @@
+{
+    "fields":[
+        {
+            "label":"What is your name?",
+            "field_type":"short_text",
+            "required":true,
+            "field_options":[
+
+            ],
+            "cid":"c2",
+            "next":{
+                "va":"c6"
+            },
+            "gametype":"text_scene"
+        },
+        {
+            "label":"Have you gone on Facebook ever before?",
+            "field_type":"yes_no",
+            "required":true,
+            "field_options":[
+                "Yes",
+                "No"
+            ],
+            "cid":"c6",
+            "next":{
+                "va":"c10"
+            },
+            "gametype":"car"
+        },
+        {
+            "label":"What do you primarily use Facebook for?",
+            "field_type":"multiple_choice",
+            "required":true,
+            "field_options":[
+                "Reading about friends",
+                "Chatting with friends",
+                "Finding new people",
+                "Reading (news, articles)",
+                "Shopping"
+            ],
+            "cid":"c10",
+            "next":{
+                "va":"c14"
+            },
+            "gametype":"balloon"
+        },
+        {
+            "label":"Is it easy to find what you are look for on Facebook?",
+            "field_type":"yes_no",
+            "required":true,
+            "field_options":[
+                "Yes",
+                "Somewhat",
+                "No"
+            ],
+            "cid":"c14",
+            "next":{
+                "va":"c18"
+            },
+            "gametype":"happy_or_sad"
+        },
+        {
+            "label":"Do you think new GIFs add to your Facebook experience?",
+            "field_type":"single_choice",
+            "required":true,
+            "field_options":[
+                "What GIF?",
+                "Useless!",
+                "The do, kind of.",
+                "Yes of course!"
+            ],
+            "cid":"c18",
+            "next":{
+                "va":"c22"
+            },
+            "gametype":"fish_scene_one"
+        },
+        {
+            "label":"How many stars would you give to your experience with the",
+            "field_type":"group_rating",
+            "required":true,
+            "field_options":[
+                "Facebook Messenger",
+                "Facebook Search",
+                "Facebook Ads"
+            ],
+            "cid":"c22",
+            "next":{
+                "va":"c26"
+            },
+            "gametype":"star_game"
+        },
+        {
+            "label":"Do Facebook ads influence your buying decision?",
+            "field_type":"single_choice",
+            "required":true,
+            "field_options":[
+                "Nope",
+                "Um kind of",
+                "Yes they do"
+            ],
+            "cid":"c26",
+            "next":{
+                "va":"c30"
+            },
+            "gametype":"fish_scene_one"
+        },
+        {
+            "label":"What Influences your buying decision, please rank them accordingly!",
+            "field_type":"ranking",
+            "required":true,
+            "field_options":[
+                "Post from a friend",
+                "Facebook ad",
+                "Google ad",
+                "Sponsored post",
+                "Friend's like on a product",
+                "Celebrity post"
+            ],
+            "cid":"c30",
+            "next":{
+                "va":"c34"
+            },
+            "gametype":"stairs"
+        },
+        {
+            "label":"How would you rate your experience of Facebook on a mobile device?",
+            "field_type":"rating",
+            "required":true,
+            "field_options":[
+
+            ],
+            "cid":"c34",
+            "next":{
+                "va":"c38"
+            },
+            "gametype":"scroll_scene"
+        },
+        {
+            "label":"What other feature would you like to add on your Facebook mobile experience?",
+            "field_type":"long_text",
+            "required":true,
+            "field_options":[
+
+            ],
+            "cid":"c38",
+            "next":{
+                "va":"c42"
+            },
+            "gametype":"suggestions"
+        },
+        {
+            "label":"Did you enjoy this survey?",
+            "field_type":"single_choice",
+            "required":true,
+            "field_options":[
+                "Yes!",
+                "No",
+                "It was okay...",
+                "I prefer normal surveys."
+            ],
+            "cid":"c42",
+            "next":{
+                "va":"end"
+            },
+            "gametype":"fish_scene_one"
+        }
+    ],
+    "game_title":"Facebook market research",
+    "game_description":"Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)",
+    "game_footer":"Thank you for contributing!"
+}

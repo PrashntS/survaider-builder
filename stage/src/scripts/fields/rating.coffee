@@ -4,7 +4,7 @@ Formbuilder.registerField 'rating',
 
   view: """
     <div class="line">
-      <label class='fb-option'>
+      <label class='sb-option'>
         <p>
               <span class="digit">1</span>
               <span class="digit">2</span>

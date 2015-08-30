@@ -1,8 +1,8 @@
 class FormbuilderModel extends Backbone.DeepModel
   sync: -> # noop
   indexInDOM: ->
-    $wrapper = $(".fb-field-wrapper").filter ( (_, el) => $(el).data('cid') == @cid  )
-    $(".fb-field-wrapper").index $wrapper
+    $wrapper = $(".sb-field-wrapper").filter ( (_, el) => $(el).data('cid') == @cid  )
+    $(".sb-field-wrapper").index $wrapper
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
 
@@ -19,7 +19,7 @@ class FormbuilderCollection extends Backbone.Collection
     model.attributes.cid = model.cid
 
 class ViewFieldView extends Backbone.View
-  className: "fb-field-wrapper"
+  className: "sb-field-wrapper"
 
   events:
     'click .subtemplate-wrapper': 'focusEditView'
@@ -53,8 +53,6 @@ class ViewFieldView extends Backbone.View
 
     x = Formbuilder.options.CLEAR_FIELD_CONFIRM
 
-    Links.reload()
-
     switch typeof x
       when 'string'
         if confirm(x) then cb()
@@ -62,6 +60,8 @@ class ViewFieldView extends Backbone.View
         x(cb)
       else
         cb()
+
+    Links.reload()
 
   duplicate: ->
     attrs = _.clone(@model.attributes)
@@ -77,7 +77,7 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
-    'click .fb-label-description': 'prepareLabel'
+    'click .sb-label-description': 'prepareLabel'
     'click .option': 'prepareLabel'
 
   initialize: (options) ->
@@ -170,10 +170,10 @@ class BuilderView extends Backbone.View
 
   events:
     'click .js-save-form': 'saveForm'
-    'click .fb-tabs a': 'showTab'
-    'click .fb-add-field-types a': 'addField'
-    'mouseover .fb-add-field-types': 'lockLeftWrapper'
-    'mouseout .fb-add-field-types': 'unlockLeftWrapper'
+    'click .sb-tabs a': 'showTab'
+    'click .sb-add-field-types a': 'addField'
+    'mouseover .sb-add-field-types': 'lockLeftWrapper'
+    'mouseout .sb-add-field-types': 'unlockLeftWrapper'
 
   initialize: (options) ->
     {selector, @formBuilder, @bootstrapData} = options
@@ -192,6 +192,14 @@ class BuilderView extends Backbone.View
     @render()
     @collection.reset(@bootstrapData)
     @bindSaveEvent()
+
+    # STUPID HACK. :(
+    setTimeout =>
+      @formSaved = false
+      @saveForm.call(@)
+      Links.reload()
+      $(".play-now").removeAttr("disabled")
+    , 2500
 
   bindSaveEvent: ->
     @formSaved = true
@@ -215,8 +223,8 @@ class BuilderView extends Backbone.View
     @$el.html Formbuilder.templates['page']()
 
     # Save jQuery objects for easy use
-    @$fbLeft = @$el.find('.fb-left')
-    @$responseFields = @$el.find('.fb-response-fields')
+    @$fbLeft = @$el.find('.sb-left')
+    @$responseFields = @$el.find('.sb-response-fields')
 
     @bindWindowScrollEvent()
     @hideShowNoResponseFields()
@@ -232,7 +240,7 @@ class BuilderView extends Backbone.View
   bindWindowScrollEvent: ->
     $(window).on 'scroll', =>
       #return if @$fbLeft.data('locked') == true
-      element   = $(".fb-tab-pane")
+      element   = $(".sb-tab-pane")
       newMargin = Math.max(0, $(window).scrollTop() - element.offset().top)
       maxMargin = @$responseFields.height()
 
@@ -243,7 +251,7 @@ class BuilderView extends Backbone.View
     $el = $(e.currentTarget)
     target = $el.data('target')
     #$el.closest('li').addClass('active').siblings('li').removeClass('active')
-    #$(target).addClass('active').siblings('.fb-field-options').removeClass('active')
+    #$(target).addClass('active').siblings('.sb-field-options').removeClass('active')
 
     @unlockLeftWrapper() unless target == '#editField'
 
@@ -273,7 +281,7 @@ class BuilderView extends Backbone.View
       @$responseFields.prepend view.render().el
 
     # Are we adding below an existing field?
-    else if ($replacePosition = @$responseFields.find(".fb-field-wrapper").eq(options.position))[0]
+    else if ($replacePosition = @$responseFields.find(".sb-field-wrapper").eq(options.position))[0]
       $replacePosition.before view.render().el
 
     # Catch-all: add to bottom
@@ -323,7 +331,7 @@ class BuilderView extends Backbone.View
     Links.reload()
 
   hideShowNoResponseFields: ->
-    @$el.find(".fb-no-response-fields")[if @collection.length > 0 then 'hide' else 'show']()
+    @$el.find(".sb-no-response-fields")[if @collection.length > 0 then 'hide' else 'show']()
 
   addField: (e) ->
     field_type = $(e.currentTarget).data('field-type')
@@ -335,14 +343,14 @@ class BuilderView extends Backbone.View
     @handleFormUpdate()
 
   createAndShowEditView: (model) ->
-    $responseFieldEl = @$el.find(".fb-field-wrapper").filter( -> $(@).data('cid') == model.cid )
-    $responseFieldEl.addClass('editing').siblings('.fb-field-wrapper').removeClass('editing')
+    $responseFieldEl = @$el.find(".sb-field-wrapper").filter( -> $(@).data('cid') == model.cid )
+    $responseFieldEl.addClass('editing').siblings('.sb-field-wrapper').removeClass('editing')
 
-    #$(".fb-field-options").attr('class', 'fb-field-options active')
+    #$(".sb-field-options").attr('class', 'sb-field-options active')
 
     if @editView
       if @editView.model.cid is model.cid
-        @$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
+        @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
         @scrollLeftWrapper($responseFieldEl)
         return
 
@@ -354,8 +362,8 @@ class BuilderView extends Backbone.View
       parentView: @
 
     $newEditEl = @editView.render().$el
-    @$el.find(".fb-edit-field-wrapper").html $newEditEl
-    #@$el.find(".fb-tabs a[data-target=\"#editField\"]").click()
+    @$el.find(".sb-edit-field-wrapper").html $newEditEl
+    #@$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
     
     $("#editField").addClass("active")
 
@@ -364,7 +372,7 @@ class BuilderView extends Backbone.View
 
   ensureEditViewScrolled: ->
     return unless @editView
-    @scrollLeftWrapper $(".fb-field-wrapper.editing")
+    @scrollLeftWrapper $(".sb-field-wrapper.editing")
 
   scrollLeftWrapper: ($responseFieldEl) ->
     @unlockLeftWrapper()
@@ -423,7 +431,7 @@ class Formbuilder
       x?.replace(/\n/g, '<br />')
 
   @options:
-    BUTTON_CLASS: 'fb-button'
+    BUTTON_CLASS: 'sb-button'
     HTTP_ENDPOINT: ''
     HTTP_METHOD: 'POST'
     AUTOSAVE: true
@@ -446,7 +454,6 @@ class Formbuilder
       MINLENGTH: 'field_options.minlength'
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
-      CID: 12
 
     limit_map:
       yes_no:
