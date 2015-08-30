@@ -82,7 +82,7 @@ var Router = {
     dat: {},
     helper: {
         between: function (number, list) {
-            if (list[0] == list[1]) {
+            if (list[0] == list[1] && number == list[0]) {
                 return true;
             }
             else if (number >= list[0] || number <= list[1]) {
@@ -98,6 +98,7 @@ var Router = {
         return Router.dat;
     },
     play: function() {
+        //var json = encodeURIComponent(JSON.stringify(Router.get()));
         var json = JSON.stringify(Router.get());
         window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + json, '_blank');
     }
