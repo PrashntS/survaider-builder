@@ -31,16 +31,16 @@ body
     position: relative
 
     &.shepherd-active
-        .fb-left
+        .sb-left
             .header, .content, .footer
                 background-color: #3C474D
-        .fb-right
-            .fb-response-fields, .fb-survey-description
+        .sb-right
+            .sb-response-fields, .sb-survey-description
                 background-color: #3C474D
 *
     box-sizing: border-box
 
-.fb-button 
+.sb-button 
     font-family: 'Work Sans', sans-serif
     margin: 0px 0px 10px 0px
     position: relative
@@ -72,17 +72,17 @@ body
         background-color: #000000
         color: #FFFFFF
 
-.fb-clear 
+.sb-clear 
     clear: both
 
-.fb-main
+.sb-main
     width: 80%
     margin: 0 auto
     position: relative
     padding: 0
     font-family: $font
 
-    .fb-left
+    .sb-left
         width: 30%
         height: 100%
         float: left
@@ -91,7 +91,7 @@ body
         margin-bottom: 20px
         border-radius: 4px 0 0 5px
 
-        .fb-field-options
+        .sb-field-options
             padding-bottom: 40px
             position: fixed
             top: 50%
@@ -110,13 +110,13 @@ body
                 opacity: 1
                 @include transform(translate(0, -50%))
 
-            .fb-edit-field-wrapper
+            .sb-edit-field-wrapper
                 height: 100%
                 overflow: auto
                 padding: 10px 20px 20px 20px
 
                 .edit-response-field
-                    .fb-edit-section-header 
+                    .sb-edit-section-header 
                         border-bottom: 1px solid $color_alto_approx
                         margin-top: 25px
                         margin-bottom: 10px
@@ -124,7 +124,7 @@ body
                         clear: both
                         font-weight: 700
 
-                    .fb-label-description
+                    .sb-label-description
                         input
                             border-radius: 5px
                             width: 100%
@@ -202,10 +202,10 @@ body
                         &:hover
                             color: #3B479D
 
-                    .fb-bottom-add 
+                    .sb-bottom-add 
                         margin-top: 8px
 
-                    .fb-nah-bro
+                    .sb-nah-bro
                         background: #000
                         opacity: 0
                         color: #FFFFFF
@@ -226,7 +226,7 @@ body
                         height: auto
                         vertical-align: middle
 
-            .fb-field-options-done
+            .sb-field-options-done
                 background-color: #D8D8D8
                 position: absolute
                 left: 0
@@ -324,7 +324,7 @@ body
         .header, .content, .footer
             @include transition(background-color 0.5s ease)    
 
-    .fb-right
+    .sb-right
         float: right
         width: 70%
         display: block
@@ -345,7 +345,7 @@ body
             &.blur
                 @include filter(blur(9px))
 
-        .fb-survey-description
+        .sb-survey-description
             position: relative
             z-index: 2
             background-color: #3B479D
@@ -426,7 +426,7 @@ body
                 &:hover
                     background: #000
 
-        .fb-response-fields 
+        .sb-response-fields 
             margin: 0 20px 0 0
             border: 2px solid #000
             border-radius: 0
@@ -442,7 +442,7 @@ body
                 height: 80px
                 width: 374px
 
-            .fb-field-wrapper 
+            .sb-field-wrapper 
                 cursor: move
                 position: relative
                 margin-bottom: 10px
@@ -660,8 +660,7 @@ body
                         border: 2px solid #000
                         font-size: 0.1em
                         cursor: pointer
-
-                        //@include transition(background 0.5s ease)
+                        background: #FFFFFF
 
                         &:focus, &:hover
                             outline: none
@@ -669,7 +668,7 @@ body
                         &:hover
                             background: #000
 
-        .fb-response-fields, .fb-survey-description
+        .sb-response-fields, .sb-survey-description
             @include transition(background-color 0.5s ease)
 
 .shepherd-step

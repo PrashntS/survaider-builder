@@ -5,7 +5,7 @@ Formbuilder.registerField 'group_rating',
   view: """
     <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
       <div class="line">
-        <label class='fb-option'>
+        <label class='sb-option'>
           <p>
               <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
               <br>

@@ -102,7 +102,10 @@ var Links = {
             "use strict";
             var cards = $("div[data-cid]");
             var card_num = cards.length;
-            cid = $("div[data-cid]").attr("data-cid")
+
+            for (var i = 0; i < card_num; i += 1) {
+                cards.eq(i);
+            }
         }
     },
 

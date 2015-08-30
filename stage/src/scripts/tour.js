@@ -10,7 +10,7 @@ tour = new Shepherd.Tour({
 tour.addStep('add-question', {
   title: 'Adding the Survey Questions',
   text: 'You can drag and drop the questions to add them to your survey.',
-  attachTo: '.fb-add-field-types right',
+  attachTo: '.sb-add-field-types right',
   buttons: [
     {
       text: '&times;',
@@ -27,7 +27,7 @@ tour.addStep('add-question', {
 tour.addStep('add-question', {
   title: 'Your survey is built in this area',
   text: 'Go ahead, re arrange your questions, or click on them to customize them.',
-  attachTo: '.fb-field-wrapper left',
+  attachTo: '.sb-field-wrapper left',
   buttons: [
     {
       text: '&times;',
