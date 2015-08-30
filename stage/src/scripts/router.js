@@ -98,8 +98,37 @@ var Router = {
         return Router.dat;
     },
     play: function() {
-        //var json = encodeURIComponent(JSON.stringify(Router.get()));
-        var json = JSON.stringify(Router.get());
-        window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + json, '_blank');
+        if (Router.working) {
+            return;
+        }
+
+        Router.working = true;
+
+        $(".play-now").html("Working!");
+        $(".play-now").css("background-color", "#2DB98A");
+
+        $.ajax({
+            type: "POST",
+            url:  "https://api.github.com/gists",
+            data: JSON.stringify({
+                files: {
+                    json_dat: {
+                        content: JSON.stringify(Router.get())
+                    }
+                }
+            }),
+            contentType: 'application/json'
+        }).done(function (data) {
+            $(".play-now").html("Play Now!");
+            $(".play-now").css("background-color", "#2165AE");
+            Router.working = false;
+            window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + data.files.json_dat.raw_url, '_blank');
+        }).fail(function (data) {
+            $(".play-now").html("Play Now!");
+            $(".play-now").css("background-color", "#2165AE");
+            Router.working = false;
+            console.log(data);
+            alert("We're facing a temporary service problem. Please try again later.");
+        });
     }
 };
