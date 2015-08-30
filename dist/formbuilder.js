@@ -254,7 +254,7 @@ var Router = {
             $(".play-now").html("Play Now!");
             $(".play-now").css("background", "#2165AE");
             Router.working = false;
-            window.open('play.survaider.com?json=' + data.files.json_dat.raw_url, '_blank');
+            window.open('/play.survaider.com?json=' + data.files.json_dat.raw_url, '_newtab');
         }).fail(function (data) {
             $(".play-now").html("Play Now!");
             $(".play-now").css("background", "#2165AE");
