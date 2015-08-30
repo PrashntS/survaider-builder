@@ -30,6 +30,13 @@ body
     background-color: #2E3A4E
     position: relative
 
+    &.shepherd-active
+        .fb-left
+            .header, .content, .footer
+                background-color: #3C474D
+        .fb-right
+            .fb-response-fields, .fb-survey-description
+                background-color: #3C474D
 *
     box-sizing: border-box
 
@@ -314,6 +321,8 @@ body
             p
                 margin: 0
 
+        .header, .content, .footer
+            @include transition(background-color 0.5s ease)    
 
     .fb-right
         float: right
@@ -660,83 +669,17 @@ body
                         &:hover
                             background: #000
 
+        .fb-response-fields, .fb-survey-description
+            @include transition(background-color 0.5s ease)
+
+.shepherd-step
+    z-index: 100
+    width: 300px
+    font-family: $font
+
 .response-field-draggable-helper 
     border: 2px dashed #000000
     background: transparent
     border-radius: 5px
     width: 374px
     z-index: 10
-
-.response-field-address 
-    .street 
-        width: 400px
-
-    .city 
-        width: 198px
-
-    .state 
-        width: 198px
-
-    .zip 
-        width: 198px
-
-    .country 
-        width: 198px
-
-
-.response-field-date 
-    .month 
-        width: 50px
-
-    .day 
-        width: 50px
-
-    .year 
-        width: 50px
-
-
-.response-field-time 
-    .hours 
-        width: 50px
-
-    .minutes 
-        width: 50px
-
-    .seconds 
-        width: 50px
-
-.response-field-text input 
-    &.rf-size-small 
-        width: 130px
-
-    &.rf-size-medium 
-        width: 300px
-
-    &.rf-size-large 
-        width: 100%
-
-
-.response-field-paragraph textarea 
-    &.rf-size-small 
-        width: 200px
-        min-height: 60px
-
-    &.rf-size-medium 
-        width: 400px
-        min-height: 100px
-
-    &.rf-size-large 
-        width: 100%
-        min-height: 200px
-
-
-.response-field-checkboxes .fb-option 
-    margin-bottom: 5px
-    display: inline-block
-
-.response-field-radio .fb-option 
-    margin-bottom: 5px
-    display: inline-block
-
-.response-field-website input 
-    width: 200px

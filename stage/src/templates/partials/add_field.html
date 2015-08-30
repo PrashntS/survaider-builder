@@ -1,9 +1,6 @@
 <div class='fb-tab-pane active' id='addField'>
   <div class='fb-add-field-types'>
-    <div class='section'
-         data-intro='Choose to add Question.'
-         data-position='right'
-    >
+    <div class='section'>
       <% _.each(_.sortBy(Formbuilder.inputFields, 'order'), function(f){ %>
         <a data-field-type="<%= f.field_type %>" class="<%= Formbuilder.options.BUTTON_CLASS %>">
           <%= f.addButton %>

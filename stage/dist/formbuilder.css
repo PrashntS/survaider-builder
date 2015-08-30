@@ -4,6 +4,12 @@ body {
   background-color: #2E3A4E;
   position: relative;
 }
+body.shepherd-active .fb-left .header, body.shepherd-active .fb-left .content, body.shepherd-active .fb-left .footer {
+  background-color: #3C474D;
+}
+body.shepherd-active .fb-right .fb-response-fields, body.shepherd-active .fb-right .fb-survey-description {
+  background-color: #3C474D;
+}
 
 * {
   box-sizing: border-box;
@@ -327,6 +333,11 @@ body {
 }
 .fb-main .fb-left .footer p {
   margin: 0;
+}
+.fb-main .fb-left .header, .fb-main .fb-left .content, .fb-main .fb-left .footer {
+  -webkit-transition: background-color 0.5s ease;
+  -moz-transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease;
 }
 .fb-main .fb-right {
   float: right;
@@ -686,6 +697,17 @@ body {
 .fb-main .fb-right .fb-response-fields .fb-field-wrapper div.field-card button.target:hover {
   background: #000;
 }
+.fb-main .fb-right .fb-response-fields, .fb-main .fb-right .fb-survey-description {
+  -webkit-transition: background-color 0.5s ease;
+  -moz-transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease;
+}
+
+.shepherd-step {
+  z-index: 100;
+  width: 300px;
+  font-family: "Work Sans", sans-serif;
+}
 
 .response-field-draggable-helper {
   border: 2px dashed #000000;
@@ -693,79 +715,6 @@ body {
   border-radius: 5px;
   width: 374px;
   z-index: 10;
-}
-
-.response-field-address .street {
-  width: 400px;
-}
-.response-field-address .city {
-  width: 198px;
-}
-.response-field-address .state {
-  width: 198px;
-}
-.response-field-address .zip {
-  width: 198px;
-}
-.response-field-address .country {
-  width: 198px;
-}
-
-.response-field-date .month {
-  width: 50px;
-}
-.response-field-date .day {
-  width: 50px;
-}
-.response-field-date .year {
-  width: 50px;
-}
-
-.response-field-time .hours {
-  width: 50px;
-}
-.response-field-time .minutes {
-  width: 50px;
-}
-.response-field-time .seconds {
-  width: 50px;
-}
-
-.response-field-text input.rf-size-small {
-  width: 130px;
-}
-.response-field-text input.rf-size-medium {
-  width: 300px;
-}
-.response-field-text input.rf-size-large {
-  width: 100%;
-}
-
-.response-field-paragraph textarea.rf-size-small {
-  width: 200px;
-  min-height: 60px;
-}
-.response-field-paragraph textarea.rf-size-medium {
-  width: 400px;
-  min-height: 100px;
-}
-.response-field-paragraph textarea.rf-size-large {
-  width: 100%;
-  min-height: 200px;
-}
-
-.response-field-checkboxes .fb-option {
-  margin-bottom: 5px;
-  display: inline-block;
-}
-
-.response-field-radio .fb-option {
-  margin-bottom: 5px;
-  display: inline-block;
-}
-
-.response-field-website input {
-  width: 200px;
 }
 
 /*# sourceMappingURL=formbuilder.css.map */

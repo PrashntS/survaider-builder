@@ -59,6 +59,7 @@ module.exports = (grunt) ->
           '<%= distFolder %>/formbuilder.js': [
             '<%= srcFolder %>/scripts/links.js'
             '<%= srcFolder %>/scripts/router.js'
+            '<%= srcFolder %>/scripts/tour.js'
             '<%= compiledFolder %>/*.js'
           ]
           '<%= vendorFolder %>/js/vendor.js': [
@@ -77,7 +78,8 @@ module.exports = (grunt) ->
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
             'bower_components/svg.js/dist/svg.min.js'
-            'bower_components/chardin.js/chardinjs.js'
+            'bower_components/tether/dist/js/tether.min.js'
+            'bower_components/tether-shepherd/dist/js/shepherd.min.js'
           ]
 
     cssmin:
@@ -86,7 +88,7 @@ module.exports = (grunt) ->
           '<%= distFolder %>/formbuilder-min.css': '<%= distFolder %>/formbuilder.css'
           '<%= vendorFolder %>/css/vendor.css': [
             'bower_components/font-awesome/css/font-awesome.css'
-            'bower_components/chardin.js/chardinjs.css'
+            'bower_components/tether-shepherd/dist/css/shepherd-theme-arrows.css'
           ]
 
     sass:
