@@ -237,7 +237,7 @@ var Router = {
         Router.working = true;
 
         $(".play-now").html("Working!");
-        $(".play-now").css("background-color", "#2DB98A");
+        $(".play-now").css("background", "#2DB98A");
 
         $.ajax({
             type: "POST",
@@ -252,12 +252,12 @@ var Router = {
             contentType: 'application/json'
         }).done(function (data) {
             $(".play-now").html("Play Now!");
-            $(".play-now").css("background-color", "#2165AE");
+            $(".play-now").css("background", "#2165AE");
             Router.working = false;
             window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + data.files.json_dat.raw_url, '_blank');
         }).fail(function (data) {
             $(".play-now").html("Play Now!");
-            $(".play-now").css("background-color", "#2165AE");
+            $(".play-now").css("background", "#2165AE");
             Router.working = false;
             console.log(data);
             alert("We're facing a temporary service problem. Please try again later.");
@@ -659,9 +659,10 @@ $(function () {
         return function() {
           _this.formSaved = false;
           _this.saveForm.call(_this);
-          return Links.reload();
+          Links.reload();
+          return $(".play-now").removeAttr("disabled");
         };
-      })(this), 1500);
+      })(this), 2500);
     };
 
     BuilderView.prototype.bindSaveEvent = function() {
@@ -1472,7 +1473,7 @@ this["Formbuilder"]["templates"]["partials/left_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-left\'>\n    <div class="header">\n        <h2>Sample Survey</h2>\n        <button class=\'js-save-form\'></button>\n        <button class=\'play-now\' onclick="Router.play();">Play Now!</button>\n    </div>\n\n    <div class="content">\n        <h2>Question Type</h2>\n        <div class=\'fb-tab-content\'>\n            ' +
+__p += '<div class=\'fb-left\'>\n    <div class="header">\n        <h2>Sample Survey</h2>\n        <button class=\'js-save-form\'></button>\n        <button class=\'play-now\' onclick="Router.play();" disabled>Play Now!</button>\n    </div>\n\n    <div class="content">\n        <h2>Question Type</h2>\n        <div class=\'fb-tab-content\'>\n            ' +
 ((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
 '\n            ' +
 ((__t = ( Formbuilder.templates['partials/edit_field']() )) == null ? '' : __t) +

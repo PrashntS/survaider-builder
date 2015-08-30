@@ -198,7 +198,8 @@ class BuilderView extends Backbone.View
       @formSaved = false
       @saveForm.call(@)
       Links.reload()
-    , 1500
+      $(".play-now").removeAttr("disabled")
+    , 2500
 
   bindSaveEvent: ->
     @formSaved = true

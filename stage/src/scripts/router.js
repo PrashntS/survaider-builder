@@ -105,7 +105,7 @@ var Router = {
         Router.working = true;
 
         $(".play-now").html("Working!");
-        $(".play-now").css("background-color", "#2DB98A");
+        $(".play-now").css("background", "#2DB98A");
 
         $.ajax({
             type: "POST",
@@ -120,12 +120,12 @@ var Router = {
             contentType: 'application/json'
         }).done(function (data) {
             $(".play-now").html("Play Now!");
-            $(".play-now").css("background-color", "#2165AE");
+            $(".play-now").css("background", "#2165AE");
             Router.working = false;
             window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + data.files.json_dat.raw_url, '_blank');
         }).fail(function (data) {
             $(".play-now").html("Play Now!");
-            $(".play-now").css("background-color", "#2165AE");
+            $(".play-now").css("background", "#2165AE");
             Router.working = false;
             console.log(data);
             alert("We're facing a temporary service problem. Please try again later.");
