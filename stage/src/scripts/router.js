@@ -8,7 +8,7 @@ var Router = {
         },
         yes_no: {
             car: [2, 2],
-            happy_or_sad: [2, 3]
+            happy_or_sad: [3, 3]
         },
         single_choice: {
             catapult: [2, 4],
