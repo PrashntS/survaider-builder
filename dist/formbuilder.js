@@ -232,7 +232,7 @@ var Router = {
     play: function() {
         swal({
             title: "Ready for the Magic?!",
-            text: "Click on Build to built your Survey. If you wish to make more changes, click on Cancel.",
+            text: "Click on Build to build your Survey. If you wish to make more changes, click on Cancel.",
             type: "info",
             confirmButtonText: "Build",
             showCancelButton: true,
@@ -271,37 +271,6 @@ var Router = {
                 });
             });
 
-        });
-
-        return;
-
-        Router.working = true;
-
-        $(".play-now").html("Working!");
-        $(".play-now").css("background", "#2DB98A");
-
-        $.ajax({
-            type: "POST",
-            url:  "https://api.github.com/gists",
-            data: JSON.stringify({
-                files: {
-                    json_dat: {
-                        content: JSON.stringify(Router.get())
-                    }
-                }
-            }),
-            contentType: 'application/json'
-        }).done(function (data) {
-            $(".play-now").html("Play Now!");
-            $(".play-now").css("background", "#2165AE");
-            Router.working = false;
-            window.open('//play.survaider.com?json=' + data.files.json_dat.raw_url, '_new');
-        }).fail(function (data) {
-            $(".play-now").html("Play Now!");
-            $(".play-now").css("background", "#2165AE");
-            Router.working = false;
-            console.log(data);
-            alert("We're facing a temporary service problem. Please try again later.");
         });
     }
 };
