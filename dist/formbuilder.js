@@ -254,7 +254,7 @@ var Router = {
             $(".play-now").html("Play Now!");
             $(".play-now").css("background", "#2165AE");
             Router.working = false;
-            window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + data.files.json_dat.raw_url, '_blank');
+            window.open('play.survaider.com?json=' + data.files.json_dat.raw_url, '_blank');
         }).fail(function (data) {
             $(".play-now").html("Play Now!");
             $(".play-now").css("background", "#2165AE");
