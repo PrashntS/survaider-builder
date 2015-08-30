@@ -318,7 +318,7 @@ tour = new Shepherd.Tour({
 tour.addStep('add-question', {
   title: 'Adding the Survey Questions',
   text: 'You can drag and drop the questions to add them to your survey.',
-  attachTo: '.fb-add-field-types right',
+  attachTo: '.sb-add-field-types right',
   buttons: [
     {
       text: '&times;',
@@ -335,7 +335,7 @@ tour.addStep('add-question', {
 tour.addStep('add-question', {
   title: 'Your survey is built in this area',
   text: 'Go ahead, re arrange your questions, or click on them to customize them.',
-  attachTo: '.fb-field-wrapper left',
+  attachTo: '.sb-field-wrapper left',
   buttons: [
     {
       text: '&times;',
@@ -430,12 +430,12 @@ $(function () {
 
     FormbuilderModel.prototype.indexInDOM = function() {
       var $wrapper;
-      $wrapper = $(".fb-field-wrapper").filter(((function(_this) {
+      $wrapper = $(".sb-field-wrapper").filter(((function(_this) {
         return function(_, el) {
           return $(el).data('cid') === _this.cid;
         };
       })(this)));
-      return $(".fb-field-wrapper").index($wrapper);
+      return $(".sb-field-wrapper").index($wrapper);
     };
 
     FormbuilderModel.prototype.is_input = function() {
@@ -478,7 +478,7 @@ $(function () {
       return ViewFieldView.__super__.constructor.apply(this, arguments);
     }
 
-    ViewFieldView.prototype.className = "fb-field-wrapper";
+    ViewFieldView.prototype.className = "sb-field-wrapper";
 
     ViewFieldView.prototype.events = {
       'click .subtemplate-wrapper': 'focusEditView',
@@ -559,7 +559,7 @@ $(function () {
       'click .js-remove-option': 'removeOption',
       'click .js-default-updated': 'defaultUpdated',
       'input .option-label-input': 'forceRender',
-      'click .fb-label-description': 'prepareLabel',
+      'click .sb-label-description': 'prepareLabel',
       'click .option': 'prepareLabel'
     };
 
@@ -675,10 +675,10 @@ $(function () {
 
     BuilderView.prototype.events = {
       'click .js-save-form': 'saveForm',
-      'click .fb-tabs a': 'showTab',
-      'click .fb-add-field-types a': 'addField',
-      'mouseover .fb-add-field-types': 'lockLeftWrapper',
-      'mouseout .fb-add-field-types': 'unlockLeftWrapper'
+      'click .sb-tabs a': 'showTab',
+      'click .sb-add-field-types a': 'addField',
+      'mouseover .sb-add-field-types': 'lockLeftWrapper',
+      'mouseout .sb-add-field-types': 'unlockLeftWrapper'
     };
 
     BuilderView.prototype.initialize = function(options) {
@@ -737,8 +737,8 @@ $(function () {
     BuilderView.prototype.render = function() {
       var j, len, ref, subview;
       this.$el.html(Formbuilder.templates['page']());
-      this.$fbLeft = this.$el.find('.fb-left');
-      this.$responseFields = this.$el.find('.fb-response-fields');
+      this.$fbLeft = this.$el.find('.sb-left');
+      this.$responseFields = this.$el.find('.sb-response-fields');
       this.bindWindowScrollEvent();
       this.hideShowNoResponseFields();
       ref = this.SUBVIEWS;
@@ -756,7 +756,7 @@ $(function () {
       return $(window).on('scroll', (function(_this) {
         return function() {
           var element, maxMargin, newMargin;
-          element = $(".fb-tab-pane");
+          element = $(".sb-tab-pane");
           newMargin = Math.max(0, $(window).scrollTop() - element.offset().top);
           maxMargin = _this.$responseFields.height();
           return element.css({
@@ -792,7 +792,7 @@ $(function () {
         return this.$responseFields.append(view.render().el);
       } else if (options.position === 0) {
         return this.$responseFields.prepend(view.render().el);
-      } else if (($replacePosition = this.$responseFields.find(".fb-field-wrapper").eq(options.position))[0]) {
+      } else if (($replacePosition = this.$responseFields.find(".sb-field-wrapper").eq(options.position))[0]) {
         return $replacePosition.before(view.render().el);
       } else {
         return this.$responseFields.append(view.render().el);
@@ -867,7 +867,7 @@ $(function () {
     };
 
     BuilderView.prototype.hideShowNoResponseFields = function() {
-      return this.$el.find(".fb-no-response-fields")[this.collection.length > 0 ? 'hide' : 'show']();
+      return this.$el.find(".sb-no-response-fields")[this.collection.length > 0 ? 'hide' : 'show']();
     };
 
     BuilderView.prototype.addField = function(e) {
@@ -885,13 +885,13 @@ $(function () {
 
     BuilderView.prototype.createAndShowEditView = function(model) {
       var $newEditEl, $responseFieldEl;
-      $responseFieldEl = this.$el.find(".fb-field-wrapper").filter(function() {
+      $responseFieldEl = this.$el.find(".sb-field-wrapper").filter(function() {
         return $(this).data('cid') === model.cid;
       });
-      $responseFieldEl.addClass('editing').siblings('.fb-field-wrapper').removeClass('editing');
+      $responseFieldEl.addClass('editing').siblings('.sb-field-wrapper').removeClass('editing');
       if (this.editView) {
         if (this.editView.model.cid === model.cid) {
-          this.$el.find(".fb-tabs a[data-target=\"#editField\"]").click();
+          this.$el.find(".sb-tabs a[data-target=\"#editField\"]").click();
           this.scrollLeftWrapper($responseFieldEl);
           return;
         }
@@ -903,7 +903,7 @@ $(function () {
         parentView: this
       });
       $newEditEl = this.editView.render().$el;
-      this.$el.find(".fb-edit-field-wrapper").html($newEditEl);
+      this.$el.find(".sb-edit-field-wrapper").html($newEditEl);
       $("#editField").addClass("active");
       this.scrollLeftWrapper($responseFieldEl);
       return this;
@@ -913,7 +913,7 @@ $(function () {
       if (!this.editView) {
         return;
       }
-      return this.scrollLeftWrapper($(".fb-field-wrapper.editing"));
+      return this.scrollLeftWrapper($(".sb-field-wrapper.editing"));
     };
 
     BuilderView.prototype.scrollLeftWrapper = function($responseFieldEl) {
@@ -1007,7 +1007,7 @@ $(function () {
     };
 
     Formbuilder.options = {
-      BUTTON_CLASS: 'fb-button',
+      BUTTON_CLASS: 'sb-button',
       HTTP_ENDPOINT: '',
       HTTP_METHOD: 'POST',
       AUTOSAVE: true,
@@ -1126,7 +1126,7 @@ $(function () {
 (function() {
   Formbuilder.registerField('group_rating', {
     order: 8,
-    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='fb-option'>\n      <p>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n          <br>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
+    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='sb-option'>\n      <p>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n          <br>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n          <i class=\"fa fa-star\"></i>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-star\"></span></span> Group Rating",
     defaultAttributes: function(attrs) {
@@ -1181,7 +1181,7 @@ $(function () {
 (function() {
   Formbuilder.registerField('ranking', {
     order: 6,
-    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='fb-option'>\n      <p>\n          <span class=\"digit up\"><i class=\"fa fa-arrow-up\"></i></span><span class=\"digit down\"><i class=\"fa fa-arrow-down\"></i></span>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
+    view: "<% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n  <div class=\"line\">\n    <label class='sb-option'>\n      <p>\n          <span class=\"digit up\"><i class=\"fa fa-arrow-up\"></i></span><span class=\"digit down\"><i class=\"fa fa-arrow-down\"></i></span>\n          <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n      </p>\n    </label>\n  </div>\n<% } %>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-bars\"></span></span> Ranking",
     defaultAttributes: function(attrs) {
@@ -1203,7 +1203,7 @@ $(function () {
 (function() {
   Formbuilder.registerField('rating', {
     order: 7,
-    view: "<div class=\"line\">\n  <label class='fb-option'>\n    <p>\n          <span class=\"digit\">1</span>\n          <span class=\"digit\">2</span>\n          <span class=\"digit\">3</span>\n          <span class=\"digit\">4</span>\n          <span class=\"digit spacer\">...</span>\n          <span class=\"digit\">8</span>\n          <span class=\"digit\">9</span>\n          <span class=\"digit\">10</span>\n    </p>\n  </label>\n</div>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
+    view: "<div class=\"line\">\n  <label class='sb-option'>\n    <p>\n          <span class=\"digit\">1</span>\n          <span class=\"digit\">2</span>\n          <span class=\"digit\">3</span>\n          <span class=\"digit\">4</span>\n          <span class=\"digit spacer\">...</span>\n          <span class=\"digit\">8</span>\n          <span class=\"digit\">9</span>\n          <span class=\"digit\">10</span>\n    </p>\n  </label>\n</div>\n<button class=\"target hanging\"\n        data-target = \"out\"\n        data-target-index = \"0\"\n></button>",
     edit: "",
     addButton: "<span class=\"symbol\"><span class=\"fa fa-star\"></span></span> Rating"
   });
@@ -1286,7 +1286,7 @@ this["Formbuilder"]["templates"]["edit/base_header"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-field-label\'>\n  <span data-rv-text="model.' +
+__p += '<div class=\'sb-field-label\'>\n  <span data-rv-text="model.' +
 ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
 '"></span>\n  <code class=\'field-type\' data-rv-text=\'model.' +
 ((__t = ( Formbuilder.options.mappings.FIELD_TYPE )) == null ? '' : __t) +
@@ -1326,11 +1326,11 @@ this["Formbuilder"]["templates"]["edit/common"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Edit Question</div>\n\n<div class=\'fb-common-wrapper\'>\n  <div class=\'fb-label-description\'>\n    ' +
+__p += '<div class=\'sb-edit-section-header\'>Edit Question</div>\n\n<div class=\'sb-common-wrapper\'>\n  <div class=\'sb-label-description\'>\n    ' +
 ((__t = ( Formbuilder.templates['edit/label_description']({rf: rf}) )) == null ? '' : __t) +
-'\n  </div>\n  <div class=\'fb-common-checkboxes\'>\n    ' +
+'\n  </div>\n  <div class=\'sb-common-checkboxes\'>\n    ' +
 ((__t = ( Formbuilder.templates['edit/checkboxes']() )) == null ? '' : __t) +
-'\n  </div>\n  <div class=\'fb-clear\'></div>\n</div>\n';
+'\n  </div>\n  <div class=\'sb-clear\'></div>\n</div>\n';
 
 }
 return __p
@@ -1340,7 +1340,7 @@ this["Formbuilder"]["templates"]["edit/integer_only"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Integer only</div>\n<label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+__p += '<div class=\'sb-edit-section-header\'>Integer only</div>\n<label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.INTEGER_ONLY )) == null ? '' : __t) +
 '\' />\n  Only accept integers\n</label>\n';
 
@@ -1366,7 +1366,7 @@ this["Formbuilder"]["templates"]["edit/min_max"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Minimum / Maximum</div>\n\nAbove\n<input type="text" data-rv-input="model.' +
+__p += '<div class=\'sb-edit-section-header\'>Minimum / Maximum</div>\n\nAbove\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MIN )) == null ? '' : __t) +
 '" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nBelow\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MAX )) == null ? '' : __t) +
@@ -1380,7 +1380,7 @@ this["Formbuilder"]["templates"]["edit/min_max_length"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Length Limit</div>\n\nMin\n<input type="text" data-rv-input="model.' +
+__p += '<div class=\'sb-edit-section-header\'>Length Limit</div>\n\nMin\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MINLENGTH )) == null ? '' : __t) +
 '" style="width: 30px" />\n\n&nbsp;&nbsp;\n\nMax\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.MAXLENGTH )) == null ? '' : __t) +
@@ -1397,7 +1397,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Add Option</div>\n\n';
+__p += '<div class=\'sb-edit-section-header\'>Add Option</div>\n\n';
  if (typeof includeBlank !== 'undefined'){ ;
 __p += '\n  <label>\n    <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.INCLUDE_BLANK )) == null ? '' : __t) +
@@ -1421,7 +1421,7 @@ this["Formbuilder"]["templates"]["edit/size"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Size</div>\n<select data-rv-value="model.' +
+__p += '<div class=\'sb-edit-section-header\'>Size</div>\n<select data-rv-value="model.' +
 ((__t = ( Formbuilder.options.mappings.SIZE )) == null ? '' : __t) +
 '">\n  <option value="small">Small</option>\n  <option value="medium">Medium</option>\n  <option value="large">Large</option>\n</select>\n';
 
@@ -1433,7 +1433,7 @@ this["Formbuilder"]["templates"]["edit/units"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Units</div>\n<input type="text" data-rv-input="model.' +
+__p += '<div class=\'sb-edit-section-header\'>Units</div>\n<input type="text" data-rv-input="model.' +
 ((__t = ( Formbuilder.options.mappings.UNITS )) == null ? '' : __t) +
 '" />\n';
 
@@ -1445,9 +1445,9 @@ this["Formbuilder"]["templates"]["edit/yes_no"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-edit-section-header\'>Yes No</div>\n\n<div class=\'option\' data-rv-each-option=\'model.' +
+__p += '<div class=\'sb-edit-section-header\'>Yes No</div>\n\n<div class=\'option\' data-rv-each-option=\'model.' +
 ((__t = ( Formbuilder.options.mappings.OPTIONS )) == null ? '' : __t) +
-'\'>\n  <input type="text" data-rv-input="option:label" class=\'option-label-input\' />\n  <a class="js-remove-option" title="Remove Option"><i class=\'fa fa-minus-circle\'></i></a>\n</div>\n\n<div class=\'fb-bottom-add\'>\n  <a class="js-add-option ' +
+'\'>\n  <input type="text" data-rv-input="option:label" class=\'option-label-input\' />\n  <a class="js-remove-option" title="Remove Option"><i class=\'fa fa-minus-circle\'></i></a>\n</div>\n\n<div class=\'sb-bottom-add\'>\n  <a class="js-add-option ' +
 ((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
 '">Add option</a>\n</div>\n';
 
@@ -1463,7 +1463,7 @@ __p +=
 ((__t = ( Formbuilder.templates['partials/left_side']() )) == null ? '' : __t) +
 '\n' +
 ((__t = ( Formbuilder.templates['partials/right_side']() )) == null ? '' : __t) +
-'\n<div class=\'fb-clear\'></div>';
+'\n<div class=\'sb-clear\'></div>';
 
 }
 return __p
@@ -1474,7 +1474,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class=\'fb-tab-pane active\' id=\'addField\'>\n  <div class=\'fb-add-field-types\'>\n    <div class=\'section\'>\n      ';
+__p += '<div class=\'sb-tab-pane active\' id=\'addField\'>\n  <div class=\'sb-add-field-types\'>\n    <div class=\'section\'>\n      ';
  _.each(_.sortBy(Formbuilder.inputFields, 'order'), function(f){ ;
 __p += '\n        <a data-field-type="' +
 ((__t = ( f.field_type )) == null ? '' : __t) +
@@ -1504,7 +1504,7 @@ this["Formbuilder"]["templates"]["partials/edit_field"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-field-options\' id=\'editField\'>\n  <div class=\'fb-edit-field-wrapper\'></div>\n  <div class="fb-field-options-done">\n      <button onclick=\'$("#editField").removeClass("active");\'>Done</button>\n  </div>\n</div>\n';
+__p += '<div class=\'sb-field-options\' id=\'editField\'>\n  <div class=\'sb-edit-field-wrapper\'></div>\n  <div class="sb-field-options-done">\n      <button onclick=\'$("#editField").removeClass("active");\'>Done</button>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -1514,7 +1514,7 @@ this["Formbuilder"]["templates"]["partials/left_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-left\'>\n    <div class="header">\n        <h2>Sample Survey</h2>\n        <button class=\'js-save-form\'></button>\n        <button class=\'play-now\' onclick="Router.play();" disabled>Play Now!</button>\n    </div>\n\n    <div class="content">\n        <h2>Question Type</h2>\n        <div class=\'fb-tab-content\'>\n            ' +
+__p += '<div class=\'sb-left\'>\n    <div class="header">\n        <h2>Sample Survey</h2>\n        <button class=\'js-save-form\'></button>\n        <button class=\'play-now\' onclick="Router.play();" disabled>Play Now!</button>\n    </div>\n\n    <div class="content">\n        <h2>Question Type</h2>\n        <div class=\'sb-tab-content\'>\n            ' +
 ((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
 '\n            ' +
 ((__t = ( Formbuilder.templates['partials/edit_field']() )) == null ? '' : __t) +
@@ -1528,7 +1528,7 @@ this["Formbuilder"]["templates"]["partials/right_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="fb-survey-description header">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target_O"\n              data-target = "top_out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'fb-response-fields\'>\n  </div>\n  <div class="fb-survey-description footer">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target_O"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
+__p += '<div class=\'sb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="sb-survey-description header">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target_O"\n              data-target = "top_out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'sb-response-fields\'>\n  </div>\n  <div class="sb-survey-description footer">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target_O"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -1538,7 +1538,7 @@ this["Formbuilder"]["templates"]["partials/save_button"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-save-wrapper\'>\n  <button class=\'js-save-form ' +
+__p += '<div class=\'sb-save-wrapper\'>\n  <button class=\'js-save-form ' +
 ((__t = ( Formbuilder.options.BUTTON_CLASS )) == null ? '' : __t) +
 '\'></button>\n</div>';
 
