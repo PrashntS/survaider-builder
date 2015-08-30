@@ -140,7 +140,7 @@ var Router = {
         },
         yes_no: {
             car: [2, 2],
-            happy_or_sad: [2, 3]
+            happy_or_sad: [3, 3]
         },
         single_choice: {
             catapult: [2, 4],
@@ -214,7 +214,7 @@ var Router = {
     dat: {},
     helper: {
         between: function (number, list) {
-            if (list[0] == list[1]) {
+            if (list[0] == list[1] && number == list[0]) {
                 return true;
             }
             else if (number >= list[0] || number <= list[1]) {
@@ -230,10 +230,106 @@ var Router = {
         return Router.dat;
     },
     play: function() {
-        var json = JSON.stringify(Router.get());
-        window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + json, '_blank');
+        if (Router.working) {
+            return;
+        }
+
+        Router.working = true;
+
+        $(".play-now").html("Working!");
+        $(".play-now").css("background", "#2DB98A");
+
+        $.ajax({
+            type: "POST",
+            url:  "https://api.github.com/gists",
+            data: JSON.stringify({
+                files: {
+                    json_dat: {
+                        content: JSON.stringify(Router.get())
+                    }
+                }
+            }),
+            contentType: 'application/json'
+        }).done(function (data) {
+            $(".play-now").html("Play Now!");
+            $(".play-now").css("background", "#2165AE");
+            Router.working = false;
+            window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + data.files.json_dat.raw_url, '_blank');
+        }).fail(function (data) {
+            $(".play-now").html("Play Now!");
+            $(".play-now").css("background", "#2165AE");
+            Router.working = false;
+            console.log(data);
+            alert("We're facing a temporary service problem. Please try again later.");
+        });
     }
 };
+
+var tour;
+
+tour = new Shepherd.Tour({
+  defaults: {
+    classes: 'shepherd-theme-arrows',
+    scrollTo: false
+  }
+});
+
+tour.addStep('add-question', {
+  title: 'Adding the Survey Questions',
+  text: 'You can drag and drop the questions to add them to your survey.',
+  attachTo: '.fb-add-field-types right',
+  buttons: [
+    {
+      text: '&times;',
+      classes: 'btn-close',
+      action: tour.cancel
+    },
+    {
+      text: 'Next',
+      action: tour.next
+    }
+  ]
+});
+
+tour.addStep('add-question', {
+  title: 'Your survey is built in this area',
+  text: 'Go ahead, re arrange your questions, or click on them to customize them.',
+  attachTo: '.fb-field-wrapper left',
+  buttons: [
+    {
+      text: '&times;',
+      classes: 'btn-close',
+      action: tour.cancel
+    },
+    {
+      text: 'Next',
+      action: tour.next
+    }
+  ]
+});
+
+tour.addStep('add-question', {
+  title: 'Time for the Magic to happen!',
+  text: "Once you're done, watch your survey turning into a game!",
+  attachTo: '.play-now bottom',
+  buttons: [
+    {
+      text: '&times;',
+      classes: 'btn-close',
+      action: tour.cancel
+    },
+    {
+      text: 'Next',
+      action: tour.next
+    }
+  ]
+});
+
+$(function () {
+  setTimeout(function () {
+    tour.start();
+  }, 1000);
+});
 
 (function() {
   rivets.binders.input = {
@@ -563,9 +659,10 @@ var Router = {
         return function() {
           _this.formSaved = false;
           _this.saveForm.call(_this);
-          return Links.reload();
+          Links.reload();
+          return $(".play-now").removeAttr("disabled");
         };
-      })(this), 1500);
+      })(this), 2500);
     };
 
     BuilderView.prototype.bindSaveEvent = function() {
@@ -1376,7 +1473,7 @@ this["Formbuilder"]["templates"]["partials/left_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'fb-left\'>\n    <div class="header">\n        <h2>Sample Survey</h2>\n        <button class=\'js-save-form\'></button>\n        <button class=\'play-now\' onclick="Router.play();">Play Now!</button>\n    </div>\n\n    <div class="content">\n        <h2>Question Type</h2>\n        <div class=\'fb-tab-content\'>\n            ' +
+__p += '<div class=\'fb-left\'>\n    <div class="header">\n        <h2>Sample Survey</h2>\n        <button class=\'js-save-form\'></button>\n        <button class=\'play-now\' onclick="Router.play();" disabled>Play Now!</button>\n    </div>\n\n    <div class="content">\n        <h2>Question Type</h2>\n        <div class=\'fb-tab-content\'>\n            ' +
 ((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
 '\n            ' +
 ((__t = ( Formbuilder.templates['partials/edit_field']() )) == null ? '' : __t) +

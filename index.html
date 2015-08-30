@@ -1,16 +1,16 @@
 <!doctype html>
 <html>
 <head>
-  <title>Survaider Builder</title>
+  <title>Build - Survaider</title>
   <meta name="description" content="">
   <link rel="stylesheet" href="vendor/css/vendor.css" />
-  <link rel="stylesheet" href="build/formbuilder.css" />
+  <link rel="stylesheet" href="dist/formbuilder.css" />
 </head>
 <body>
   <div class='fb-main'></div>
 
   <script src="vendor/js/vendor.js"></script>
-  <script src="build/formbuilder.js"></script>
+  <script src="dist/formbuilder.js"></script>
 
   <script>
     $(function(){
@@ -72,10 +72,10 @@
                     "label": "Yes",
                     "checked": false
                 }, {
-                    "label": "Somewhat",
+                    "label": "No",
                     "checked": false
                 }, {
-                    "label": "No",
+                    "label": "Somewhat",
                     "checked": false
                 }]
             },
@@ -156,7 +156,7 @@
                     "label": "Sponsored post",
                     "checked": false
                 }, {
-                    "label": "Friend%27s like on a product",
+                    "label": "Friend's like on a product",
                     "checked": false
                 }, {
                     "label": "Celebrity post",
@@ -207,6 +207,7 @@
         Router.dat = JSON.parse(payload);
       })
     });
+
   </script>
 
 
