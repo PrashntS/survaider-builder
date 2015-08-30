@@ -708,6 +708,9 @@ body.shepherd-active .fb-right .fb-response-fields, body.shepherd-active .fb-rig
   width: 300px;
   font-family: "Work Sans", sans-serif;
 }
+.shepherd-step .btn-close {
+  background: #AAAAAA !important;
+}
 
 .response-field-draggable-helper {
   border: 2px dashed #000000;
