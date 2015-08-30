@@ -77,6 +77,7 @@ module.exports = (grunt) ->
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
             'bower_components/svg.js/dist/svg.min.js'
+            'bower_components/chardin.js/chardinjs.min.js'
           ]
       mobile_friendly:
         files:
@@ -93,7 +94,10 @@ module.exports = (grunt) ->
       dist:
         files:
           '<%= distFolder %>/formbuilder-min.css': '<%= distFolder %>/formbuilder.css'
-          '<%= vendorFolder %>/css/vendor.css': 'bower_components/font-awesome/css/font-awesome.css'
+          '<%= vendorFolder %>/css/vendor.css': [
+            'bower_components/font-awesome/css/font-awesome.css'
+            'bower_components/chardin.js/chardinjs.css'
+          ]
 
     sass:
       all:
