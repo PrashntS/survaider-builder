@@ -230,9 +230,50 @@ var Router = {
         return Router.dat;
     },
     play: function() {
-        if (Router.working) {
-            return;
-        }
+        swal({
+            title: "Ready for the Magic?!",
+            text: "Click on Build to built your Survey. If you wish to make more changes, click on Cancel.",
+            type: "info",
+            confirmButtonText: "Build",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function() {
+
+            $.ajax({
+                type: "POST",
+                url:  "https://api.github.com/gists",
+                data: JSON.stringify({
+                    files: {
+                        json_dat: {
+                            content: JSON.stringify(Router.get())
+                        }
+                    }
+                }),
+                contentType: 'application/json'
+            }).done(function (data) {
+                swal({
+                    title: "Built!",
+                    text:  "Your game has been built. Click Play Now!",
+                    type:  "success",
+                    confirmButtonText: "Play Now!",
+                    closeOnConfirm: true
+                }, function () {
+                    window.open('//play.survaider.com?json=' + data.files.json_dat.raw_url, '_blank');
+                });
+            }).fail(function (data) {
+                console.log(data);
+                swal({
+                    title: "We're Sorry!",
+                    text:  "There's been some problem with the Server. Please try again in a little while.",
+                    type:  "error",
+                    closeOnConfirm: true
+                });
+            });
+
+        });
+
+        return;
 
         Router.working = true;
 
@@ -254,7 +295,7 @@ var Router = {
             $(".play-now").html("Play Now!");
             $(".play-now").css("background", "#2165AE");
             Router.working = false;
-            window.open('http://vkphillia.github.io/SurvaiderTesting?json=' + data.files.json_dat.raw_url, '_blank');
+            window.open('//play.survaider.com?json=' + data.files.json_dat.raw_url, '_new');
         }).fail(function (data) {
             $(".play-now").html("Play Now!");
             $(".play-now").css("background", "#2165AE");

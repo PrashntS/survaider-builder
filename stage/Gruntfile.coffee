@@ -78,6 +78,7 @@ module.exports = (grunt) ->
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
             'bower_components/svg.js/dist/svg.min.js'
+            'bower_components/sweetalert/dist/sweetalert.min.js'
             'bower_components/tether/dist/js/tether.min.js'
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
           ]
@@ -88,6 +89,7 @@ module.exports = (grunt) ->
           '<%= distFolder %>/formbuilder-min.css': '<%= distFolder %>/formbuilder.css'
           '<%= vendorFolder %>/css/vendor.css': [
             'bower_components/font-awesome/css/font-awesome.css'
+            'bower_components/sweetalert/dist/sweetalert.css'
             'bower_components/tether-shepherd/dist/css/shepherd-theme-arrows.css'
           ]
 
