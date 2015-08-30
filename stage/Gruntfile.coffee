@@ -1,4 +1,4 @@
-ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'sass:all', 'clean:compiled']
+ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'sass:all', 'clean:compiled', 'cssmin:dist']
 
 # formbuilder.js must be compiled in this order:
 # 1. rivets-config
@@ -77,17 +77,7 @@ module.exports = (grunt) ->
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
             'bower_components/svg.js/dist/svg.min.js'
-            'bower_components/chardin.js/chardinjs.min.js'
-          ]
-      mobile_friendly:
-        files:
-          '<%= distFolder %>/formbuilder.js': '<%= compiledFolder %>/*.js'
-          '<%= vendorFolder %>/js/vendor_mobile_friendly.js': [
-            'bower_components/ie8-node-enum/index.js'
-            'bower_components/jquery.scrollWindowTo/index.js'
-            'bower_components/underscore.mixin.deepExtend/index.js'
-            'bower_components/rivets/dist/rivets.js'
-            'bower_components/backbone-deep-model/src/deep-model.js'
+            'bower_components/chardin.js/chardinjs.js'
           ]
 
     cssmin:
@@ -129,7 +119,6 @@ module.exports = (grunt) ->
 
 
   grunt.registerTask 'default', ALL_TASKS
-  grunt.registerTask 'mobile_friendly', ['jst:all', 'coffee:all', 'concat:mobile_friendly', 'sass:all', 'clean:compiled']
   # grunt.registerTask 'dist', ['cssmin:dist', 'uglify:dist']
   grunt.registerTask 'dist', ['uglify:dist']
   #grunt.registerTask 'test', ['dist', 'karma']

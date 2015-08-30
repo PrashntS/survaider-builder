@@ -1,13 +1,17 @@
 <div class='fb-left'>
-    <div class="header">
+    <div class="header"
+         data-intro='When satisfied, hit "Play Now" to see the magic!'
+         data-position='right'
+    >
         <h2>Sample Survey</h2>
         <button class='js-save-form'></button>
-        <button class='play-now' onclick="Router.play();">Play Now!</button>
+        <button class='play-now'
+                onclick="Router.play();"
+        >Play Now!</button>
     </div>
-
     <div class="content">
         <h2>Question Type</h2>
-        <div class='fb-tab-content' data-intro='Choose to add Question.' data-position='right'>
+        <div class='fb-tab-content'>
             <%= Formbuilder.templates['partials/add_field']() %>
             <%= Formbuilder.templates['partials/edit_field']() %>
         </div>
