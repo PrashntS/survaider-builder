@@ -690,6 +690,7 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   border: 2px solid #000;
   font-size: 0.1em;
   cursor: pointer;
+  background: #FFFFFF;
 }
 .sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card button.target:focus, .sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card button.target:hover {
   outline: none;
