@@ -82,10 +82,14 @@ var Router = {
     dat: {},
     helper: {
         between: function (number, list) {
-            if (list[0] == list[1] && number == list[0]) {
-                return true;
+            if (list[0] == list[1]) {
+                if (number == list[0]) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
-            else if (number >= list[0] || number <= list[1]) {
+            else if (number >= list[0] && number <= list[1]) {
                 return true;
             }
             else {
