@@ -4,16 +4,48 @@ body {
   background-color: #2E3A4E;
   position: relative;
 }
-body.shepherd-active .sb-left .header, body.shepherd-active .sb-left .content, body.shepherd-active .sb-left .footer {
-  background-color: #3C474D;
+body.shepherd-active .sb-left .header, body.shepherd-active .sb-left .content, body.shepherd-active .sb-left .footer, body.shepherd-active .sb-left p, body.shepherd-active .sb-left button, body.shepherd-active .sb-left span, body.shepherd-active .sb-left a, body.shepherd-active .sb-left button[disabled], body.shepherd-active .sb-left .sb-field-options, body.shepherd-active .sb-left input, body.shepherd-active .sb-left textarea, body.shepherd-active .sb-left .sb-field-options-done {
+  background-color: #2E3A4E !important;
+  border-color: #000 !important;
+  color: #000 !important;
 }
 body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-right .sb-survey-description, body.shepherd-active .sb-right .sb-field-wrapper .field-card, body.shepherd-active .sb-right .sb-field-wrapper .field-card .meta, body.shepherd-active .sb-right .field-card button, body.shepherd-active .sb-right .field-card .line p, body.shepherd-active .sb-right .field-card .line i, body.shepherd-active .sb-right .field-card .line span, body.shepherd-active .sb-right .field-card a, body.shepherd-active .sb-right textarea, body.shepherd-active .sb-right p, body.shepherd-active .sb-right input, body.shepherd-active .sb-right button {
-  background-color: #3C474D !important;
-  border-color: #666 !important;
-  color: #666 !important;
+  background-color: #2E3A4E !important;
+  border-color: #000 !important;
+  color: #000 !important;
 }
 body.shepherd-active .sb-right #svg-canvas svg line {
-  stroke: #666 !important;
+  stroke: #000 !important;
+}
+body.shepherd-active[data-shepherd-step="add-question"] .sb-add-field-types a.sb-button {
+  background-color: #FFFFFF !important;
+}
+body.shepherd-active[data-shepherd-step="add-question"] .sb-add-field-types a.sb-button span {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+body.shepherd-active[data-shepherd-step="edit-question"] .sb-field-wrapper .field-card {
+  background-color: #FFFFFF !important;
+}
+body.shepherd-active[data-shepherd-step="edit-question"] .sb-field-wrapper .field-card .meta {
+  background-color: #3B479D !important;
+}
+body.shepherd-active[data-shepherd-step="edit-question"] .sb-field-wrapper .field-card .meta p {
+  color: #FFFFFF !important;
+  background-color: transparent !important;
+}
+body.shepherd-active[data-shepherd-step="edit-question"] .field-card .logic p, body.shepherd-active[data-shepherd-step="edit-question"] .field-card .logic i, body.shepherd-active[data-shepherd-step="edit-question"] .field-card .logic span, body.shepherd-active[data-shepherd-step="edit-question"] .field-card .logic a, body.shepherd-active[data-shepherd-step="edit-question"] .field-card .logic .line > p {
+  background-color: #FFFFFF !important;
+}
+body.shepherd-active[data-shepherd-step="edit-question"] .field-card .logic .link {
+  background-color: #000000 !important;
+}
+body.shepherd-active[data-shepherd-step="play-survey"] .sb-left button.play-now {
+  background-color: #2165AE !important;
+  color: #FFFFFF !important;
+}
+body.shepherd-active[data-shepherd-step="play-survey"] .sb-left button.play-now:hover {
+  background-color: #000000 !important;
 }
 
 * {

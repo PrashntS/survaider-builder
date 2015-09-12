@@ -26,17 +26,57 @@ body
 
     &.shepherd-active
         .sb-left
-            .header, .content, .footer
-                background-color: #3C474D
+            .header, .content, .footer, p, button, span, a, button[disabled], .sb-field-options, input, textarea, .sb-field-options-done
+                background-color: #2E3A4E !important
+                border-color: #000 !important
+                color: #000 !important
         .sb-right
             .sb-response-fields, .sb-survey-description, .sb-field-wrapper .field-card, .sb-field-wrapper .field-card .meta, .field-card button, .field-card .line p, .field-card .line i, .field-card .line span, .field-card a, textarea, p, input, button
-                background-color: #3C474D !important
-                border-color: #666 !important
-                color: #666 !important
+                background-color: #2E3A4E !important
+                border-color: #000 !important
+                color: #000 !important
             #svg-canvas
                 svg
                     line
-                        stroke: #666 !important
+                        stroke: #000 !important
+
+        &[data-shepherd-step="add-question"]
+            .sb-add-field-types
+                a.sb-button
+                    background-color: #FFFFFF !important
+                    span
+                        background-color: #000000 !important
+                        color: #FFFFFF !important
+
+        &[data-shepherd-step="edit-question"]
+            .sb-field-wrapper .field-card
+                background-color: #FFFFFF !important
+
+            .sb-field-wrapper .field-card .meta
+                background-color: #3B479D !important
+
+                p
+                    color: #FFFFFF !important
+                    background-color: transparent !important
+
+            .field-card .logic
+                p, i, span, a, .line > p
+                    background-color: #FFFFFF !important
+
+                .link
+                    background-color: #000000 !important
+
+        &[data-shepherd-step="play-survey"]
+            .sb-left
+                button.play-now
+                    background-color: #2165AE !important
+                    color: #FFFFFF !important
+
+                    &:hover
+                        background-color: #000000 !important
+
+
+
 *
     box-sizing: border-box
 

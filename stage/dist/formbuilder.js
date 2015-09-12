@@ -316,7 +316,7 @@ tour.addStep('add-question', {
   ]
 });
 
-tour.addStep('add-question', {
+tour.addStep('edit-question', {
   title: 'Your survey is built in this area',
   text: 'Go ahead, re arrange your questions, or click on them to customize them.',
   attachTo: '.sb-field-wrapper left',
@@ -333,7 +333,7 @@ tour.addStep('add-question', {
   ]
 });
 
-tour.addStep('add-question', {
+tour.addStep('play-survey', {
   title: 'Time for the Magic to happen!',
   text: "Once you're done, watch your survey turning into a game!",
   attachTo: '.play-now bottom',
