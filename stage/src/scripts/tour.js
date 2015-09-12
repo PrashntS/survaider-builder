@@ -13,7 +13,7 @@ tour.addStep('add-question', {
   attachTo: '.sb-add-field-types right',
   buttons: [
     {
-      text: '&times;',
+      text: 'Close',
       classes: 'btn-close',
       action: tour.cancel
     },
@@ -30,7 +30,7 @@ tour.addStep('add-question', {
   attachTo: '.sb-field-wrapper left',
   buttons: [
     {
-      text: '&times;',
+      text: 'Close',
       classes: 'btn-close',
       action: tour.cancel
     },
@@ -47,7 +47,7 @@ tour.addStep('add-question', {
   attachTo: '.play-now bottom',
   buttons: [
     {
-      text: '&times;',
+      text: 'Close',
       classes: 'btn-close',
       action: tour.cancel
     },

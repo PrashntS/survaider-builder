@@ -162,7 +162,7 @@ class EditFieldView extends Backbone.View
     @model.trigger('change')
 
   prepareLabel: (e) ->
-    $el = $(e.currentTarget).find("input").eq(0)
+    $el = $(e.currentTarget).find("input,textarea").eq(0)
     $el.val("") if $el.val().indexOf("\x1e") > -1
 
 class BuilderView extends Backbone.View
@@ -366,6 +366,10 @@ class BuilderView extends Backbone.View
     #@$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
     
     $("#editField").addClass("active")
+
+    Helper.textarea_autogrow($("#editField textarea").eq(0))
+    $("#editField textarea").eq(0).focus()
+    $("#editField textarea").eq(0).click()
 
     @scrollLeftWrapper($responseFieldEl)
     return @

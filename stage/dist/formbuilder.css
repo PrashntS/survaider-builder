@@ -111,8 +111,14 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   clear: both;
   font-weight: 700;
 }
-.sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field .sb-label-description input {
+.sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field .sb-label-description textarea {
   border-radius: 5px;
+  padding-bottom: 10px;
+  resize: none;
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 30px;
+  max-height: 100px;
   width: 100%;
 }
 .sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field .option {
@@ -226,7 +232,7 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
     opacity: 1;
   }
 }
-.sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field input, .sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field .button {
+.sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field input, .sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field .button, .sb-main .sb-left .sb-field-options .sb-edit-field-wrapper .edit-response-field textarea {
   border: 2px solid #000000;
   padding: 5px 10px;
   font-size: 14px;

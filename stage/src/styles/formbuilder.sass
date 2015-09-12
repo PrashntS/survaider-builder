@@ -125,8 +125,15 @@ body
                         font-weight: 700
 
                     .sb-label-description
-                        input
+                        textarea
                             border-radius: 5px
+                            //overflow: hidden
+                            padding-bottom: 10px
+                            resize: none
+                            max-width: 100%
+                            min-width: 100%
+                            min-height: 30px
+                            max-height: 100px
                             width: 100%
 
                     .option
@@ -218,7 +225,7 @@ body
                         10%, 90%
                             opacity: 1
 
-                    input, .button
+                    input, .button, textarea
                         border: 2px solid #000000
                         padding: 5px 10px
                         font-size: 14px
