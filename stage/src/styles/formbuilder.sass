@@ -17,12 +17,6 @@ $color_gallery_approx: #eee
 $red: #f00
 $color_storm_dust_approx: #666
 
-
-$font_0: 'Source Sans Pro'
-$font_1: 'Open Sans'
-$font_2: 'Tahoma'
-$font_3: 'Source Sans Pro'
-$font_4: 'sans-serif'
 $font: 'Work Sans', sans-serif
 
 body
@@ -35,8 +29,14 @@ body
             .header, .content, .footer
                 background-color: #3C474D
         .sb-right
-            .sb-response-fields, .sb-survey-description
-                background-color: #3C474D
+            .sb-response-fields, .sb-survey-description, .sb-field-wrapper .field-card, .sb-field-wrapper .field-card .meta, .field-card button, .field-card .line p, .field-card .line i, .field-card .line span, .field-card a, textarea, p, input, button
+                background-color: #3C474D !important
+                border-color: #666 !important
+                color: #666 !important
+            #svg-canvas
+                svg
+                    line
+                        stroke: #666 !important
 *
     box-sizing: border-box
 
@@ -525,13 +525,13 @@ body
                         width: 100%
                         z-index: 2
 
-                div.field-card
+                .field-card
                     width: 350px
                     border: 2px solid #000000
                     border-radius: 8px
                     font-family: 'Work Sans', sans-serif
                     position: relative
-                    background: #FFFFFF
+                    background-color: #FFFFFF
 
                     $meta-bg: #3B479D
 
@@ -539,7 +539,7 @@ body
                         @include filter(blur(5px))
 
                     .meta
-                        background: $meta-bg
+                        background-color: $meta-bg
                         border-radius: 5px 5px 0 0
                         color: #FFFFFF
                         padding: 10px 30px
@@ -675,8 +675,8 @@ body
                         &:hover
                             background: #000
 
-        .sb-response-fields, .sb-survey-description
-            @include transition(background-color 0.5s ease)
+        .sb-response-fields, .sb-survey-description, .sb-field-wrapper .field-card, .sb-field-wrapper .field-card .meta, .field-card button, .field-card .line p, .field-card .line span
+            @include transition(background-color 0.5s ease, border-color 0.5s ease)
 
 .shepherd-step
     z-index: 100

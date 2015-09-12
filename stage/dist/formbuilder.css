@@ -7,8 +7,13 @@ body {
 body.shepherd-active .sb-left .header, body.shepherd-active .sb-left .content, body.shepherd-active .sb-left .footer {
   background-color: #3C474D;
 }
-body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-right .sb-survey-description {
-  background-color: #3C474D;
+body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-right .sb-survey-description, body.shepherd-active .sb-right .sb-field-wrapper .field-card, body.shepherd-active .sb-right .sb-field-wrapper .field-card .meta, body.shepherd-active .sb-right .field-card button, body.shepherd-active .sb-right .field-card .line p, body.shepherd-active .sb-right .field-card .line i, body.shepherd-active .sb-right .field-card .line span, body.shepherd-active .sb-right .field-card a, body.shepherd-active .sb-right textarea, body.shepherd-active .sb-right p, body.shepherd-active .sb-right input, body.shepherd-active .sb-right button {
+  background-color: #3C474D !important;
+  border-color: #666 !important;
+  color: #666 !important;
+}
+body.shepherd-active .sb-right #svg-canvas svg line {
+  stroke: #666 !important;
 }
 
 * {
@@ -549,20 +554,20 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   width: 100%;
   z-index: 2;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card {
   width: 350px;
   border: 2px solid #000000;
   border-radius: 8px;
   font-family: "Work Sans", sans-serif;
   position: relative;
-  background: #FFFFFF;
+  background-color: #FFFFFF;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card.blur {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card.blur {
   -webkit-filter: blur(5px);
   filter: blur(5px);
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .meta {
-  background: #3B479D;
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .meta {
+  background-color: #3B479D;
   border-radius: 5px 5px 0 0;
   color: #FFFFFF;
   padding: 10px 30px;
@@ -570,45 +575,45 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   -moz-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .meta p {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .meta p {
   margin: 0;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .meta p.section {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .meta p.section {
   font-size: 0.8em;
   font-weight: 200;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .meta p.title {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .meta p.title {
   font-size: 1.5em;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .meta p.title:empty:after {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .meta p.title:empty:after {
   content: "Untitled Question";
   color: #FFFFFF;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .meta p.type {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .meta p.type {
   text-transform: capitalize;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .meta button.target {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .meta button.target {
   right: -1.25em;
   top: 25px;
   background: #3B479D;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic {
   padding: 10px 0 10px 30px;
   position: relative;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic p {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic p {
   margin: 0;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic p.section {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic p.section {
   font-size: 0.8em;
   font-weight: 200;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line {
   padding-right: 30px;
   position: relative;
   margin: 10px 0;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line p {
   display: inline-block;
   border: 2px solid;
   padding: 2px 10px;
@@ -616,11 +621,11 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   background: #FFF;
   position: relative;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p i.fa-star {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line p i.fa-star {
   color: #FEC84E;
   margin-top: 10px;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p span.digit {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line p span.digit {
   background-color: #3C474D;
   color: #FFFFFF;
   width: 20px;
@@ -631,18 +636,18 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   text-align: center;
   display: inline-block;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p span.digit.down, .sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p span.digit.up {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line p span.digit.down, .sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line p span.digit.up {
   background-color: #7F74B6;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p span.digit.spacer {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line p span.digit.spacer {
   width: 25px;
   border-radius: 5px;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p:empty:after {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line p:empty:after {
   content: "Option";
   color: #e74c3c;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line span.link {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line span.link {
   width: 100%;
   height: 2px;
   background-color: #000;
@@ -650,7 +655,7 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   top: 50%;
   transform: translateY(-50%);
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line button.target {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic .line button.target {
   right: -1.25em;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -659,7 +664,7 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic button.target.hanging {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic button.target.hanging {
   right: -1.25em;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -668,7 +673,7 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic button.add-logic {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic button.add-logic {
   border: 2px solid #000000;
   padding: 2px 10px;
   border-radius: 5px;
@@ -681,14 +686,14 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   -moz-transition: background 0.2s ease, color 0.2s ease;
   transition: background 0.2s ease, color 0.2s ease;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic button.add-logic:hover {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic button.add-logic:hover {
   background: #000000;
   color: #FFFFFF;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic button.add-logic:hover, .sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic button.add-logic:focus {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic button.add-logic:hover, .sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card .logic button.add-logic:focus {
   outline: none;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card button.target {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card button.target {
   position: absolute;
   width: 2.5em;
   height: 2.5em;
@@ -698,16 +703,16 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   cursor: pointer;
   background: #FFFFFF;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card button.target:focus, .sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card button.target:hover {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card button.target:focus, .sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card button.target:hover {
   outline: none;
 }
-.sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card button.target:hover {
+.sb-main .sb-right .sb-response-fields .sb-field-wrapper .field-card button.target:hover {
   background: #000;
 }
-.sb-main .sb-right .sb-response-fields, .sb-main .sb-right .sb-survey-description {
-  -webkit-transition: background-color 0.5s ease;
-  -moz-transition: background-color 0.5s ease;
-  transition: background-color 0.5s ease;
+.sb-main .sb-right .sb-response-fields, .sb-main .sb-right .sb-survey-description, .sb-main .sb-right .sb-field-wrapper .field-card, .sb-main .sb-right .sb-field-wrapper .field-card .meta, .sb-main .sb-right .field-card button, .sb-main .sb-right .field-card .line p, .sb-main .sb-right .field-card .line span {
+  -webkit-transition: background-color 0.5s ease, border-color 0.5s ease;
+  -moz-transition: background-color 0.5s ease, border-color 0.5s ease;
+  transition: background-color 0.5s ease, border-color 0.5s ease;
 }
 
 .shepherd-step {
