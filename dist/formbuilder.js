@@ -1,3 +1,11 @@
+var Helper = {
+    textarea_autogrow: function (element) {
+        "use strict";
+        //element.style.height = "5px";
+        element.css("height", element.prop('scrollHeight'));
+    }
+};
+
 var Links = {
     hook_id: "svg-canvas",
     target_hook: "button.target",
@@ -297,7 +305,7 @@ tour.addStep('add-question', {
   attachTo: '.sb-add-field-types right',
   buttons: [
     {
-      text: '&times;',
+      text: 'Close',
       classes: 'btn-close',
       action: tour.cancel
     },
@@ -308,13 +316,13 @@ tour.addStep('add-question', {
   ]
 });
 
-tour.addStep('add-question', {
+tour.addStep('edit-question', {
   title: 'Your survey is built in this area',
   text: 'Go ahead, re arrange your questions, or click on them to customize them.',
   attachTo: '.sb-field-wrapper left',
   buttons: [
     {
-      text: '&times;',
+      text: 'Close',
       classes: 'btn-close',
       action: tour.cancel
     },
@@ -325,13 +333,13 @@ tour.addStep('add-question', {
   ]
 });
 
-tour.addStep('add-question', {
+tour.addStep('play-survey', {
   title: 'Time for the Magic to happen!',
   text: "Once you're done, watch your survey turning into a game!",
   attachTo: '.play-now bottom',
   buttons: [
     {
-      text: '&times;',
+      text: 'Close',
       classes: 'btn-close',
       action: tour.cancel
     },
@@ -630,7 +638,7 @@ $(function () {
 
     EditFieldView.prototype.prepareLabel = function(e) {
       var $el;
-      $el = $(e.currentTarget).find("input").eq(0);
+      $el = $(e.currentTarget).find("input,textarea").eq(0);
       if ($el.val().indexOf("\x1e") > -1) {
         return $el.val("");
       }
@@ -881,6 +889,9 @@ $(function () {
       $newEditEl = this.editView.render().$el;
       this.$el.find(".sb-edit-field-wrapper").html($newEditEl);
       $("#editField").addClass("active");
+      Helper.textarea_autogrow($("#editField textarea").eq(0));
+      $("#editField textarea").eq(0).focus();
+      $("#editField textarea").eq(0).click();
       this.scrollLeftWrapper($responseFieldEl);
       return this;
     };
@@ -1328,9 +1339,9 @@ this["Formbuilder"]["templates"]["edit/label_description"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<h3>What question do you want to ask?</h3>\n<input type=\'text\' data-rv-input=\'model.' +
+__p += '<h3>What question do you want to ask?</h3>\n<textarea\n    data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
-'\' placeholder="Question" />\n<p>\n' +
+'\'\n    onkeyup="Helper.textarea_autogrow($(this))">\n</textarea>\n<p>\n' +
 ((__t = ( Formbuilder.options.dict.FIELDS[rf.get(Formbuilder.options.mappings.FIELD_TYPE)] )) == null ? '' : __t) +
 '\n</p>';
 
