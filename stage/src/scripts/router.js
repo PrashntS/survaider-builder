@@ -31,7 +31,7 @@ var Router = {
     },
 
     data_schema: schema({
-        fields: Array.of(0, 50, {
+        fields: Array.of(1, 50, {
             label: String,
             field_type: String,
             required: Boolean,
@@ -47,21 +47,53 @@ var Router = {
 
     }),
 
+    raw_schema: schema(Array.of(1, 50, {
+        cid: String,
+        field_options: Object,
+        field_type: String,
+        label: String,
+        required: Boolean
+    })),
+
     process: {
         field: function(dat) {
-            var fields = Router.dat.fields;
-            if (fields) {
-                for (var i = 0; i < fields.length; i += 1) {
-                    fields[i].field_options = Router.process.field_options(fields[i].field_options);
-                    fields[i].next = Router.process.logic(fields[i + 1]);
-                    fields[i].gametype = Router.process.game(fields[i]);
+
+            if (Router.raw_schema(dat)) {
+                var cp = dat, i = 0, rt = {};
+                for (i; i < dat.length; i += 1) {
+                    cp[i].field_options = Router.process.field_options(dat[i].field_options);
+                    cp[i].next = Router.process.logic(dat[i + 1]);
+                    cp[i].gametype = Router.process.game(dat[i])
                 }
+
+                rt.fields           = cp;
+                rt.game_title       = $("#survey_title").val();
+                rt.game_description = $("#survey_description").val();
+                rt.game_footer      = $("#survey_thank_you").val();
+
+                if (Router.data_schema(rt)) {
+                    Router.dat = rt;
+                    Router.ok  = true;
+                    console.log(rt);
+                    return dat;
+                }
+                else {
+                    console.log(Router.data_schema.errors(rt));
+                    return false;
+                }
+
             }
-            Router.dat.game_title = $("#survey_title").val();
-            Router.dat.game_description = $("#survey_description").val();
-            Router.dat.game_footer = $("#survey_thank_you").val();
+            else {
+                console.log(Router.raw_schema.errors(rt));
+                return false;
+            }
         },
 
+        /**
+         * Flattens the field_option attribute.
+         * @param  {object} opt field_options object.
+         * @return {Array}      Flattened options.
+         */
         field_options: function (opt) {
             var options = []
             if (opt.options) {
@@ -71,6 +103,13 @@ var Router = {
             }
             return options;
         },
+
+        /**
+         * Assigns logical "next" hop from the question.
+         * @param  {Object} id_next Next object to get the ID from.
+         * @return {Object}         Logical Jump
+         * **TODO** Not fully implemented.
+         */
         logic: function (id_next) {
             if (id_next) {
                 return {
@@ -82,6 +121,7 @@ var Router = {
                 };
             }
         },
+
         game: function (field) {
             if (Router.game_map[field.field_type]) {
                 var type = field.field_type,
@@ -94,7 +134,6 @@ var Router = {
                         }
                     }
                 }
-                console.log("LOL");
                 return games[Math.floor(Math.random() * games.length)];
             }
         }
