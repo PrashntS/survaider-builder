@@ -29,8 +29,26 @@ var Router = {
             star_game: [2, 3]
         }
     },
+
+    data_schema: schema({
+        fields: Array.of(0, 50, {
+            label: String,
+            field_type: String,
+            required: Boolean,
+            field_options: Array.of(0, 6, String),
+            cid: String,
+            next: {
+                va: String
+            },
+            gametype: String
+        }),
+        game_title: String,
+        game_footer: String,
+
+    }),
+
     process: {
-        field: function() {
+        field: function(dat) {
             var fields = Router.dat.fields;
             if (fields) {
                 for (var i = 0; i < fields.length; i += 1) {
@@ -43,6 +61,7 @@ var Router = {
             Router.dat.game_description = $("#survey_description").val();
             Router.dat.game_footer = $("#survey_thank_you").val();
         },
+
         field_options: function (opt) {
             var options = []
             if (opt.options) {
@@ -75,6 +94,7 @@ var Router = {
                         }
                     }
                 }
+                console.log("LOL");
                 return games[Math.floor(Math.random() * games.length)];
             }
         }

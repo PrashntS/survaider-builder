@@ -204,6 +204,8 @@
       });
 
       fb.on('save', function(payload){
+        console.log("LOL");
+        console.log(payload);
         Router.dat = JSON.parse(payload);
       })
     });

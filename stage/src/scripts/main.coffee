@@ -400,7 +400,7 @@ class BuilderView extends Backbone.View
     payload = JSON.stringify fields: @collection.toJSON()
 
     if Formbuilder.options.HTTP_ENDPOINT then @doAjaxSave(payload)
-    @formBuilder.trigger 'save', payload
+    @formBuilder.trigger 'save', @collection.toJSON()
 
   doAjaxSave: (payload) ->
     $.ajax
