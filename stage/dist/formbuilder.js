@@ -190,40 +190,40 @@ var Router = {
         required: Boolean
     })),
 
+    /**
+     * Processes the input data, and stores in `dat` global variable.
+     * IMPORTANT: Always check the Router.ok flag.
+     * KNOWN VULNERABILITIES: Race Around Condition exists. However, there's no exposed API in the Formbuilder Base as of now to circumvent this.
+     * @param  {Object} dat  Object of Fields
+     * @return {Boolean}     Object Translation Results.
+     */
+    field: function(dat) {
+        if (Router.raw_schema(dat)) {
+            var cp = dat, i = 0, rt = {};
+            for (i; i < dat.length; i += 1) {
+                cp[i].field_options = Router.process.field_options(dat[i].field_options);
+                cp[i].next = Router.process.logic(dat[i + 1]);
+                cp[i].gametype = Router.process.game(dat[i])
+            }
+
+            rt.fields           = cp;
+            rt.game_title       = $("#survey_title").val();
+            rt.game_description = $("#survey_description").val();
+            rt.game_footer      = $("#survey_thank_you").val();
+
+            if (Router.data_schema(rt)) {
+                Router.dat = rt;
+                Router.ok  = true;
+                return true;
+            }
+
+        }
+
+        Router.ok  = false;
+        return false;
+    },
+
     process: {
-        field: function(dat) {
-
-            if (Router.raw_schema(dat)) {
-                var cp = dat, i = 0, rt = {};
-                for (i; i < dat.length; i += 1) {
-                    cp[i].field_options = Router.process.field_options(dat[i].field_options);
-                    cp[i].next = Router.process.logic(dat[i + 1]);
-                    cp[i].gametype = Router.process.game(dat[i])
-                }
-
-                rt.fields           = cp;
-                rt.game_title       = $("#survey_title").val();
-                rt.game_description = $("#survey_description").val();
-                rt.game_footer      = $("#survey_thank_you").val();
-
-                if (Router.data_schema(rt)) {
-                    Router.dat = rt;
-                    Router.ok  = true;
-                    console.log(rt);
-                    return dat;
-                }
-                else {
-                    console.log(Router.data_schema.errors(rt));
-                    return false;
-                }
-
-            }
-            else {
-                console.log(Router.raw_schema.errors(rt));
-                return false;
-            }
-        },
-
         /**
          * Flattens the field_option attribute.
          * @param  {object} opt field_options object.
@@ -257,6 +257,11 @@ var Router = {
             }
         },
 
+        /**
+         * Assigns games on the basis of field_type.
+         * @param  {Object} field Field contents.
+         * @return {String}       Game ID.
+         */
         game: function (field) {
             if (Router.game_map[field.field_type]) {
                 var type = field.field_type,
