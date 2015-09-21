@@ -74,6 +74,7 @@ module.exports = (grunt) ->
             'bower_components/jquery.scrollWindowTo/index.js'
             'bower_components/underscore/underscore-min.js'
             'bower_components/underscore.mixin.deepExtend/index.js'
+            'bower_components/sightglass/index.js'
             'bower_components/rivets/dist/rivets.js'
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
@@ -81,6 +82,7 @@ module.exports = (grunt) ->
             'bower_components/sweetalert/dist/sweetalert.min.js'
             'bower_components/tether/dist/js/tether.min.js'
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
+            'bower_components/js-schema/js-schema.min.js'
           ]
 
     cssmin:

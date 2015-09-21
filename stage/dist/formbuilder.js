@@ -279,6 +279,23 @@ var Router = {
             });
 
         });
+    },
+
+    /**
+     * Checks the schema of the generated Object.
+     * @return {[type]} [description]
+     */
+    validate: function () {
+        "use strict";
+        // 1. Should have `fields`
+        // 2. Should have `game_title`
+        // 3. Should have `game_footer`
+        // 4. Type of `fields` should be Array/List
+        // 5. Every entry of the `fields` should be an Object.
+        // 6. Content of Object: 'gametype', 'next', 'field_type', 'label', 'required', 'cid'
+        // Return true iff all the rules are met.
+
+        var correct = true;
     }
 };
 
@@ -344,7 +361,7 @@ tour.addStep('add-question', {
 
 $(function () {
   setTimeout(function () {
-    tour.start();
+    //tour.start();
   }, 1000);
 });
 
@@ -545,7 +562,7 @@ $(function () {
     };
 
     EditFieldView.prototype.render = function() {
-      this.$el.html(Formbuilder.templates["edit/base" + (!this.model.is_input() ? '_non_input' : '')]({
+      this.$el.html(Formbuilder.templates["edit/base"]({
         rf: this.model
       }));
       rivets.bind(this.$el, {

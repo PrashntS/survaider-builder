@@ -79,7 +79,7 @@ body.shepherd-active .sb-right .sb-response-fields, body.shepherd-active .sb-rig
   border: 2px solid #000000;
   border-radius: 5px;
   font-family: "Work Sans", sans-serif;
-  height: 70%;
+  max-height: 70%;
   opacity: 0;
   -webkit-transform: translate(120%, -50%);
   -moz-transform: translate(120%, -50%);

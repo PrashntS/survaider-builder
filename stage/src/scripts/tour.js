@@ -60,6 +60,6 @@ tour.addStep('add-question', {
 
 $(function () {
   setTimeout(function () {
-    tour.start();
+    //tour.start();
   }, 1000);
 });

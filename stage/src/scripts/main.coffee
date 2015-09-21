@@ -85,7 +85,7 @@ class EditFieldView extends Backbone.View
     @listenTo @model, "destroy", @remove
 
   render: ->
-    @$el.html(Formbuilder.templates["edit/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
+    @$el.html(Formbuilder.templates["edit/base"]({rf: @model}))
     rivets.bind @$el, { model: @model }
     Links.reload()
     return @
@@ -362,6 +362,7 @@ class BuilderView extends Backbone.View
       parentView: @
 
     $newEditEl = @editView.render().$el
+
     @$el.find(".sb-edit-field-wrapper").html $newEditEl
     #@$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
     
