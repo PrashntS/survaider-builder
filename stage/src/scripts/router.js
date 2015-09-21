@@ -1,5 +1,10 @@
 var Router = {
-    game_map: {
+
+    /**
+     * Mapping between field_type and games.
+     * @type {Object}
+     */
+    GameMap: {
         short_text: {
             text_scene: [0, 0]
         },
@@ -30,7 +35,11 @@ var Router = {
         }
     },
 
-    data_schema: schema({
+    /**
+     * Schema for the Translated data.
+     * @type {Schema}
+     */
+    DataSchema: schema({
         fields: Array.of(1, 50, {
             label: String,
             field_type: String,
@@ -47,7 +56,11 @@ var Router = {
 
     }),
 
-    raw_schema: schema(Array.of(1, 50, {
+    /**
+     * Schema for Incoming data.
+     * @type {Schema}
+     */
+    RawSchema: schema(Array.of(1, 50, {
         cid: String,
         field_options: Object,
         field_type: String,
@@ -62,13 +75,15 @@ var Router = {
      * @param  {Object} dat  Object of Fields
      * @return {Boolean}     Object Translation Results.
      */
-    field: function(dat) {
-        if (Router.raw_schema(dat)) {
+    translate: function(dat) {
+        "use strict";
+
+        if (Router.RawSchema(dat)) {
             var cp = dat, i = 0, rt = {};
             for (i; i < dat.length; i += 1) {
-                cp[i].field_options = Router.process.field_options(dat[i].field_options);
-                cp[i].next = Router.process.logic(dat[i + 1]);
-                cp[i].gametype = Router.process.game(dat[i])
+                cp[i].field_options = Router.Process.field_options(dat[i].field_options);
+                cp[i].next = Router.Process.logic(dat[i + 1]);
+                cp[i].gametype = Router.Process.game(dat[i])
             }
 
             rt.fields           = cp;
@@ -76,7 +91,7 @@ var Router = {
             rt.game_description = $("#survey_description").val();
             rt.game_footer      = $("#survey_thank_you").val();
 
-            if (Router.data_schema(rt)) {
+            if (Router.DataSchema(rt)) {
                 Router.dat = rt;
                 Router.ok  = true;
                 return true;
@@ -88,13 +103,19 @@ var Router = {
         return false;
     },
 
-    process: {
+    /**
+     * Helper functions.
+     * @type {Object}
+     */
+    Process: {
         /**
          * Flattens the field_option attribute.
          * @param  {object} opt field_options object.
          * @return {Array}      Flattened options.
          */
         field_options: function (opt) {
+            "use strict";
+
             var options = []
             if (opt.options) {
                 for (var i = 0; i < opt.options.length; i += 1) {
@@ -111,6 +132,8 @@ var Router = {
          * **TODO** Not fully implemented.
          */
         logic: function (id_next) {
+            "use strict";
+
             if (id_next) {
                 return {
                     va: id_next.cid
@@ -128,13 +151,15 @@ var Router = {
          * @return {String}       Game ID.
          */
         game: function (field) {
-            if (Router.game_map[field.field_type]) {
+            "use strict";
+
+            if (Router.GameMap[field.field_type]) {
                 var type = field.field_type,
                     len  = field.field_options.length,
                     games = [];
-                for (var game in Router.game_map[type]) {
-                    if (Router.game_map[type].hasOwnProperty(game)) {
-                        if (Router.helper.between(len, Router.game_map[type][game])) {
+                for (var game in Router.GameMap[type]) {
+                    if (Router.GameMap[type].hasOwnProperty(game)) {
+                        if (Router.Helper.between(len, Router.GameMap[type][game])) {
                             games.push(game);
                         }
                     }
@@ -143,9 +168,21 @@ var Router = {
             }
         }
     },
-    dat: {},
-    helper: {
+
+    /**
+     * Other Helper functions.
+     * @type {Object}
+     */
+    Helper: {
+        /**
+         * If the number is 
+         * @param  {[type]} number [description]
+         * @param  {[type]} list   [description]
+         * @return {[type]}        [description]
+         */
         between: function (number, list) {
+            "use strict";
+
             if (list[0] == list[1]) {
                 if (number == list[0]) {
                     return true;
@@ -161,11 +198,14 @@ var Router = {
             }
         }
     },
+
     get: function () {
-        Router.process.field();
-        return Router.dat;
+        "use strict";
+
     },
     play: function() {
+        "use strict";
+
         swal({
             title: "Ready for the Magic?!",
             text: "Click on Build to build your Survey. If you wish to make more changes, click on Cancel.",
