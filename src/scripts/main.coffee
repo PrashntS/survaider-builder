@@ -203,7 +203,7 @@ class BuilderView extends Backbone.View
 
   bindSaveEvent: ->
     @formSaved = true
-    @saveFormButton = @$el.find(".js-save-form")
+    @saveFormButton = $(".js-save-form")
     @saveFormButton.attr('disabled', true).text(Formbuilder.options.dict.ALL_CHANGES_SAVED)
 
     unless !Formbuilder.options.AUTOSAVE
@@ -226,15 +226,15 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.sb-left')
     @$responseFields = @$el.find('.sb-response-fields')
 
-    @bindWindowScrollEvent()
+    # @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
     new subview({parentView: @}).render() for subview in @SUBVIEWS
-    
+
     # Initialise the Linking SVG canvas.
     Links.reload()
-    
+
     return @
 
   bindWindowScrollEvent: ->
@@ -365,7 +365,7 @@ class BuilderView extends Backbone.View
 
     @$el.find(".sb-edit-field-wrapper").html $newEditEl
     #@$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
-    
+
     $("#editField").addClass("active")
 
     @scrollLeftWrapper($responseFieldEl)

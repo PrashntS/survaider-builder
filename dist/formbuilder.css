@@ -363,7 +363,7 @@
 }
 .sb-main .sb-right .sb-survey-description input {
   font-size: 30px;
-  font-weight: 300;
+  font-weight: 100;
   margin: 0 10px 0 0;
   color: #FFF;
   margin-bottom: 10px;
@@ -381,12 +381,12 @@
 }
 .sb-main .sb-right .sb-survey-description input, .sb-main .sb-right .sb-survey-description textarea {
   display: block;
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 5px 30px;
   width: 100%;
   font-family: "Montserrat", sans-serif;
   background-color: transparent;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   -webkit-transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   -moz-transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;

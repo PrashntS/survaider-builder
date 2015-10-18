@@ -788,7 +788,7 @@ $(function () {
 
     BuilderView.prototype.bindSaveEvent = function() {
       this.formSaved = true;
-      this.saveFormButton = this.$el.find(".js-save-form");
+      this.saveFormButton = $(".js-save-form");
       this.saveFormButton.attr('disabled', true).text(Formbuilder.options.dict.ALL_CHANGES_SAVED);
       if (!!Formbuilder.options.AUTOSAVE) {
         setInterval((function(_this) {
@@ -819,7 +819,6 @@ $(function () {
       this.$el.html(Formbuilder.templates['page']());
       this.$fbLeft = this.$el.find('.sb-left');
       this.$responseFields = this.$el.find('.sb-response-fields');
-      this.bindWindowScrollEvent();
       this.hideShowNoResponseFields();
       ref = this.SUBVIEWS;
       for (j = 0, len = ref.length; j < len; j++) {
@@ -1541,7 +1540,7 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="row no-margin">\n    <div class="col-sm-3 bg-info-darker fixed">\n        <!--' +
 ((__t = ( Formbuilder.templates['partials/left_side']() )) == null ? '' : __t) +
-'-->\n        ' +
+'-->\n        <button class=\'btn btn-success js-save-form\'></button>\n        ' +
 ((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
 '\n        <a href="#" onclick="$(\'#modalSlideLeft\').modal(\'show\')">sss</a>\n    </div>\n    <div class="col-sm-9 no-padding">\n        ' +
 ((__t = ( Formbuilder.templates['partials/right_side']() )) == null ? '' : __t) +
