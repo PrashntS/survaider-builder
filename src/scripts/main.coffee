@@ -350,12 +350,14 @@ class BuilderView extends Backbone.View
 
     if @editView
       if @editView.model.cid is model.cid
-        @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
+        # @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
         @scrollLeftWrapper($responseFieldEl)
         return
 
       @editView.remove()
-      $("#editField").removeClass("active")
+      $('#sb_edit_model').modal('hide')
+      $responseFieldEl.removeClass('editing')
+      # $("#editField").removeClass("active")
 
     @editView = new EditFieldView
       model: model
@@ -366,7 +368,8 @@ class BuilderView extends Backbone.View
     @$el.find(".sb-edit-field-wrapper").html $newEditEl
     #@$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
 
-    $("#editField").addClass("active")
+    $('#sb_edit_model').modal('show')
+    # $("#editField").addClass("active")
 
     @scrollLeftWrapper($responseFieldEl)
     return @

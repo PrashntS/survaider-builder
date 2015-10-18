@@ -328,13 +328,20 @@ $font: 'Montserrat', sans-serif
         .sb-survey-description
             position: relative
             background-color: #3B479D
+            border-left: 1px solid #000
+            border-right: 1px solid #000
             padding: 10px 30px 20px 30px
+            margin: 0 32px 0 32px
 
             &.above
+                border-bottom: 1px solid #000
+                border-radius: 0 0 5px 5px
                 button.target_O
                     bottom: -10px
 
             &.below
+                border: 1px solid #000
+                border-radius: 5px
                 button.target_O
                     top: -10px
 
@@ -399,7 +406,7 @@ $font: 'Montserrat', sans-serif
 
         .sb-response-fields
             border-radius: 0
-            background-color: #FFFFFF
+            // background-color: #FFFFFF
             min-height: 200px
             padding: 20px 0 0 20px
 
