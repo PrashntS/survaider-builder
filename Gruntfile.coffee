@@ -37,11 +37,11 @@ module.exports = (grunt) ->
         options:
           namespace: 'Formbuilder.templates'
           processName: (filename) ->
-            signalStr = "templates/" #strip extra filepath and extensions
+            signalStr = "templates.pluggable/" #strip extra filepath and extensions
             filename.slice(filename.indexOf(signalStr)+signalStr.length, filename.indexOf(".html"))
 
         files:
-          '<%= compiledFolder %>/templates.js': '<%= srcFolder %>/templates/**/*.html'
+          '<%= compiledFolder %>/templates.js': '<%= srcFolder %>/templates.pluggable/**/*.html'
 
     coffee:
       all:

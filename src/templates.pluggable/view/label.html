@@ -1,0 +1,15 @@
+<p class="title"><%= Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.LABEL)) %></p>
+<p class="type">
+    <!--<strong>Type</strong>: -->
+    <small><%= Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.FIELD_TYPE)).replace(/_/, " ") %></small>
+    <!--
+    &bullet;
+    <strong>CID:</strong> <%= Formbuilder.attributes %>
+    &bullet;
+    <% if (rf.get(Formbuilder.options.mappings.REQUIRED)) { %>
+    Required
+    <% } else { %>
+    Optional
+    <% } %>
+    -->
+</p>

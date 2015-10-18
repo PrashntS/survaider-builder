@@ -1,0 +1,17 @@
+<div class='subtemplate-wrapper'>
+    <div class='cover'></div>
+    <div class="field-card">
+        <div class="meta">
+            <p class="section">Question</p>
+
+            <%= Formbuilder.templates['view/label']({rf: rf}) %>
+
+            <button class="target" data-target="in"></button>
+        </div>
+        <div class="logic">
+            <p class="section">Options</p>
+            <%= Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) %>
+        </div>
+        <%= Formbuilder.templates['view/duplicate_remove']({rf: rf}) %>
+    </div>
+</div>
