@@ -349,8 +349,8 @@
   background-color: #3B479D;
   border-left: 1px solid #000;
   border-right: 1px solid #000;
-  padding: 10px 30px 20px 30px;
-  margin: 0 32px 0 32px;
+  padding: 10px 15px 20px 15px;
+  margin: 0 33px 0 33px;
 }
 .sb-main .sb-right .sb-survey-description.above {
   border-bottom: 1px solid #000;
@@ -369,7 +369,7 @@
 .sb-main .sb-right .sb-survey-description p.section {
   margin-bottom: 0;
   color: #FFFFFF;
-  margin-left: 30px;
+  margin-left: 18px;
   font-weight: 300;
 }
 .sb-main .sb-right .sb-survey-description input {
@@ -393,7 +393,7 @@
 .sb-main .sb-right .sb-survey-description input, .sb-main .sb-right .sb-survey-description textarea {
   display: block;
   border-radius: 3px;
-  padding: 5px 30px;
+  padding: 5px 15px;
   width: 100%;
   font-family: "Montserrat", sans-serif;
   background-color: transparent;
@@ -435,7 +435,7 @@
 }
 .sb-main .sb-right .sb-response-fields a.sortable-placeholder {
   display: block;
-  border: 2px dashed #000000;
+  border: 1px dashed #000;
   border-radius: 5px;
   min-height: 80px;
   height: 80px;
