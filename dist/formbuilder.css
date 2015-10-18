@@ -589,6 +589,7 @@
   font-size: 14px;
   font-weight: 400;
   position: relative;
+  margin-left: -11px;
 }
 .sb-main .sb-right .sb-response-fields .sb-field-wrapper div.field-card .logic .line p i.fa-star {
   color: #FEC84E;
