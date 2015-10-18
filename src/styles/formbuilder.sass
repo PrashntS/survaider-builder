@@ -26,9 +26,7 @@ $font_4: 'sans-serif'
 $font: 'Work Sans', sans-serif
 
 body
-    margin: 0
-    background-color: #2E3A4E
-    position: relative
+    // background-color: #2E3A4E
 
     &.shepherd-active
         .sb-left
@@ -40,7 +38,7 @@ body
 *
     box-sizing: border-box
 
-.sb-button 
+.sb-button
     font-family: 'Work Sans', sans-serif
     margin: 0px 0px 10px 0px
     position: relative
@@ -72,12 +70,10 @@ body
         background-color: #000000
         color: #FFFFFF
 
-.sb-clear 
+.sb-clear
     clear: both
 
 .sb-main
-    width: 80%
-    margin: 0 auto
     position: relative
     padding: 0
     font-family: $font
@@ -116,7 +112,7 @@ body
                 padding: 10px 20px 20px 20px
 
                 .edit-response-field
-                    .sb-edit-section-header 
+                    .sb-edit-section-header
                         border-bottom: 1px solid $color_alto_approx
                         margin-top: 25px
                         margin-bottom: 10px
@@ -139,7 +135,7 @@ body
                             border-radius: 5px
                             width: 100%
 
-                        .js-remove-option 
+                        .js-remove-option
                             position: absolute
                             right: 0
                             top: 0
@@ -202,7 +198,7 @@ body
                         &:hover
                             color: #3B479D
 
-                    .sb-bottom-add 
+                    .sb-bottom-add
                         margin-top: 8px
 
                     .sb-nah-bro
@@ -322,15 +318,12 @@ body
                 margin: 0
 
         .header, .content, .footer
-            @include transition(background-color 0.5s ease)    
+            @include transition(background-color 0.5s ease)
 
     .sb-right
-        float: right
-        width: 70%
         display: block
         min-height: 100%
         //overflow: hidden
-        position: relative
         z-index: 5
 
         #svg-canvas
@@ -426,15 +419,14 @@ body
                 &:hover
                     background: #000
 
-        .sb-response-fields 
+        .sb-response-fields
             margin: 0 20px 0 0
-            border: 2px solid #000
             border-radius: 0
             background-color: #FFFFFF
             min-height: 200px
             padding: 20px 0 0 20px
 
-            a.sortable-placeholder 
+            a.sortable-placeholder
                 display: block
                 border: 2px dashed #000000
                 border-radius: 5px
@@ -442,7 +434,7 @@ body
                 height: 80px
                 width: 374px
 
-            .sb-field-wrapper 
+            .sb-field-wrapper
                 cursor: move
                 position: relative
                 margin-bottom: 10px
@@ -451,16 +443,16 @@ body
                 &:empty
                     margin: 0
 
-                &:hover 
-                    .actions-wrapper 
+                &:hover
+                    .actions-wrapper
                         opacity: 1
                         visibility: visible
 
-                    .subtemplate-wrapper 
+                    .subtemplate-wrapper
                         border-color: #000000
 
-                &.editing 
-                    .actions-wrapper 
+                &.editing
+                    .actions-wrapper
                         opacity: 1
                         visibility: visible
 
@@ -470,7 +462,7 @@ body
                     .field-card.blur
                         @include filter(blur(0px))
 
-                .actions-wrapper 
+                .actions-wrapper
                     visibility: hidden
                     position: absolute
                     bottom: -12px
@@ -479,7 +471,7 @@ body
                     opacity: 0
                     @include transition(opacity 0.2s ease)
 
-                    a 
+                    a
                         cursor: pointer
                         display: inline-block
                         padding: 2px 4px
@@ -493,10 +485,10 @@ body
                         font-size: 14px
                         @include transition(background-color 0.2s ease)
 
-                        &.js-duplicate 
+                        &.js-duplicate
                             background-color: $color_emerald_approx
 
-                        &.js-clear 
+                        &.js-clear
                             background-color: $color_cinnabar_approx
 
                         &:hover
@@ -510,7 +502,7 @@ body
                     position: relative
 
                     @include transition(border-color 0.2s ease)
-                    .cover 
+                    .cover
                         position: absolute
                         top: 0
                         left: 0
@@ -679,7 +671,7 @@ body
     .btn-close
         background: #AAAAAA !important
 
-.response-field-draggable-helper 
+.response-field-draggable-helper
     border: 2px dashed #000000
     background: transparent
     border-radius: 5px

@@ -1,3 +1,11 @@
-<%= Formbuilder.templates['partials/left_side']() %>
-<%= Formbuilder.templates['partials/right_side']() %>
-<div class='sb-clear'></div>
+<div class="row">
+    <div class="col-sm-3 bg-info-darker fixed">
+        <!--<%= Formbuilder.templates['partials/left_side']() %>-->
+        <%= Formbuilder.templates['partials/add_field']() %>
+        <a href="#" onclick="$('#modalSlideLeft').modal('show')">sss</a>
+    </div>
+    <div class="col-sm-9 no-padding">
+        <%= Formbuilder.templates['partials/right_side']() %>
+    </div>
+</div>
+<%= Formbuilder.templates['partials/edit_field']() %>

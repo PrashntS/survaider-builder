@@ -2,9 +2,9 @@
   <div class='sb-add-field-types'>
     <div class='section'>
       <% _.each(_.sortBy(Formbuilder.inputFields, 'order'), function(f){ %>
-        <a data-field-type="<%= f.field_type %>" class="<%= Formbuilder.options.BUTTON_CLASS %>">
+        <p><a data-field-type="<%= f.field_type %>" class="btn btn-info">
           <%= f.addButton %>
-        </a>
+        </a></p>
       <% }); %>
     </div>
 

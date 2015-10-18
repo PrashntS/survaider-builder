@@ -1,5 +1,4 @@
-<div class='sb-left'>
-    <div class="header">
+    <div class="hesader">
         <h2>Sample Survey</h2>
         <button class='js-save-form'></button>
         <button class='play-now' onclick="Router.play();" disabled>Play Now!</button>
@@ -8,17 +7,6 @@
     <div class="content">
         <h2>Question Type</h2>
         <div class='sb-tab-content'>
-            <%= Formbuilder.templates['partials/add_field']() %>
-            <%= Formbuilder.templates['partials/edit_field']() %>
+            Formbuilder.templates['partials/edit_field']()
         </div>
-
-        <!--h3>Generic Help Text here</h3-->
-        <p>Go ahead, build your survey. Then click "Play Now" to see the magic.</p>
     </div>
-
-    <div class="footer">
-        <p><img src="vendor/img/survaider.png">Survaider Builder</p>
-        <p>v0.1.2 Pre-Alpha</p>
-        <p><a href="https://github.com/PrashntS/survaider-builder">GitHub</a></p>
-    </div>
-</div>
