@@ -582,11 +582,11 @@ $(function () {
         rf: this.model
       }));
       Links.reload();
+      Formbuilder.proxy.addTargetAndSources();
       return this;
     };
 
     ViewFieldView.prototype.focusEditView = function() {
-      $("#editField").addClass("active");
       return this.parentView.createAndShowEditView(this.model);
     };
 
@@ -750,7 +750,6 @@ $(function () {
 
     BuilderView.prototype.events = {
       'click .js-save-form': 'saveForm',
-      'click .sb-tabs a': 'showTab',
       'click .sb-add-field-types a': 'addField',
       'mouseover .sb-add-field-types': 'lockLeftWrapper',
       'mouseout .sb-add-field-types': 'unlockLeftWrapper'
@@ -838,20 +837,6 @@ $(function () {
           });
         };
       })(this));
-    };
-
-    BuilderView.prototype.showTab = function(e) {
-      var $el, first_model, target;
-      $el = $(e.currentTarget);
-      target = $el.data('target');
-      if (target !== '#editField') {
-        this.unlockLeftWrapper();
-      }
-      if (target === '#editField' && !this.editView && (first_model = this.collection.models[0])) {
-        return this.createAndShowEditView(first_model);
-      } else {
-        return Links.reload();
-      }
     };
 
     BuilderView.prototype.addOne = function(responseField, _, options) {
@@ -963,15 +948,6 @@ $(function () {
         return $(this).data('cid') === model.cid;
       });
       $responseFieldEl.addClass('editing').siblings('.sb-field-wrapper').removeClass('editing');
-      if (this.editView) {
-        if (this.editView.model.cid === model.cid) {
-          this.scrollLeftWrapper($responseFieldEl);
-          return;
-        }
-        this.editView.remove();
-        $('#sb_edit_model').modal('hide');
-        $responseFieldEl.removeClass('editing');
-      }
       this.editView = new EditFieldView({
         model: model,
         parentView: this
@@ -1145,6 +1121,12 @@ $(function () {
           rating: "This question asks to rate on a scale of 1 to 10.<br>eg. How much do you like the design of our product?",
           group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
         }
+      }
+    };
+
+    Formbuilder.proxy = {
+      addTargetAndSources: function() {
+        return console.log("Fired.");
       }
     };
 

@@ -41,10 +41,10 @@ class ViewFieldView extends Backbone.View
         .attr('data-cid', @model.cid)
         .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
     Links.reload()
+    Formbuilder.proxy.addTargetAndSources()
     return @
 
   focusEditView: ->
-    $("#editField").addClass("active")
     @parentView.createAndShowEditView(@model)
 
   clear: (e) ->
@@ -163,7 +163,6 @@ class BuilderView extends Backbone.View
 
   events:
     'click .js-save-form': 'saveForm'
-    'click .sb-tabs a': 'showTab'
     'click .sb-add-field-types a': 'addField'
     'mouseover .sb-add-field-types': 'lockLeftWrapper'
     'mouseout .sb-add-field-types': 'unlockLeftWrapper'
@@ -239,19 +238,6 @@ class BuilderView extends Backbone.View
 
       element.css
         'padding-top': Math.min(maxMargin, newMargin)
-
-  showTab: (e) ->
-    $el = $(e.currentTarget)
-    target = $el.data('target')
-    #$el.closest('li').addClass('active').siblings('li').removeClass('active')
-    #$(target).addClass('active').siblings('.sb-field-options').removeClass('active')
-
-    @unlockLeftWrapper() unless target == '#editField'
-
-    if target == '#editField' && !@editView && (first_model = @collection.models[0])
-      @createAndShowEditView(first_model)
-    else
-      Links.reload()
 
   addOne: (responseField, _, options) ->
     view = new ViewFieldView
@@ -341,16 +327,16 @@ class BuilderView extends Backbone.View
 
     #$(".sb-field-options").attr('class', 'sb-field-options active')
 
-    if @editView
-      if @editView.model.cid is model.cid
-        # @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
-        @scrollLeftWrapper($responseFieldEl)
-        return
+    # if @editView
+    #   if @editView.model.cid is model.cid
+    #     # @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
+    #     @scrollLeftWrapper($responseFieldEl)
+    #     return
 
-      @editView.remove()
-      $('#sb_edit_model').modal('hide')
-      $responseFieldEl.removeClass('editing')
-      # $("#editField").removeClass("active")
+    #   @editView.remove()
+    #   $('#sb_edit_model').modal('hide')
+    #   $responseFieldEl.removeClass('editing')
+    #   # $("#editField").removeClass("active")
 
     @editView = new EditFieldView
       model: model
@@ -487,6 +473,10 @@ class Formbuilder
         ranking: "Users can drag and drop the following options according to their preference!"
         rating: "This question asks to rate on a scale of 1 to 10.<br>eg. How much do you like the design of our product?"
         group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
+
+  @proxy:
+    addTargetAndSources: ->
+      console.log("Fired.")
 
   @fields: {}
   @inputFields: {}
