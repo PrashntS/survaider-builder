@@ -3,7 +3,8 @@ Formbuilder.registerField 'group_rating',
   order: 8
 
   view: """
-    <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
+    <% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>
+    <% for (i = 0; i < lis.length; i += 1) { %>
       <div class="line">
         <label class='sb-option'>
           <p>

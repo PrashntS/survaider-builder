@@ -3,7 +3,8 @@ Formbuilder.registerField 'multiple_choice',
   order: 5
 
   view: """
-    <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
+    <% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>
+    <% for (i = 0; i < lis.length; i += 1) { %>
       <div class="line">
           <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>
       </div>
