@@ -36,7 +36,6 @@
     "sweetalert": "~1.1.0",
     "tether-shepherd": "~1.1.4",
     "underscore": "~1.5.2",
-    "underscore.mixin.deepExtend": "https://gist.githubusercontent.com/PrashntS/d7f1452b7d75e759e69d/raw/1f2b15d21d0b48362ea16c41706e6653763266c9/underscore.mixin.deepExtend.js",
-    "autosize": "~3.0.13"
+    "underscore.mixin.deepExtend": "https://gist.githubusercontent.com/PrashntS/d7f1452b7d75e759e69d/raw/1f2b15d21d0b48362ea16c41706e6653763266c9/underscore.mixin.deepExtend.js"
   }
 }
