@@ -37,11 +37,11 @@ module.exports = (grunt) ->
         options:
           namespace: 'Formbuilder.templates'
           processName: (filename) ->
-            signalStr = "templates/" #strip extra filepath and extensions
+            signalStr = "templates.pluggable/" #strip extra filepath and extensions
             filename.slice(filename.indexOf(signalStr)+signalStr.length, filename.indexOf(".html"))
 
         files:
-          '<%= compiledFolder %>/templates.js': '<%= srcFolder %>/templates/**/*.html'
+          '<%= compiledFolder %>/templates.js': '<%= srcFolder %>/templates.pluggable/**/*.html'
 
     coffee:
       all:
@@ -83,6 +83,8 @@ module.exports = (grunt) ->
             'bower_components/tether/dist/js/tether.min.js'
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
             'bower_components/js-schema/js-schema.min.js'
+            'bower_components/autosize/dist/autosize.js'
+            'bower_components/jsPlumb/dist/js/jsPlumb-2.0.3.js'
           ]
           '<%= vendorFolder %>/js/vendor.sans.jquery.js': [
             'bower_components/ie8-node-enum/index.js'
@@ -98,6 +100,7 @@ module.exports = (grunt) ->
             'bower_components/tether/dist/js/tether.min.js'
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
             'bower_components/js-schema/js-schema.min.js'
+            'bower_components/jsPlumb/dist/js/jsPlumb-2.0.3.js'
           ]
 
     cssmin:

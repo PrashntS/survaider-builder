@@ -5,7 +5,12 @@ Formbuilder.registerField 'long_text',
   view: """
     <div class="line">
         <p>Any Response</p>
-        <button class="target" data-target="out"></button>
+        <button class="target"
+                data-target = "out"
+                id = "<%= rf.cid %>_0"
+                data-target-index = "0"
+                data-target-value = ""
+        ></button>
     </div>
   """
 

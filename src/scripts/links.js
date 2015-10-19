@@ -19,7 +19,7 @@ var Links = {
         if (!String.prototype.format) {
           String.prototype.format = function() {
             var args = arguments;
-            return this.replace(/{(\d+)}/g, function(match, number) { 
+            return this.replace(/{(\d+)}/g, function(match, number) {
               return typeof args[number] != 'undefined'
                 ? args[number]
                 : match
@@ -32,7 +32,7 @@ var Links = {
     grid_lines: {
         lines: [],
         style: {
-            width: 2,
+            width: 1,
             color: "#BBB"
         },
 

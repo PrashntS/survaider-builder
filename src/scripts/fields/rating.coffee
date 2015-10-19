@@ -17,10 +17,10 @@ Formbuilder.registerField 'rating',
         </p>
       </label>
     </div>
-    <button class="target hanging"
-            data-target = "out"
-            data-target-index = "0"
-    ></button>
+      <button class="target hanging"
+              data-target = "out"
+              id = "<%= rf.cid %>_0"
+      ></button>
   """
 
   edit: ""

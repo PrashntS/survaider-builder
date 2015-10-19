@@ -19,6 +19,10 @@ class FormbuilderCollection extends Backbone.Collection
     model.attributes.cid = model.cid
 
 class ViewFieldView extends Backbone.View
+  ###
+  The question cards.
+  ###
+
   className: "sb-field-wrapper"
 
   events:
@@ -109,15 +113,7 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
-      ol_val = $el.eq(0).html()
-      new_val = ol_val + "<br>No more than " + op_len + " options!"
-      $el.eq(0).html(new_val)
-      $el.eq(0).addClass("err")
-      setTimeout ( ->
-        $el.eq(0).html(ol_val)
-        $el.eq(0).removeClass("err")
-      ), 2500
-
+      sweetAlert("", "This question only supports three options." + field_type, "error")
       return
 
     if i > -1
@@ -137,10 +133,7 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
-      $el.eq(0).addClass("err")
-      setTimeout ( ->
-        $el.eq(0).removeClass("err")
-      ), 2500
+      sweetAlert("", "This question only supports three options." + field_type, "error")
       return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
@@ -203,7 +196,7 @@ class BuilderView extends Backbone.View
 
   bindSaveEvent: ->
     @formSaved = true
-    @saveFormButton = @$el.find(".js-save-form")
+    @saveFormButton = $(".js-save-form")
     @saveFormButton.attr('disabled', true).text(Formbuilder.options.dict.ALL_CHANGES_SAVED)
 
     unless !Formbuilder.options.AUTOSAVE
@@ -226,15 +219,15 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.sb-left')
     @$responseFields = @$el.find('.sb-response-fields')
 
-    @bindWindowScrollEvent()
+    # @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
     new subview({parentView: @}).render() for subview in @SUBVIEWS
-    
+
     # Initialise the Linking SVG canvas.
     Links.reload()
-    
+
     return @
 
   bindWindowScrollEvent: ->
@@ -350,12 +343,14 @@ class BuilderView extends Backbone.View
 
     if @editView
       if @editView.model.cid is model.cid
-        @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
+        # @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
         @scrollLeftWrapper($responseFieldEl)
         return
 
       @editView.remove()
-      $("#editField").removeClass("active")
+      $('#sb_edit_model').modal('hide')
+      $responseFieldEl.removeClass('editing')
+      # $("#editField").removeClass("active")
 
     @editView = new EditFieldView
       model: model
@@ -365,8 +360,9 @@ class BuilderView extends Backbone.View
 
     @$el.find(".sb-edit-field-wrapper").html $newEditEl
     #@$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
-    
-    $("#editField").addClass("active")
+
+    $('#sb_edit_model').modal('show')
+    # $("#editField").addClass("active")
 
     @scrollLeftWrapper($responseFieldEl)
     return @

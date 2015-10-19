@@ -1,0 +1,12 @@
+<div class="row no-margin">
+    <div class="col-sm-3 fixed">
+        <!--<%= Formbuilder.templates['partials/left_side']() %>-->
+        <button class='btn btn-success js-save-form'></button>
+        <%= Formbuilder.templates['partials/add_field']() %>
+        <p onclick="$('#modalSlideLeft').modal('show')">sss</p>
+    </div>
+    <div class="col-sm-9 no-padding">
+        <%= Formbuilder.templates['partials/right_side']() %>
+    </div>
+</div>
+<%= Formbuilder.templates['partials/edit_field']() %>

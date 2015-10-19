@@ -3,7 +3,8 @@ Formbuilder.registerField 'ranking',
   order: 6
 
   view: """
-    <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>
+    <% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>
+    <% for (i = 0; i < lis.length; i += 1) { %>
       <div class="line">
         <label class='sb-option'>
           <p>
@@ -13,10 +14,10 @@ Formbuilder.registerField 'ranking',
         </label>
       </div>
     <% } %>
-    <button class="target hanging"
-            data-target = "out"
-            data-target-index = "0"
-    ></button>
+      <button class="target hanging"
+              data-target = "out"
+              id = "<%= rf.cid %>_0"
+      ></button>
   """
 
   edit: """
