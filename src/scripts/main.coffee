@@ -19,6 +19,10 @@ class FormbuilderCollection extends Backbone.Collection
     model.attributes.cid = model.cid
 
 class ViewFieldView extends Backbone.View
+  ###
+  The question cards.
+  ###
+
   className: "sb-field-wrapper"
 
   events:
@@ -109,15 +113,7 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
-      ol_val = $el.eq(0).html()
-      new_val = ol_val + "<br>No more than " + op_len + " options!"
-      $el.eq(0).html(new_val)
-      $el.eq(0).addClass("err")
-      setTimeout ( ->
-        $el.eq(0).html(ol_val)
-        $el.eq(0).removeClass("err")
-      ), 2500
-
+      sweetAlert("", "This question only supports three options." + field_type, "error")
       return
 
     if i > -1
@@ -137,10 +133,7 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
-      $el.eq(0).addClass("err")
-      setTimeout ( ->
-        $el.eq(0).removeClass("err")
-      ), 2500
+      sweetAlert("", "This question only supports three options." + field_type, "error")
       return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
