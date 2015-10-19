@@ -84,6 +84,7 @@ module.exports = (grunt) ->
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
             'bower_components/js-schema/js-schema.min.js'
             'bower_components/autosize/dist/autosize.js'
+            'bower_components/jsPlumb/dist/js/jsPlumb-2.0.3.js'
           ]
           '<%= vendorFolder %>/js/vendor.sans.jquery.js': [
             'bower_components/ie8-node-enum/index.js'
@@ -99,7 +100,7 @@ module.exports = (grunt) ->
             'bower_components/tether/dist/js/tether.min.js'
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
             'bower_components/js-schema/js-schema.min.js'
-            'bower_components/autosize/dist/autosize.js'
+            'bower_components/jsPlumb/dist/js/jsPlumb-2.0.3.js'
           ]
 
     cssmin:

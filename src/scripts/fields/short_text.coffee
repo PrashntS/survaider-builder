@@ -5,12 +5,15 @@ Formbuilder.registerField 'short_text',
   view: """
     <div class="line">
         <p>Any Response</p>
-        <button class="target" data-target="out"></button>
+        <button class="target hanging"
+                data-target = "out"
+                id = "<%= rf.cid %>_0"
+        ></button>
     </div>
   """
 
   edit: """"""
-  
+
   ed:  """
     <%= Formbuilder.templates['edit/min_max_length']() %>
   """

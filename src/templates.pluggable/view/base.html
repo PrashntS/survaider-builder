@@ -1,12 +1,11 @@
 <div class='subtemplate-wrapper'>
-    <div class='cover'></div>
     <div class="field-card">
         <div class="meta">
             <p class="section">Question</p>
 
             <%= Formbuilder.templates['view/label']({rf: rf}) %>
 
-            <button class="target" data-target="in"></button>
+            <button class="target" data-target="in" id="<%= rf.cid %>" ></button>
         </div>
         <div class="logic">
             <p class="section">Options</p>

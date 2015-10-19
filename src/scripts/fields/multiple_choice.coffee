@@ -8,10 +8,10 @@ Formbuilder.registerField 'multiple_choice',
           <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>
       </div>
     <% } %>
-    <button class="target hanging"
-            data-target = "out"
-            data-target-index = "0"
-    ></button>
+      <button class="target hanging"
+              data-target = "out"
+              id = "<%= rf.cid %>_0"
+      ></button>
   """
 
   edit: """

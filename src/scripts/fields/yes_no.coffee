@@ -9,6 +9,7 @@ Formbuilder.registerField 'yes_no',
           <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>
           <button class="target"
                   data-target = "out"
+                  id = "<%= rf.cid %>_<%= i %>"
                   data-target-index = "<%= i %>"
                   data-target-value = "<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>"
           ></button>
