@@ -667,7 +667,7 @@ $(function () {
     };
 
     EditFieldView.prototype.addOption = function(e) {
-      var $el, field_type, i, newOption, op_len, options;
+      var $el, field_type, i, newOption, new_val, ol_val, op_len, options;
       $el = $(e.currentTarget);
       i = this.$el.find('.option').index($el.closest('.option'));
       options = this.model.get(Formbuilder.options.mappings.OPTIONS) || [];
@@ -678,7 +678,14 @@ $(function () {
       op_len = $el.parent().parent().find('.option').length;
       field_type = this.model.get(Formbuilder.options.mappings.FIELD_TYPE);
       if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max) {
-        sweetAlert("", "This question only supports three options." + field_type, "error");
+        ol_val = $el.eq(0).html();
+        new_val = ol_val + "<br>No more than " + op_len + " options!";
+        $el.eq(0).html(new_val);
+        $el.eq(0).addClass("err");
+        setTimeout((function() {
+          $el.eq(0).html(ol_val);
+          return $el.eq(0).removeClass("err");
+        }), 2500);
         return;
       }
       if (i > -1) {
@@ -698,7 +705,10 @@ $(function () {
       op_len = $el.parent().parent().find('.option').length;
       field_type = this.model.get(Formbuilder.options.mappings.FIELD_TYPE);
       if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min) {
-        sweetAlert("", "This question only supports three options." + field_type, "error");
+        $el.eq(0).addClass("err");
+        setTimeout((function() {
+          return $el.eq(0).removeClass("err");
+        }), 2500);
         return;
       }
       options = this.model.get(Formbuilder.options.mappings.OPTIONS);
@@ -1575,7 +1585,7 @@ this["Formbuilder"]["templates"]["partials/edit_field"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '\n\n<div class="modal fade slide-right" id="sb_edit_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-sm">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body col-xs-height col-middle text-center   ">\n                  <div class=\'sb-edit-field-wrapper\'></div>\n                  <div class="sb-field-options-done">\n                      <button onclick=\'$("#editField").removeClass("active");\'>Done</button>\n                  </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- /.modal-content -->\n  </div>\n</div>\n';
+__p += '\n\n<div class="modal fade slide-right" id="sb_edit_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-sm">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body col-xs-height col-middle text-center   ">\n                <div class=\'sb-field-options\' id=\'editField\'>\n                  <div class=\'sb-edit-field-wrapper\'></div>\n                  <div class="sb-field-options-done">\n                      <button onclick=\'$("#editField").removeClass("active");\'>Done</button>\n                  </div>\n                </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- /.modal-content -->\n  </div>\n</div>\n';
 
 }
 return __p

@@ -109,8 +109,14 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
-
-      sweetAlert("", "This question only supports three options." + field_type, "error")
+      ol_val = $el.eq(0).html()
+      new_val = ol_val + "<br>No more than " + op_len + " options!"
+      $el.eq(0).html(new_val)
+      $el.eq(0).addClass("err")
+      setTimeout ( ->
+        $el.eq(0).html(ol_val)
+        $el.eq(0).removeClass("err")
+      ), 2500
 
       return
 
@@ -131,9 +137,10 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
-
-      sweetAlert("", "This question only supports three options." + field_type, "error")
-
+      $el.eq(0).addClass("err")
+      setTimeout ( ->
+        $el.eq(0).removeClass("err")
+      ), 2500
       return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
