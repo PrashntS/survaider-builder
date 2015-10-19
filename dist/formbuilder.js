@@ -1128,7 +1128,7 @@ $(function () {
         },
         group_rating: {
           min: 2,
-          max: 5
+          max: 3
         }
       },
       dict: {

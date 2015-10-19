@@ -474,7 +474,7 @@ class Formbuilder
         max: 6
       group_rating:
         min: 2
-        max: 5
+        max: 3
 
     dict:
       ALL_CHANGES_SAVED: 'Saved'
