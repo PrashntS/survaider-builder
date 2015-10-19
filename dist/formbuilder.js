@@ -752,7 +752,8 @@ $(function () {
       'click .js-save-form': 'saveForm',
       'click .sb-add-field-types a': 'addField',
       'mouseover .sb-add-field-types': 'lockLeftWrapper',
-      'mouseout .sb-add-field-types': 'unlockLeftWrapper'
+      'mouseout .sb-add-field-types': 'unlockLeftWrapper',
+      'hide.bs.modal #sb_edit_model': 'deSelectField'
     };
 
     BuilderView.prototype.initialize = function(options) {
@@ -957,6 +958,10 @@ $(function () {
       $('#sb_edit_model').modal('show');
       this.scrollLeftWrapper($responseFieldEl);
       return this;
+    };
+
+    BuilderView.prototype.deSelectField = function(model) {
+      return this.$el.find(".sb-field-wrapper").removeClass('editing');
     };
 
     BuilderView.prototype.ensureEditViewScrolled = function() {

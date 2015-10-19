@@ -166,6 +166,7 @@ class BuilderView extends Backbone.View
     'click .sb-add-field-types a': 'addField'
     'mouseover .sb-add-field-types': 'lockLeftWrapper'
     'mouseout .sb-add-field-types': 'unlockLeftWrapper'
+    'hide.bs.modal #sb_edit_model': 'deSelectField'
 
   initialize: (options) ->
     {selector, @formBuilder, @bootstrapData} = options
@@ -325,19 +326,6 @@ class BuilderView extends Backbone.View
     $responseFieldEl = @$el.find(".sb-field-wrapper").filter( -> $(@).data('cid') == model.cid )
     $responseFieldEl.addClass('editing').siblings('.sb-field-wrapper').removeClass('editing')
 
-    #$(".sb-field-options").attr('class', 'sb-field-options active')
-
-    # if @editView
-    #   if @editView.model.cid is model.cid
-    #     # @$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
-    #     @scrollLeftWrapper($responseFieldEl)
-    #     return
-
-    #   @editView.remove()
-    #   $('#sb_edit_model').modal('hide')
-    #   $responseFieldEl.removeClass('editing')
-    #   # $("#editField").removeClass("active")
-
     @editView = new EditFieldView
       model: model
       parentView: @
@@ -345,13 +333,14 @@ class BuilderView extends Backbone.View
     $newEditEl = @editView.render().$el
 
     @$el.find(".sb-edit-field-wrapper").html $newEditEl
-    #@$el.find(".sb-tabs a[data-target=\"#editField\"]").click()
 
     $('#sb_edit_model').modal('show')
-    # $("#editField").addClass("active")
 
     @scrollLeftWrapper($responseFieldEl)
     return @
+
+  deSelectField: (model)->
+    @$el.find(".sb-field-wrapper").removeClass('editing')
 
   ensureEditViewScrolled: ->
     return unless @editView
