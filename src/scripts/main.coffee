@@ -98,7 +98,6 @@ class EditFieldView extends Backbone.View
     @parentView.editView = undefined
     $("#editField").removeClass("active")
     Links.reload()
-    #@parentView.$el.find("[data-target=\"#addField\"]").click()
     super
 
   # @todo this should really be on the model, not the view
@@ -358,7 +357,7 @@ class BuilderView extends Backbone.View
   unlockLeftWrapper: ->
     @$fbLeft.data('locked', false)
 
-  handleFormUpdate: ->
+  handleFormUpdate: (e)->
     return if @updatingBatch
     @formSaved = false
     @saveFormButton.removeAttr('disabled').text(Formbuilder.options.dict.SAVE_FORM)

@@ -991,7 +991,7 @@ $(function () {
       return this.$fbLeft.data('locked', false);
     };
 
-    BuilderView.prototype.handleFormUpdate = function() {
+    BuilderView.prototype.handleFormUpdate = function(e) {
       if (this.updatingBatch) {
         return;
       }
@@ -1587,7 +1587,7 @@ this["Formbuilder"]["templates"]["partials/right_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'sb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="sb-survey-description above">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target_O"\n              data-target = "top_out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'sb-response-fields\'>\n  </div>\n  <div class="sb-survey-description below">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target_O"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
+__p += '<div class=\'sb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="sb-survey-description above">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target_O"\n              id = "i"\n              data-target = "top_out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'sb-response-fields\'>\n  </div>\n  <div class="sb-survey-description below">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target_O"\n              id = "j"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
 
 }
 return __p
