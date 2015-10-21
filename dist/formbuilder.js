@@ -582,11 +582,11 @@ $(function () {
         rf: this.model
       }));
       Links.reload();
+      Formbuilder.proxy.addTargetAndSources();
       return this;
     };
 
     ViewFieldView.prototype.focusEditView = function() {
-      $("#editField").addClass("active");
       return this.parentView.createAndShowEditView(this.model);
     };
 
@@ -750,10 +750,10 @@ $(function () {
 
     BuilderView.prototype.events = {
       'click .js-save-form': 'saveForm',
-      'click .sb-tabs a': 'showTab',
       'click .sb-add-field-types a': 'addField',
       'mouseover .sb-add-field-types': 'lockLeftWrapper',
-      'mouseout .sb-add-field-types': 'unlockLeftWrapper'
+      'mouseout .sb-add-field-types': 'unlockLeftWrapper',
+      'hide.bs.modal #sb_edit_model': 'deSelectField'
     };
 
     BuilderView.prototype.initialize = function(options) {
@@ -838,20 +838,6 @@ $(function () {
           });
         };
       })(this));
-    };
-
-    BuilderView.prototype.showTab = function(e) {
-      var $el, first_model, target;
-      $el = $(e.currentTarget);
-      target = $el.data('target');
-      if (target !== '#editField') {
-        this.unlockLeftWrapper();
-      }
-      if (target === '#editField' && !this.editView && (first_model = this.collection.models[0])) {
-        return this.createAndShowEditView(first_model);
-      } else {
-        return Links.reload();
-      }
     };
 
     BuilderView.prototype.addOne = function(responseField, _, options) {
@@ -963,15 +949,6 @@ $(function () {
         return $(this).data('cid') === model.cid;
       });
       $responseFieldEl.addClass('editing').siblings('.sb-field-wrapper').removeClass('editing');
-      if (this.editView) {
-        if (this.editView.model.cid === model.cid) {
-          this.scrollLeftWrapper($responseFieldEl);
-          return;
-        }
-        this.editView.remove();
-        $('#sb_edit_model').modal('hide');
-        $responseFieldEl.removeClass('editing');
-      }
       this.editView = new EditFieldView({
         model: model,
         parentView: this
@@ -981,6 +958,10 @@ $(function () {
       $('#sb_edit_model').modal('show');
       this.scrollLeftWrapper($responseFieldEl);
       return this;
+    };
+
+    BuilderView.prototype.deSelectField = function(model) {
+      return this.$el.find(".sb-field-wrapper").removeClass('editing');
     };
 
     BuilderView.prototype.ensureEditViewScrolled = function() {
@@ -1010,7 +991,7 @@ $(function () {
       return this.$fbLeft.data('locked', false);
     };
 
-    BuilderView.prototype.handleFormUpdate = function() {
+    BuilderView.prototype.handleFormUpdate = function(e) {
       if (this.updatingBatch) {
         return;
       }
@@ -1145,6 +1126,12 @@ $(function () {
           rating: "This question asks to rate on a scale of 1 to 10.<br>eg. How much do you like the design of our product?",
           group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
         }
+      }
+    };
+
+    Formbuilder.proxy = {
+      addTargetAndSources: function() {
+        return console.log("Fired.");
       }
     };
 
@@ -1600,7 +1587,7 @@ this["Formbuilder"]["templates"]["partials/right_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'sb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="sb-survey-description above">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target_O"\n              data-target = "top_out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'sb-response-fields\'>\n  </div>\n  <div class="sb-survey-description below">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target_O"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
+__p += '<div class=\'sb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="sb-survey-description above">\n      <p class="section">Introduction Screen</p>\n      <input type="text" placeholder="Survey Title" value="Facebook Market Research" id="survey_title">\n      <textarea id="survey_description">Play to answer questions about your most beloved social networking website - Facebook. Help us in making a better product for you. :)</textarea>\n      <button class="target_O"\n              id = "i"\n              data-target = "top_out"\n              data-target-index = "0"\n      ></button>\n  </div>\n  <div class=\'sb-response-fields\'>\n  </div>\n  <div class="sb-survey-description below">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you">Thank you for contributing!</textarea>\n      <button class="target_O"\n              id = "j"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
 
 }
 return __p
