@@ -581,7 +581,6 @@ $(function () {
       this.$el.addClass('response-field-' + this.model.get(Formbuilder.options.mappings.FIELD_TYPE)).data('cid', this.model.cid).attr('data-cid', this.model.cid).html(Formbuilder.templates["view/base" + (!this.model.is_input() ? '_non_input' : '')]({
         rf: this.model
       }));
-      Links.reload();
       Formbuilder.proxy.addTargetAndSources();
       return this;
     };
@@ -604,16 +603,14 @@ $(function () {
       switch (typeof x) {
         case 'string':
           if (confirm(x)) {
-            cb();
+            return cb();
           }
           break;
         case 'function':
-          x(cb);
-          break;
+          return x(cb);
         default:
-          cb();
+          return cb();
       }
-      return Links.reload();
     };
 
     ViewFieldView.prototype.duplicate = function() {
@@ -660,14 +657,12 @@ $(function () {
       rivets.bind(this.$el, {
         model: this.model
       });
-      Links.reload();
       return this;
     };
 
     EditFieldView.prototype.remove = function() {
       this.parentView.editView = void 0;
       $("#editField").removeClass("active");
-      Links.reload();
       return EditFieldView.__super__.remove.apply(this, arguments);
     };
 
@@ -723,7 +718,6 @@ $(function () {
     };
 
     EditFieldView.prototype.forceRender = function() {
-      Links.reload();
       return this.model.trigger('change');
     };
 
@@ -775,7 +769,6 @@ $(function () {
         return function() {
           _this.formSaved = false;
           _this.saveForm.call(_this);
-          Links.reload();
           return $(".play-now").removeAttr("disabled");
         };
       })(this), 2500);
@@ -805,8 +798,7 @@ $(function () {
 
     BuilderView.prototype.reset = function() {
       this.$responseFields.html('');
-      this.addAll();
-      return Links.reload();
+      return this.addAll();
     };
 
     BuilderView.prototype.render = function() {
@@ -822,7 +814,6 @@ $(function () {
           parentView: this
         }).render();
       }
-      Links.reload();
       return this;
     };
 
@@ -862,7 +853,6 @@ $(function () {
     BuilderView.prototype.setSortable = function() {
       if (this.$responseFields.hasClass('ui-sortable')) {
         this.$responseFields.sortable('destroy');
-        Links.reload();
       }
       this.$responseFields.sortable({
         forcePlaceholderSize: true,
@@ -888,14 +878,10 @@ $(function () {
           };
         })(this),
         deactivate: (function(_this) {
-          return function(e, ui) {
-            return Links.reload();
-          };
+          return function(e, ui) {};
         })(this),
         activate: (function(_this) {
-          return function(e, ui) {
-            return Links.blur();
-          };
+          return function(e, ui) {};
         })(this)
       });
       return this.setDraggable();
@@ -922,8 +908,7 @@ $(function () {
 
     BuilderView.prototype.addAll = function() {
       this.collection.each(this.addOne, this);
-      this.setSortable();
-      return Links.reload();
+      return this.setSortable();
     };
 
     BuilderView.prototype.hideShowNoResponseFields = function() {
@@ -1167,7 +1152,6 @@ $(function () {
         formBuilder: this
       });
       this.mainView = new BuilderView(args);
-      Links.reload();
     }
 
     return Formbuilder;

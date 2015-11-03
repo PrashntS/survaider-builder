@@ -40,7 +40,6 @@ class ViewFieldView extends Backbone.View
         .data('cid', @model.cid)
         .attr('data-cid', @model.cid)
         .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
-    Links.reload()
     Formbuilder.proxy.addTargetAndSources()
     return @
 
@@ -65,7 +64,6 @@ class ViewFieldView extends Backbone.View
       else
         cb()
 
-    Links.reload()
 
   duplicate: ->
     attrs = _.clone(@model.attributes)
@@ -91,13 +89,11 @@ class EditFieldView extends Backbone.View
   render: ->
     @$el.html(Formbuilder.templates["edit/base"]({rf: @model}))
     rivets.bind @$el, { model: @model }
-    Links.reload()
     return @
 
   remove: ->
     @parentView.editView = undefined
     $("#editField").removeClass("active")
-    Links.reload()
     super
 
   # @todo this should really be on the model, not the view
@@ -150,7 +146,6 @@ class EditFieldView extends Backbone.View
     @forceRender()
 
   forceRender: ->
-    Links.reload()
     @model.trigger('change')
 
   prepareLabel: (e) ->
@@ -189,7 +184,6 @@ class BuilderView extends Backbone.View
     setTimeout =>
       @formSaved = false
       @saveForm.call(@)
-      Links.reload()
       $(".play-now").removeAttr("disabled")
     , 2500
 
@@ -209,7 +203,6 @@ class BuilderView extends Backbone.View
   reset: ->
     @$responseFields.html('')
     @addAll()
-    Links.reload()
 
   render: ->
     @$el.html Formbuilder.templates['page']()
@@ -225,7 +218,6 @@ class BuilderView extends Backbone.View
     new subview({parentView: @}).render() for subview in @SUBVIEWS
 
     # Initialise the Linking SVG canvas.
-    Links.reload()
 
     return @
 
@@ -270,7 +262,6 @@ class BuilderView extends Backbone.View
   setSortable: ->
     if @$responseFields.hasClass('ui-sortable')
       @$responseFields.sortable('destroy')
-      Links.reload()
     @$responseFields.sortable
       forcePlaceholderSize: true
       placeholder: 'sortable-placeholder'
@@ -285,9 +276,7 @@ class BuilderView extends Backbone.View
         # ensureEditViewScrolled, unless we're updating from the draggable
         @ensureEditViewScrolled() unless ui.item.data('field-type')
       deactivate: (e, ui) =>
-        Links.reload()
       activate: (e, ui) =>
-        Links.blur()
 
     @setDraggable()
 
@@ -307,7 +296,6 @@ class BuilderView extends Backbone.View
   addAll: ->
     @collection.each @addOne, @
     @setSortable()
-    Links.reload()
 
   hideShowNoResponseFields: ->
     @$el.find(".sb-no-response-fields")[if @collection.length > 0 then 'hide' else 'show']()
@@ -487,7 +475,6 @@ class Formbuilder
     _.extend @, Backbone.Events
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
-    Links.reload()
 
 window.Formbuilder = Formbuilder
 
