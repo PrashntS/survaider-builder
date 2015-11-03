@@ -36,11 +36,11 @@ class ViewFieldView extends Backbone.View
     @listenTo @model, "destroy", @remove
 
   render: ->
+    @model.q_no = @model.collection.indexOf(@model)
     @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
         .data('cid', @model.cid)
         .attr('data-cid', @model.cid)
         .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
-    Formbuilder.proxy.addTargetAndSources()
     return @
 
   focusEditView: ->
@@ -216,8 +216,6 @@ class BuilderView extends Backbone.View
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
     new subview({parentView: @}).render() for subview in @SUBVIEWS
-
-    # Initialise the Linking SVG canvas.
 
     return @
 

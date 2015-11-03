@@ -5,11 +5,12 @@
     <!--
     &bullet;
     <strong>CID:</strong> <%= Formbuilder.attributes %>
-    &bullet;
+    -->
+    &bullet;<small>
     <% if (rf.get(Formbuilder.options.mappings.REQUIRED)) { %>
     Required
     <% } else { %>
     Optional
     <% } %>
-    -->
+    </small>
 </p>

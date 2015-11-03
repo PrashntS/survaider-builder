@@ -578,10 +578,10 @@ $(function () {
     };
 
     ViewFieldView.prototype.render = function() {
+      this.model.q_no = this.model.collection.indexOf(this.model);
       this.$el.addClass('response-field-' + this.model.get(Formbuilder.options.mappings.FIELD_TYPE)).data('cid', this.model.cid).attr('data-cid', this.model.cid).html(Formbuilder.templates["view/base" + (!this.model.is_input() ? '_non_input' : '')]({
         rf: this.model
       }));
-      Formbuilder.proxy.addTargetAndSources();
       return this;
     };
 
@@ -1359,9 +1359,9 @@ this["Formbuilder"]["templates"]["edit/checkboxes"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<!--label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
+__p += '<label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.REQUIRED )) == null ? '' : __t) +
-'\' />\n  Required\n</label-->\n';
+'\' />\n  Required\n</label>\n';
 
 }
 return __p
@@ -1593,7 +1593,9 @@ this["Formbuilder"]["templates"]["view/base"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'subtemplate-wrapper\'>\n    <div class="field-card">\n        <div class="meta">\n            <p class="section">Question</p>\n\n            ' +
+__p += '<div class=\'subtemplate-wrapper\'>\n    <div class="field-card">\n        <div class="meta">\n            <p class="section">Question ' +
+((__t = ( rf.q_no )) == null ? '' : __t) +
+'</p>\n\n            ' +
 ((__t = ( Formbuilder.templates['view/label']({rf: rf}) )) == null ? '' : __t) +
 '\n\n            <button class="target" data-target="in" id="' +
 ((__t = ( rf.cid )) == null ? '' : __t) +
@@ -1650,13 +1652,13 @@ __p += '<p class="title">' +
 ((__t = ( Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.FIELD_TYPE)).replace(/_/, " ") )) == null ? '' : __t) +
 '</small>\n    <!--\n    &bullet;\n    <strong>CID:</strong> ' +
 ((__t = ( Formbuilder.attributes )) == null ? '' : __t) +
-'\n    &bullet;\n    ';
+'\n    -->\n    &bullet;<small>\n    ';
  if (rf.get(Formbuilder.options.mappings.REQUIRED)) { ;
 __p += '\n    Required\n    ';
  } else { ;
 __p += '\n    Optional\n    ';
  } ;
-__p += '\n    -->\n</p>\n';
+__p += '\n    </small>\n</p>\n';
 
 }
 return __p
