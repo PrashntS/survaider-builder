@@ -6,6 +6,14 @@ class FormbuilderModel extends Backbone.DeepModel
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
 
+class ScreenModel extends Backbone.DeepModel
+  screens:
+    intro:
+      title: 'Default Title'
+      description: 'Default Description'
+    end:
+      title: 'Default Ending'
+
 class FormbuilderCollection extends Backbone.Collection
   initialize: ->
     @on 'add', @copyCidToModel
@@ -353,10 +361,19 @@ class BuilderView extends Backbone.View
     @formSaved = true
     @saveFormButton.attr('disabled', true).text(Formbuilder.options.dict.ALL_CHANGES_SAVED)
     @collection.sort()
-    payload = JSON.stringify fields: @collection.toJSON()
+
+    payload = JSON.stringify
+      fields: @collection.toJSON()
+      screens: @formBuilder.screenView.toJSON()
+
+    console.log payload
 
     if Formbuilder.options.HTTP_ENDPOINT then @doAjaxSave(payload)
     @formBuilder.trigger 'save', @collection.toJSON()
+
+  doForceSave: ->
+    @formSaved = false
+    @saveForm()
 
   doAjaxSave: (payload) ->
     $.ajax
@@ -373,6 +390,43 @@ class BuilderView extends Backbone.View
           @collection.trigger 'sync'
 
         @updatingBatch = undefined
+
+class ScreenCollection extends Backbone.Collection
+  initialize: ->
+
+  model: ScreenModel
+
+class ScreenView extends Backbone.View
+  events:
+    'input #survey_title': 'update'
+    'input #survey_description': 'update'
+    'input #survey_thank_you': 'update'
+
+  initialize: (options) ->
+    {selector, @formBuilder, screens} = options
+
+    if selector?
+      @setElement $(selector)
+
+    @dat = screens
+    @render screens
+
+  update: _.debounce ->
+      @dat = [
+        $('#survey_title').val(),
+        $('#survey_description').val(),
+        $('#survey_thank_you').val(),
+      ]
+      @formBuilder.mainView.doForceSave()
+    ,500
+
+  toJSON: ->
+    @dat
+
+  render: (dat) ->
+    $('#survey_title').val(dat[0])
+    $('#survey_description').val(dat[1])
+    $('#survey_thank_you').val(dat[2])
 
 class Formbuilder
   @helpers:
@@ -473,6 +527,7 @@ class Formbuilder
     _.extend @, Backbone.Events
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
+    @screenView = new ScreenView args
 
 window.Formbuilder = Formbuilder
 
