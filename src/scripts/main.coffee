@@ -369,7 +369,7 @@ class BuilderView extends Backbone.View
     console.log payload
 
     if Formbuilder.options.HTTP_ENDPOINT then @doAjaxSave(payload)
-    @formBuilder.trigger 'save', @collection.toJSON()
+    @formBuilder.trigger 'save', payload
 
   doForceSave: ->
     @formSaved = false
