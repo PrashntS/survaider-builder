@@ -6,6 +6,14 @@ class FormbuilderModel extends Backbone.DeepModel
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
 
+class ScreenModel extends Backbone.DeepModel
+  screens:
+    intro:
+      title: 'Default Title'
+      description: 'Default Description'
+    end:
+      title: 'Default Ending'
+
 class FormbuilderCollection extends Backbone.Collection
   initialize: ->
     @on 'add', @copyCidToModel
@@ -36,12 +44,11 @@ class ViewFieldView extends Backbone.View
     @listenTo @model, "destroy", @remove
 
   render: ->
+    @model.q_no = @model.collection.indexOf(@model)
     @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
         .data('cid', @model.cid)
         .attr('data-cid', @model.cid)
         .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
-    Links.reload()
-    Formbuilder.proxy.addTargetAndSources()
     return @
 
   focusEditView: ->
@@ -65,7 +72,6 @@ class ViewFieldView extends Backbone.View
       else
         cb()
 
-    Links.reload()
 
   duplicate: ->
     attrs = _.clone(@model.attributes)
@@ -91,13 +97,11 @@ class EditFieldView extends Backbone.View
   render: ->
     @$el.html(Formbuilder.templates["edit/base"]({rf: @model}))
     rivets.bind @$el, { model: @model }
-    Links.reload()
     return @
 
   remove: ->
     @parentView.editView = undefined
     $("#editField").removeClass("active")
-    Links.reload()
     super
 
   # @todo this should really be on the model, not the view
@@ -150,7 +154,6 @@ class EditFieldView extends Backbone.View
     @forceRender()
 
   forceRender: ->
-    Links.reload()
     @model.trigger('change')
 
   prepareLabel: (e) ->
@@ -189,7 +192,6 @@ class BuilderView extends Backbone.View
     setTimeout =>
       @formSaved = false
       @saveForm.call(@)
-      Links.reload()
       $(".play-now").removeAttr("disabled")
     , 2500
 
@@ -209,7 +211,6 @@ class BuilderView extends Backbone.View
   reset: ->
     @$responseFields.html('')
     @addAll()
-    Links.reload()
 
   render: ->
     @$el.html Formbuilder.templates['page']()
@@ -223,9 +224,6 @@ class BuilderView extends Backbone.View
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
     new subview({parentView: @}).render() for subview in @SUBVIEWS
-
-    # Initialise the Linking SVG canvas.
-    Links.reload()
 
     return @
 
@@ -270,7 +268,6 @@ class BuilderView extends Backbone.View
   setSortable: ->
     if @$responseFields.hasClass('ui-sortable')
       @$responseFields.sortable('destroy')
-      Links.reload()
     @$responseFields.sortable
       forcePlaceholderSize: true
       placeholder: 'sortable-placeholder'
@@ -285,9 +282,7 @@ class BuilderView extends Backbone.View
         # ensureEditViewScrolled, unless we're updating from the draggable
         @ensureEditViewScrolled() unless ui.item.data('field-type')
       deactivate: (e, ui) =>
-        Links.reload()
       activate: (e, ui) =>
-        Links.blur()
 
     @setDraggable()
 
@@ -307,7 +302,6 @@ class BuilderView extends Backbone.View
   addAll: ->
     @collection.each @addOne, @
     @setSortable()
-    Links.reload()
 
   hideShowNoResponseFields: ->
     @$el.find(".sb-no-response-fields")[if @collection.length > 0 then 'hide' else 'show']()
@@ -367,10 +361,19 @@ class BuilderView extends Backbone.View
     @formSaved = true
     @saveFormButton.attr('disabled', true).text(Formbuilder.options.dict.ALL_CHANGES_SAVED)
     @collection.sort()
-    payload = JSON.stringify fields: @collection.toJSON()
+
+    payload = JSON.stringify
+      fields: @collection.toJSON()
+      screens: @formBuilder.screenView.toJSON()
+
+    console.log payload
 
     if Formbuilder.options.HTTP_ENDPOINT then @doAjaxSave(payload)
-    @formBuilder.trigger 'save', @collection.toJSON()
+    @formBuilder.trigger 'save', payload
+
+  doForceSave: ->
+    @formSaved = false
+    @saveForm()
 
   doAjaxSave: (payload) ->
     $.ajax
@@ -387,6 +390,43 @@ class BuilderView extends Backbone.View
           @collection.trigger 'sync'
 
         @updatingBatch = undefined
+
+class ScreenCollection extends Backbone.Collection
+  initialize: ->
+
+  model: ScreenModel
+
+class ScreenView extends Backbone.View
+  events:
+    'input #survey_title': 'update'
+    'input #survey_description': 'update'
+    'input #survey_thank_you': 'update'
+
+  initialize: (options) ->
+    {selector, @formBuilder, screens} = options
+
+    if selector?
+      @setElement $(selector)
+
+    @dat = screens
+    @render screens
+
+  update: _.debounce ->
+      @dat = [
+        $('#survey_title').val(),
+        $('#survey_description').val(),
+        $('#survey_thank_you').val(),
+      ]
+      @formBuilder.mainView.doForceSave()
+    ,500
+
+  toJSON: ->
+    @dat
+
+  render: (dat) ->
+    $('#survey_title').val(dat[0])
+    $('#survey_description').val(dat[1])
+    $('#survey_thank_you').val(dat[2])
 
 class Formbuilder
   @helpers:
@@ -487,7 +527,7 @@ class Formbuilder
     _.extend @, Backbone.Events
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
-    Links.reload()
+    @screenView = new ScreenView args
 
 window.Formbuilder = Formbuilder
 
