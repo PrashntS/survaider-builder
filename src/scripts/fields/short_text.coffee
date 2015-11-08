@@ -19,5 +19,5 @@ Formbuilder.registerField 'short_text',
   """
 
   addButton: """
-    <span class='symbol'><span class='fa fa-font'></span></span> Short Text
+    <span class='pull-left'><span class='fa fa-font'></span></span> Short Text
   """

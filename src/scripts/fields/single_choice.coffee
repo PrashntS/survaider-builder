@@ -23,7 +23,7 @@ Formbuilder.registerField 'single_choice',
   """
 
   addButton: """
-    <span class="symbol"><span class="fa fa-circle-o"></span></span> Single Choice
+    <span class="pull-left"><span class="fa fa-circle-o"></span></span> Single Choice
   """
 
   defaultAttributes: (attrs) ->

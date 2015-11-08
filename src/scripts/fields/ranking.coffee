@@ -25,7 +25,7 @@ Formbuilder.registerField 'ranking',
   """
 
   addButton: """
-    <span class="symbol"><span class="fa fa-bars"></span></span> Ranking
+    <span class="pull-left"><span class="fa fa-bars"></span></span> Ranking
   """
 
 

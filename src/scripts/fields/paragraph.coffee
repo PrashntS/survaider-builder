@@ -22,5 +22,5 @@ Formbuilder.registerField 'long_text',
   edit: """"""
 
   addButton: """
-    <span class="symbol">&#182;</span> Long Text
+    <span class="pull-left">&#182;</span> Long Text
   """

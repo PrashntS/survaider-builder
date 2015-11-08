@@ -1,11 +1,35 @@
 <div class="row no-margin">
-    <div class="col-sm-3 fixed">
-        <!--<%= Formbuilder.templates['partials/left_side']() %>-->
-        <button class='btn btn-success js-save-form'></button>
-        <%= Formbuilder.templates['partials/add_field']() %>
-        <p onclick="$('#modalSlideLeft').modal('show')">sss</p>
+    <div class="col-xs-3 fixed">
+        <div id="builder-panel"></div>
+        <div class="panel panel-transparent affix" style="position:fixed; width:25%;">
+          <div class="panel-heading">
+            <span class="font-montserrat text-uppercase bold">Project Details</span><br>
+            <span class="h3 font-montserrat" id="builder-project-title"></span>
+            <br>
+            <div class="btn-group btn-group-sm btn-group-justified m-t-10 m-b-10">
+              <a href="#" class="btn btn-primary" onclick="$('#survey_export_modal').modal('show');">
+                <span class="font-montserrat">Share / Preview</span>
+              </a>
+              <a href="#" class="btn btn-default" onclick="$('#survey_settings_modal').modal('show');">
+                <i class="fa fa-cog"></i>
+                <span class="font-montserrat">Settings</span>
+              </a>
+            </div>
+            <button class="btn btn-success font-montserrat btn-sm js-save-form">Save</button>
+          </div>
+          <div class="panel-body">
+            <hr>
+            <span class="font-montserrat text-uppercase bold">Fields</span>
+            <br>
+            <%= Formbuilder.templates['partials/add_field']() %>
+            <hr>
+            <p>Drag and Drop the questions to begin building the survaider.</p>
+          </div>
+        </div>
+
+        <!-- <button class='btn btn-success js-save-form'></button> -->
     </div>
-    <div class="col-sm-9 no-padding">
+    <div class="col-xs-9 no-padding">
         <%= Formbuilder.templates['partials/right_side']() %>
     </div>
 </div>

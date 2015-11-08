@@ -23,7 +23,7 @@ Formbuilder.registerField 'yes_no',
   """
 
   addButton: """
-    <span class="symbol"><span class="fa fa-dot-circle-o"></span></span> Yes \/ No
+    <span class="pull-left"><span class="fa fa-dot-circle-o"></span></span> Yes \/ No
   """
 
   defaultAttributes: (attrs) ->

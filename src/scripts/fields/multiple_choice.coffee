@@ -20,7 +20,7 @@ Formbuilder.registerField 'multiple_choice',
   """
 
   addButton: """
-    <span class="symbol"><span class="fa fa-square-o"></span></span> Multiple Choice
+    <span class="pull-left"><span class="fa fa-square-o"></span></span> Multiple Choice
   """
 
   defaultAttributes: (attrs) ->
