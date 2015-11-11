@@ -12,5 +12,8 @@
     <% } else { %>
     Optional
     <% } %>
+    <% if (rf.get(Formbuilder.options.mappings.VALIDATION)) { %>
+    &bullet; <%= rf.get(Formbuilder.options.mappings.VALIDATION) %>
+    <% } %>
     </small>
 </p>

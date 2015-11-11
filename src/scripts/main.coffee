@@ -1,7 +1,7 @@
 class FormbuilderModel extends Backbone.DeepModel
   sync: -> # noop
   indexInDOM: ->
-    $wrapper = $(".sb-field-wrapper").filter ( (_, el) => $(el).data('cid') == @cid  )
+    $wrapper = $(".sb-field-wrapper").filter (_, el) => $(el).data('cid') == @cid
     $(".sb-field-wrapper").index $wrapper
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
@@ -44,7 +44,6 @@ class ViewFieldView extends Backbone.View
     @listenTo @model, "destroy", @remove
 
   render: ->
-    @model.q_no = @model.collection.indexOf(@model)
     @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
         .data('cid', @model.cid)
         .attr('data-cid', @model.cid)
@@ -219,7 +218,6 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.sb-left')
     @$responseFields = @$el.find('.sb-response-fields')
 
-    # @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
@@ -275,7 +273,6 @@ class BuilderView extends Backbone.View
         if ui.item.data('field-type')
           rf = @collection.create Formbuilder.helpers.defaultFieldAttrs(ui.item.data('field-type')), {$replaceEl: ui.item}
           @createAndShowEditView(rf)
-
         @handleFormUpdate()
         return true
       update: (e, ui) =>
@@ -298,6 +295,15 @@ class BuilderView extends Backbone.View
           width: '374px'
           height: '80px'
         $helper
+
+  list_update: ->
+    i = 0
+    last = undefined
+    for j in @collection.models
+      j.set 'q_no', i + 1
+      last = j
+      i += 1
+    console.log last
 
   addAll: ->
     @collection.each @addOne, @
@@ -355,6 +361,7 @@ class BuilderView extends Backbone.View
     return if @updatingBatch
     @formSaved = false
     @saveFormButton.removeAttr('disabled').text(Formbuilder.options.dict.SAVE_FORM)
+    @list_update()
 
   saveForm: (e) ->
     return if @formSaved
@@ -435,6 +442,7 @@ class Formbuilder
       attrs[Formbuilder.options.mappings.LABEL] = Formbuilder.options.dict.DEFAULT_LABEL
       attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type
       attrs[Formbuilder.options.mappings.REQUIRED] = true
+      attrs[Formbuilder.options.mappings.QNO] = 2
       attrs['field_options'] = {}
       Formbuilder.fields[field_type].defaultAttributes?(attrs) || attrs
 
@@ -465,6 +473,9 @@ class Formbuilder
       MINLENGTH: 'field_options.minlength'
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
+      NEXT_VA: 'next.va'
+      VALIDATION: 'field_options.validation'
+      QNO: 'q_no'
 
     limit_map:
       yes_no:

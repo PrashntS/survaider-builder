@@ -1,5 +1,4 @@
 
-
 <div class="modal fade slide-right" id="sb_edit_model" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content-wrapper">
@@ -8,7 +7,7 @@
         </button>
         <div class="container-xs-height full-height">
           <div class="row-xs-height">
-            <div class="modal-body col-xs-height col-middle text-center   ">
+            <div class="modal-body col-xs-height col-middle">
                 <div class='sb-field-options' id='editField'>
                   <div class='sb-edit-field-wrapper'></div>
                   <div class="sb-field-options-done">
@@ -20,6 +19,26 @@
         </div>
       </div>
     </div>
-    <!-- /.modal-content -->
   </div>
 </div>
+
+<div class="modal fade slide-up" id="sb_upload_model" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+        </button>
+        <div class="container-xs-height full-height">
+          <div class="row-xs-height">
+            <div class="modal-body col-xs-height col-middle text-center   ">
+
+                      <button onclick='$("#editField").removeClass("active");'>Done</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

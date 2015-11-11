@@ -1,5 +1,8 @@
-<h3>What question do you want to ask?</h3>
-<input type='text' data-rv-input='model.<%= Formbuilder.options.mappings.LABEL %>' placeholder="Question" />
+
+<div class="form-group form-group-default required">
+<label>Question Label</label>
+<textarea class="form-control" data-rv-input='model.<%= Formbuilder.options.mappings.LABEL %>'></textarea>
+</div>
 <p>
 <%= Formbuilder.options.dict.FIELDS[rf.get(Formbuilder.options.mappings.FIELD_TYPE)] %>
 </p>
