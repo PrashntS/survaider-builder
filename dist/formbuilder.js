@@ -799,10 +799,23 @@ var Boner = {
       }
     };
 
-    Formbuilder.proxy = {
-      addTargetAndSources: function() {
-        return console.log("Fired.");
+    Formbuilder.uploads = {
+      init: function(opt) {
+        var el;
+        el = $('div#sbDropzone');
+        console.log(opt);
+        return el.dropzone({
+          url: opt.img_upload,
+          paramName: 'swag',
+          maxFilesize: 4,
+          uploadMultiple: false,
+          clickable: true
+        });
       }
+    };
+
+    Formbuilder.proxy = {
+      addTargetAndSources: function() {}
     };
 
     Formbuilder.fields = {};
@@ -838,7 +851,7 @@ var Boner = {
       });
       this.mainView = new BuilderView(args);
       this.screenView = new ScreenView(args);
-      Formbuilder.richtext.init();
+      Formbuilder.uploads.init(args.endpoints);
     }
 
     return Formbuilder;
@@ -1272,7 +1285,7 @@ this["Formbuilder"]["templates"]["partials/edit_field"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '\n<div class="modal fade slide-right" id="sb_edit_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-sm">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body col-xs-height col-middle">\n                <div class=\'sb-field-options\' id=\'editField\'>\n                  <div class=\'sb-edit-field-wrapper\'></div>\n                  <div class="sb-field-options-done">\n                      <button onclick=\'$("#editField").removeClass("active");\'>Done</button>\n                  </div>\n                </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="modal fade slide-up" id="sb_upload_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-lg">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body  col-middle">\n\n\n                <div class="wysiwyg5-wrapper b-a b-grey">\n                  <div id="sb-edit-rich"></div>\n                </div>\n\n              <form action="/file-upload" class="dropzone no-margin dz-clickable">\n\n                    <div class="dz-default dz-message"><span>Drop files here to upload</span></div></form>\n\n                      <button onclick=\'$("#editField").removeClass("active");\'>Done</button>\n\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n';
+__p += '\n<div class="modal fade slide-right" id="sb_edit_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-sm">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body col-xs-height col-middle">\n                <div class=\'sb-field-options\' id=\'editField\'>\n                  <div class=\'sb-edit-field-wrapper\'></div>\n                  <div class="sb-field-options-done">\n                      <button onclick=\'$("#editField").removeClass("active");\'>Done</button>\n                  </div>\n                </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class="modal fade slide-up" id="sb_upload_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-lg">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body  col-middle">\n                <div class="wysiwyg5-wrapper b-a b-grey">\n                  <div id="sb-edit-rich"></div>\n                </div>\n\n\n                <div class="dropzone dropzone-previews" id="sbDropzone"></div>\n\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n';
 
 }
 return __p

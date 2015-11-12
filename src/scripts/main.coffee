@@ -700,9 +700,19 @@ class Formbuilder
         html: true,
         customTemplates: @template
 
+  @uploads:
+    init: (opt) ->
+      el = $ 'div#sbDropzone'
+      console.log opt
+      el.dropzone
+        url: opt.img_upload
+        paramName: 'swag'
+        maxFilesize: 4
+        uploadMultiple: false
+        clickable: true
+
   @proxy:
     addTargetAndSources: ->
-      console.log("Fired.")
 
   @fields: {}
   @inputFields: {}
@@ -726,7 +736,7 @@ class Formbuilder
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
     @screenView = new ScreenView args
-    Formbuilder.richtext.init()
+    Formbuilder.uploads.init args.endpoints
 
 window.Formbuilder = Formbuilder
 
