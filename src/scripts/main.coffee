@@ -86,6 +86,7 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
+    'click .check': 'optionUpdated'
     'click .sb-label-description': 'prepareLabel'
     'click .option': 'prepareLabel'
 
@@ -151,6 +152,11 @@ class EditFieldView extends Backbone.View
       @$el.find(".js-default-updated").not($el).attr('checked', false).trigger('change')
 
     @forceRender()
+
+  optionUpdated: (e) ->
+    # @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}.notify"
+    log = _.bind(@forceRender, @);
+    _.delay log, 100
 
   forceRender: ->
     @model.trigger('change')
@@ -303,7 +309,6 @@ class BuilderView extends Backbone.View
       j.set 'q_no', i + 1
       last = j
       i += 1
-    console.log last
 
   addAll: ->
     @collection.each @addOne, @
@@ -475,6 +480,7 @@ class Formbuilder
       VALIDATION: 'field_options.validation'
       QNO: 'q_no'
       RICHTEXT: 'richtext'
+      NOTIFICATION: 'notifications'
 
     limit_map:
       yes_no:
@@ -612,77 +618,6 @@ class Formbuilder
           </div>
         </li>
       """
-      image: -> """
-        <li>
-          <div class="bootstrap-wysihtml5-insert-image-modal modal fade">
-            <div class="modal-dialog ">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <a data-dismiss="modal" class="close">
-                    x
-                  </a>
-                  <h3>
-                    Insert image
-                  </h3>
-                </div>
-                <div class="modal-body">
-                  <input class="bootstrap-wysihtml5-insert-image-url form-control" value="http://">
-                </div>
-                <div class="modal-footer">
-                  <a data-dismiss="modal" class="btn btn-default">
-                    Cancel
-                  </a>
-                  <a data-dismiss="modal" class="btn btn-primary">
-                    Insert image
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <a tabindex="-1" title="Insert image" data-wysihtml5-command="insertImage" class="btn  btn-default" href="javascript:;" unselectable="on">
-            <i class="editor-icon editor-icon-image">
-            </i>
-          </a>
-        </li>
-      """
-      link: -> """
-        <li>
-          <div class="bootstrap-wysihtml5-insert-link-modal modal fade">
-            <div class="modal-dialog ">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <a data-dismiss="modal" class="close">
-                    Ã—
-                  </a>
-                  <h3>
-                    Insert link
-                  </h3>
-                </div>
-                <div class="modal-body">
-                  <input class="bootstrap-wysihtml5-insert-link-url form-control" value="http://">
-                  <label class="checkbox">
-
-                    <input type="checkbox" checked="" class="bootstrap-wysihtml5-insert-link-target">
-                    Open link in new window
-                  </label>
-                </div>
-                <div class="modal-footer">
-                  <a data-dismiss="modal" class="btn btn-default">
-                    Cancel
-                  </a>
-                  <a data-dismiss="modal" class="btn btn-primary" href="#">
-                    Insert link
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <a tabindex="-1" title="Insert link" data-wysihtml5-command="createLink" class="btn  btn-default" href="javascript:;" unselectable="on">
-            <i class="editor-icon editor-icon-link">
-            </i>
-          </a>
-        </li>
-      """
       html: -> """
         <li>
           <div class="btn-group">
@@ -732,12 +667,6 @@ class Formbuilder
     load_old: ->
       $.getJSON @opt.img_list, (data) =>
         for i in data.imgs
-          m_f =
-            name: i.name
-            size: 1000
-          # @dz.emit "addedfile", m_f
-          # @dz.createThumbnailFromUrl m_f, i.uri
-          # @dz.emit "complete", m_f
           @add_thumbnail i
 
     add_thumbnail: (i) ->
@@ -746,8 +675,6 @@ class Formbuilder
         <img src="#{i.uri}" data-img-name="#{i.name}">
       </div>
       """
-      console.log i
-
 
     thumbnails: ->
       @th_el = $ '#sb-thumbnails'

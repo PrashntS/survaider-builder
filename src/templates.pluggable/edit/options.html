@@ -1,22 +1,19 @@
 <div class='sb-edit-section-header'>Add Option</div>
 
-<% if (typeof includeBlank !== 'undefined'){ %>
-  <label>
-    <input type='checkbox' data-rv-checked='model.<%= Formbuilder.options.mappings.INCLUDE_BLANK %>' />
-    Include blank
-  </label>
-<% } %>
-
-<div class='option' data-rv-each-option='model.<%= Formbuilder.options.mappings.OPTIONS %>'>
-  <input type="text" data-rv-input="option:label" class='option-label-input' />
-  <a class="js-remove-option" title="Remove Option"><i class="fa fa-times-circle"></i></a>
+<div class="input-group option m-b-5" data-rv-each-option='model.<%= Formbuilder.options.mappings.OPTIONS %>'>
+  <input type="text" class="form-control option-label-input" data-rv-input="option:label">
+  <a class="input-group-addon" data-rv-if="model.<%= Formbuilder.options.mappings.RICHTEXT %>">
+    <i class="fa fa-paperclip"></i>
+    <input type="text" data-rv-input="option:image" class="form-control option-label-input" style="display:none">
+  </a>
+  <a class="input-group-addon" data-rv-if="model.<%= Formbuilder.options.mappings.NOTIFICATION %>">
+    <input type="checkbox" class="check" data-rv-checked="option:notify">
+  </a>
+  <a class="input-group-addon js-remove-option">
+    <i class="fa fa-times-circle"></i>
+  </a>
 </div>
 
-<% if (typeof includeOther !== 'undefined'){ %>
-  <label>
-    <input type='checkbox' data-rv-checked='model.<%= Formbuilder.options.mappings.INCLUDE_OTHER %>' />
-    Include "other"
-  </label>
-<% } %>
-
-<a class="js-add-option .button"><i class="fa fa-plus-circle"></i>&nbsp;Add Option</a>
+<button class="btn btn-primary btn-sm m-b-10 js-add-option" type="button">
+  <i class="fa fa-plus-circle"></i> <span class="bold">Add Option</span>
+</button>

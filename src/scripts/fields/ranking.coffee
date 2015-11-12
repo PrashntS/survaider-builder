@@ -8,8 +8,15 @@ Formbuilder.registerField 'ranking',
       <div class="line">
         <label class='sb-option'>
           <p>
-              <span class="digit up"><i class="fa fa-arrow-up"></i></span><span class="digit down"><i class="fa fa-arrow-down"></i></span>
-              <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
+            <span class="digit up"><i class="fa fa-arrow-up"></i></span><span class="digit down"><i class="fa fa-arrow-down"></i></span>
+            <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
+            <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>
+              <i class="fa fa-paperclip"></i>
+            <% } %>
+            <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&
+                   rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>
+              <i class="fa fa-globe"></i>
+            <% } %>
           </p>
         </label>
       </div>
@@ -21,6 +28,7 @@ Formbuilder.registerField 'ranking',
   """
 
   edit: """
+    <%= Formbuilder.templates['edit/notify']() %>
     <%= Formbuilder.templates['edit/options']() %>
   """
 

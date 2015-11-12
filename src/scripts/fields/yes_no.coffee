@@ -7,7 +7,16 @@ Formbuilder.registerField 'yes_no',
     <% for (i = 0; i < lis.length; i += 1) { %>
       <div class="line">
           <span class="link"></span>
-          <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>
+          <p>
+            <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
+            <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>
+              <i class="fa fa-paperclip"></i>
+            <% } %>
+            <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&
+                   rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>
+              <i class="fa fa-globe"></i>
+            <% } %>
+          </p>
           <button class="target"
                   data-target = "out"
                   id = "<%= rf.cid %>_<%= i %>"
@@ -19,6 +28,7 @@ Formbuilder.registerField 'yes_no',
   """
 
   edit: """
+    <%= Formbuilder.templates['edit/notify']() %>
     <%= Formbuilder.templates['edit/options']() %>
   """
 
