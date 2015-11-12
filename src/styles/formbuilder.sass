@@ -653,6 +653,61 @@ $font: 'Montserrat', sans-serif
         .sb-response-fields, .sb-survey-description
             @include transition(background-color 0.5s ease)
 
+.sb-rich-input
+    // .wysiwyg5-wrapper
+    .wysihtml5-editor
+        height: 100px
+        overflow: scroll
+        padding-bottom: 20px !important
+        margin-bottom: 60px
+
+        &:focus, &:active
+            outline: none
+
+    .sb-thumbnails
+        .thumbnail
+            height: 60px
+            margin: 10px
+            padding: 0
+            overflow: hidden
+            border: 1px solid #999
+            border-radius: 4px
+
+            img
+                height: 60px
+
+            &:active, &:focus
+                outline: inherit
+
+            &.selected
+                outline-style: solid
+                outline-color: #3B479D
+                outline-offset: -3px
+
+        &.slick-slider
+            margin-bottom: 0
+            padding: 0 20px
+
+            .slick-prev
+                left: -2px
+
+            .slick-next
+                right: -2px
+
+            .slick-prev, .slick-next
+                &::before
+                    color: #626262
+
+            .slick-dots
+                margin: 0
+                bottom: -10px
+
+    .dropzone
+        border: 1px solid #e6e6e6
+        min-height: 100px
+        max-height: 100px
+        padding: 5px
+
 .shepherd-step
     z-index: 100
     width: 300px

@@ -373,8 +373,6 @@ class BuilderView extends Backbone.View
       fields: @collection.toJSON()
       screens: @formBuilder.screenView.toJSON()
 
-    console.log payload
-
     if Formbuilder.options.HTTP_ENDPOINT then @doAjaxSave(payload)
     @formBuilder.trigger 'save', payload
 
@@ -476,6 +474,7 @@ class Formbuilder
       NEXT_VA: 'next.va'
       VALIDATION: 'field_options.validation'
       QNO: 'q_no'
+      RICHTEXT: 'richtext'
 
     limit_map:
       yes_no:
@@ -697,19 +696,67 @@ class Formbuilder
 
     init: ->
       $('#sb-edit-rich').wysihtml5
-        html: true,
+        html: true
         customTemplates: @template
+        toolbar:
+          'font-styles': true
+          emphasis: true
+          lists: false
+          html: false
+          link: false
+          image: false
+          color: false
+          blockquote: true
+          size: 'sm'
 
   @uploads:
     init: (opt) ->
-      el = $ 'div#sbDropzone'
-      console.log opt
-      el.dropzone
+      @dz = new Dropzone 'div#sbDropzone',
         url: opt.img_upload
         paramName: 'swag'
         maxFilesize: 4
         uploadMultiple: false
         clickable: true
+      @opt = opt
+
+      @dz.on 'complete', (file, e) =>
+        @dz.removeFile(file)
+        js = JSON.parse file.xhr.response
+        @add_thumbnail
+          uri: js.temp_uri
+          name: js.access_id
+
+      @thumbnails()
+      @load_old()
+
+    load_old: ->
+      $.getJSON @opt.img_list, (data) =>
+        for i in data.imgs
+          m_f =
+            name: i.name
+            size: 1000
+          # @dz.emit "addedfile", m_f
+          # @dz.createThumbnailFromUrl m_f, i.uri
+          # @dz.emit "complete", m_f
+          @add_thumbnail i
+
+    add_thumbnail: (i) ->
+      @th_el.slick 'slickAdd', """
+      <div class="thumbnail">
+        <img src="#{i.uri}" data-img-name="#{i.name}">
+      </div>
+      """
+      console.log i
+
+
+    thumbnails: ->
+      @th_el = $ '#sb-thumbnails'
+      @th_el.slick
+        infinite: true
+        slidesToShow: 2
+        slidesToScroll: 2
+        # dots: true
+        variableWidth: true
 
   @proxy:
     addTargetAndSources: ->
@@ -736,6 +783,7 @@ class Formbuilder
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
     @screenView = new ScreenView args
+    Formbuilder.richtext.init args.endpoints
     Formbuilder.uploads.init args.endpoints
 
 window.Formbuilder = Formbuilder
