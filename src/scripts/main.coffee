@@ -41,7 +41,11 @@ class ViewFieldView extends Backbone.View
   initialize: (options) ->
     {@parentView} = options
     @listenTo @model, "change", @render
+    @listenTo @model, "set", @render
     @listenTo @model, "destroy", @remove
+    @listenTo @parentView, "change", @render
+    # console.log @
+    # console.log @parentView
 
   render: ->
     @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
@@ -307,14 +311,6 @@ class BuilderView extends Backbone.View
           height: '80px'
         $helper
 
-  list_update: ->
-    i = 0
-    last = undefined
-    for j in @collection.models
-      j.set 'q_no', i + 1
-      last = j
-      i += 1
-
   addAll: ->
     @collection.each @addOne, @
     @setSortable()
@@ -372,7 +368,6 @@ class BuilderView extends Backbone.View
     return if @updatingBatch
     @formSaved = false
     @saveFormButton.removeAttr('disabled').text(Formbuilder.options.dict.SAVE_FORM)
-    @list_update()
 
   saveForm: (e) ->
     return if @formSaved

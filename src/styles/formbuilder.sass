@@ -409,6 +409,7 @@ $font: 'Montserrat', sans-serif
             // background-color: #FFFFFF
             min-height: 200px
             padding: 20px 0 0 20px
+            counter-reset: section
 
             a.sortable-placeholder
                 display: block
@@ -523,6 +524,10 @@ $font: 'Montserrat', sans-serif
                             &.section
                                 font-size: 14px
                                 font-weight: 300
+
+                                &:after
+                                    content: counter(section)
+                                    counter-increment: section
 
                             &.title
                                 font-size: 20px
