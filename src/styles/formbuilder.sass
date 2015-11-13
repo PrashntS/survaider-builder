@@ -664,49 +664,91 @@ $font: 'Montserrat', sans-serif
         &:focus, &:active
             outline: none
 
-    .sb-thumbnails
-        .thumbnail
+.sb-thumbnails
+    .thumbnail
+        height: 60px
+        margin: 10px
+        padding: 0
+        overflow: hidden
+        border: 1px solid #999
+        border-radius: 4px
+
+        img
             height: 60px
-            margin: 10px
-            padding: 0
-            overflow: hidden
-            border: 1px solid #999
-            border-radius: 4px
 
-            img
-                height: 60px
+        &:active, &:focus
+            outline: inherit
 
-            &:active, &:focus
-                outline: inherit
+        &.selected
+            outline-style: solid
+            outline-color: #3B479D
+            outline-offset: -3px
 
-            &.selected
-                outline-style: solid
-                outline-color: #3B479D
-                outline-offset: -3px
+    &.slick-slider
+        margin-bottom: 0
+        padding: 0 20px
 
-        &.slick-slider
-            margin-bottom: 0
-            padding: 0 20px
+        .slick-prev
+            left: -2px
 
-            .slick-prev
-                left: -2px
+        .slick-next
+            right: -2px
 
-            .slick-next
-                right: -2px
+        .slick-prev, .slick-next
+            &::before
+                color: #626262
 
-            .slick-prev, .slick-next
-                &::before
-                    color: #626262
+        .slick-dots
+            margin: 0
+            bottom: -10px
 
-            .slick-dots
-                margin: 0
-                bottom: -10px
+.dropzone
+    border: 1px solid #e6e6e6
+    min-height: 100px
+    max-height: 100px
+    padding: 5px
 
-    .dropzone
-        border: 1px solid #e6e6e6
-        min-height: 100px
-        max-height: 100px
-        padding: 5px
+.sb-attach
+    z-index: 2000
+    visibility: hidden
+    @include transition(opacity 0.2s, left 0.2s, right 0.5s)
+
+    position: absolute
+    padding: 15px
+    width: 550px
+    opacity: 0
+    top: 0
+    left: -1000px
+    background: #FFFCFC
+    border: 1px solid #000000
+    border-radius: 4px
+
+    &:before
+        content: ''
+        position: absolute
+        top: 50%
+        left: 100%
+        margin-top: -10px
+        width: 0
+        height: 0
+        border-left: 10px solid #000000
+        border-top: 10px solid transparent
+        border-bottom: 10px solid transparent
+
+    &:after
+        content: ''
+        position: absolute
+        top: 50%
+        left: 100%
+        margin-top: -8px
+        width: 0
+        height: 0
+        border-left: 8px solid #FFFCFC
+        border-top: 8px solid transparent
+        border-bottom: 8px solid transparent
+
+.modal-content-wrapper
+    position: relative
 
 .shepherd-step
     z-index: 100

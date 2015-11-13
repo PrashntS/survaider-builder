@@ -87,6 +87,7 @@ class EditFieldView extends Backbone.View
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
     'click .check': 'optionUpdated'
+    'click .sb-attach-init': 'attachImage'
     'click .sb-label-description': 'prepareLabel'
     'click .option': 'prepareLabel'
 
@@ -157,6 +158,11 @@ class EditFieldView extends Backbone.View
     # @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}.notify"
     log = _.bind(@forceRender, @);
     _.delay log, 100
+
+  attachImage: (e) ->
+    target = $(e.currentTarget)
+    t = target.offset().top - (target.outerHeight() * 2.25)
+    Formbuilder.uploads.show t
 
   forceRender: ->
     @model.trigger('change')
@@ -345,6 +351,7 @@ class BuilderView extends Backbone.View
 
   deSelectField: (model)->
     @$el.find(".sb-field-wrapper").removeClass('editing')
+    Formbuilder.uploads.hide()
 
   ensureEditViewScrolled: ->
     return unless @editView
@@ -664,6 +671,8 @@ class Formbuilder
       @thumbnails()
       @load_old()
 
+      @at = $ '#sb-attach'
+
     load_old: ->
       $.getJSON @opt.img_list, (data) =>
         for i in data.imgs
@@ -682,8 +691,19 @@ class Formbuilder
         infinite: true
         slidesToShow: 2
         slidesToScroll: 2
-        # dots: true
         variableWidth: true
+
+    show: (t) ->
+      @at.css 'top', t - (@at.height() * 0.5)
+      @at.css 'left', -1 * (@at.width() + 25)
+      @at.css 'opacity', 1
+      @at.css 'visibility', 'visible'
+
+    hide: ->
+      @at.css 'top', 0
+      @at.css 'left', -1000
+      @at.css 'opacity', 0
+      @at.css 'visibility', 'hidden'
 
   @proxy:
     addTargetAndSources: ->

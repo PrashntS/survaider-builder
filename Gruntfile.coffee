@@ -100,6 +100,8 @@ module.exports = (grunt) ->
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
             'bower_components/js-schema/js-schema.min.js'
             'bower_components/slick-carousel/slick/slick.js'
+            'bower_components/opentip/lib/opentip.js'
+            'bower_components/opentip/lib/adapter-jquery.js'
             'bower_components/dropzone/dist/dropzone.js'
             'bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js'
           ]
@@ -110,6 +112,7 @@ module.exports = (grunt) ->
           '<%= distFolder %>/formbuilder.vendor.css': [
             '<%= distFolder %>/formbuilder.css'
             'bower_components/dropzone/dist/dropzone.css'
+            'bower_components/opentip/css/opentip.css'
             'bower_components/slick-carousel/slick/slick.css'
             'bower_components/slick-carousel/slick/slick-theme.css'
           ]

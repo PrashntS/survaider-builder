@@ -39,6 +39,7 @@
     "underscore.mixin.deepExtend": "https://gist.githubusercontent.com/PrashntS/d7f1452b7d75e759e69d/raw/1f2b15d21d0b48362ea16c41706e6653763266c9/underscore.mixin.deepExtend.js",
     "dropzone": "~4.2.0",
     "bootstrap3-wysihtml5-bower": "~0.3.3",
-    "slick-carousel": "~1.5.8"
+    "slick-carousel": "~1.5.8",
+    "opentip": "~2.4.6"
   }
 }
