@@ -26,5 +26,5 @@ Formbuilder.registerField 'rating',
   edit: ""
 
   addButton: """
-    <span class="symbol"><span class="fa fa-star"></span></span> Rating
+    <span class="pull-left"><span class="fa fa-star"></span></span> Rating
   """

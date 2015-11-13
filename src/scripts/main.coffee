@@ -1,7 +1,7 @@
 class FormbuilderModel extends Backbone.DeepModel
   sync: -> # noop
   indexInDOM: ->
-    $wrapper = $(".sb-field-wrapper").filter ( (_, el) => $(el).data('cid') == @cid  )
+    $wrapper = $(".sb-field-wrapper").filter (_, el) => $(el).data('cid') == @cid
     $(".sb-field-wrapper").index $wrapper
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
@@ -41,10 +41,13 @@ class ViewFieldView extends Backbone.View
   initialize: (options) ->
     {@parentView} = options
     @listenTo @model, "change", @render
+    @listenTo @model, "set", @render
     @listenTo @model, "destroy", @remove
+    @listenTo @parentView, "change", @render
+    # console.log @
+    # console.log @parentView
 
   render: ->
-    @model.q_no = @model.collection.indexOf(@model)
     @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
         .data('cid', @model.cid)
         .attr('data-cid', @model.cid)
@@ -87,6 +90,8 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
+    'click .check': 'optionUpdated'
+    'click .sb-attach-init': 'attachImage'
     'click .sb-label-description': 'prepareLabel'
     'click .option': 'prepareLabel'
 
@@ -152,6 +157,15 @@ class EditFieldView extends Backbone.View
       @$el.find(".js-default-updated").not($el).attr('checked', false).trigger('change')
 
     @forceRender()
+
+  optionUpdated: (e) ->
+    log = _.bind(@forceRender, @);
+    _.delay log, 100
+
+  attachImage: (e) ->
+    target = $(e.currentTarget)
+    t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
+    Formbuilder.uploads.show t
 
   forceRender: ->
     @model.trigger('change')
@@ -219,7 +233,6 @@ class BuilderView extends Backbone.View
     @$fbLeft = @$el.find('.sb-left')
     @$responseFields = @$el.find('.sb-response-fields')
 
-    # @bindWindowScrollEvent()
     @hideShowNoResponseFields()
 
     # Render any subviews (this is an easy way of extending the Formbuilder)
@@ -275,7 +288,6 @@ class BuilderView extends Backbone.View
         if ui.item.data('field-type')
           rf = @collection.create Formbuilder.helpers.defaultFieldAttrs(ui.item.data('field-type')), {$replaceEl: ui.item}
           @createAndShowEditView(rf)
-
         @handleFormUpdate()
         return true
       update: (e, ui) =>
@@ -334,6 +346,7 @@ class BuilderView extends Backbone.View
 
   deSelectField: (model)->
     @$el.find(".sb-field-wrapper").removeClass('editing')
+    Formbuilder.uploads.hide()
 
   ensureEditViewScrolled: ->
     return unless @editView
@@ -365,8 +378,6 @@ class BuilderView extends Backbone.View
     payload = JSON.stringify
       fields: @collection.toJSON()
       screens: @formBuilder.screenView.toJSON()
-
-    console.log payload
 
     if Formbuilder.options.HTTP_ENDPOINT then @doAjaxSave(payload)
     @formBuilder.trigger 'save', payload
@@ -435,6 +446,7 @@ class Formbuilder
       attrs[Formbuilder.options.mappings.LABEL] = Formbuilder.options.dict.DEFAULT_LABEL
       attrs[Formbuilder.options.mappings.FIELD_TYPE] = field_type
       attrs[Formbuilder.options.mappings.REQUIRED] = true
+      attrs[Formbuilder.options.mappings.QNO] = 2
       attrs['field_options'] = {}
       Formbuilder.fields[field_type].defaultAttributes?(attrs) || attrs
 
@@ -465,6 +477,11 @@ class Formbuilder
       MINLENGTH: 'field_options.minlength'
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
+      NEXT_VA: 'next.va'
+      VALIDATION: 'field_options.validation'
+      QNO: 'q_no'
+      RICHTEXT: 'richtext'
+      NOTIFICATION: 'notifications'
 
     limit_map:
       yes_no:
@@ -502,9 +519,191 @@ class Formbuilder
         rating: "This question asks to rate on a scale of 1 to 10.<br>eg. How much do you like the design of our product?"
         group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
 
+  @richtext:
+    template:
+      "font-styles": -> """
+        <li class="dropdown">
+          <a data-toggle="dropdown" class="btn btn-default dropdown-toggle ">
+            <span class="editor-icon editor-icon-headline">
+            </span>
+            <span class="current-font">
+              Normal
+            </span>
+            <b class="caret">
+            </b>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a tabindex="-1" data-wysihtml5-command-value="p" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
+                Normal
+              </a>
+            </li>
+            <li>
+              <a tabindex="-1" data-wysihtml5-command-value="h1" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
+                1
+              </a>
+            </li>
+            <li>
+              <a tabindex="-1" data-wysihtml5-command-value="h2" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
+                2
+              </a>
+            </li>
+            <li>
+              <a tabindex="-1" data-wysihtml5-command-value="h3" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
+                3
+              </a>
+            </li>
+            <li>
+              <a tabindex="-1" data-wysihtml5-command-value="h4" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
+                4
+              </a>
+            </li>
+            <li>
+              <a tabindex="-1" data-wysihtml5-command-value="h5" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
+                5
+              </a>
+            </li>
+            <li>
+              <a tabindex="-1" data-wysihtml5-command-value="h6" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
+                6
+              </a>
+            </li>
+          </ul>
+        </li>
+      """
+      emphasis: -> """
+        <li>
+          <div class="btn-group">
+            <a tabindex="-1" title="CTRL+B" data-wysihtml5-command="bold" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-bold">
+              </i>
+            </a>
+            <a tabindex="-1" title="CTRL+I" data-wysihtml5-command="italic" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-italic">
+              </i>
+            </a>
+            <a tabindex="-1" title="CTRL+U" data-wysihtml5-command="underline" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-underline">
+              </i>
+            </a>
+          </div>
+        </li>
+      """
+      blockquote: -> """
+        <li>
+          <a tabindex="-1" data-wysihtml5-display-format-name="false" data-wysihtml5-command-value="blockquote" data-wysihtml5-command="formatBlock" class="btn  btn-default" href="javascript:;" unselectable="on">
+            <i class="editor-icon editor-icon-quote">
+            </i>
+          </a>
+        </li>
+      """
+      lists: -> """
+        <li>
+          <div class="btn-group">
+            <a tabindex="-1" title="Unordered list" data-wysihtml5-command="insertUnorderedList" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-ul">
+              </i>
+            </a>
+            <a tabindex="-1" title="Ordered list" data-wysihtml5-command="insertOrderedList" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-ol">
+              </i>
+            </a>
+            <a tabindex="-1" title="Outdent" data-wysihtml5-command="Outdent" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-outdent">
+              </i>
+            </a>
+            <a tabindex="-1" title="Indent" data-wysihtml5-command="Indent" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-indent">
+              </i>
+            </a>
+          </div>
+        </li>
+      """
+      html: -> """
+        <li>
+          <div class="btn-group">
+            <a tabindex="-1" title="Edit HTML" data-wysihtml5-action="change_view" class="btn  btn-default" href="javascript:;" unselectable="on">
+              <i class="editor-icon editor-icon-html">
+              </i>
+            </a>
+          </div>
+        </li>
+      """
+
+    init: ->
+      $('#sb-edit-rich').wysihtml5
+        html: true
+        customTemplates: @template
+        toolbar:
+          'font-styles': true
+          emphasis: true
+          lists: false
+          html: false
+          link: false
+          image: false
+          color: false
+          blockquote: true
+          size: 'sm'
+
+  @uploads:
+    init: (opt) ->
+      @dz = new Dropzone 'div#sbDropzone',
+        url: opt.img_upload
+        paramName: 'swag'
+        maxFilesize: 4
+        uploadMultiple: false
+        clickable: true
+      @opt = opt
+
+      @dz.on 'complete', (file, e) =>
+        @dz.removeFile(file)
+        js = JSON.parse file.xhr.response
+        @add_thumbnail
+          uri: js.temp_uri
+          name: js.access_id
+
+      @thumbnails()
+      @load_old()
+
+      @at = $ '#sb-attach'
+
+    load_old: ->
+      $.getJSON @opt.img_list, (data) =>
+        for i in data.imgs
+          @add_thumbnail i
+
+    add_thumbnail: (i) ->
+      @th_el.slick 'slickAdd', """
+      <div class="thumbnail">
+        <img src="#{i.uri}" data-img-name="#{i.name}">
+      </div>
+      """
+
+    thumbnails: ->
+      @th_el = $ '#sb-thumbnails'
+      @th_el.slick
+        infinite: true
+        slidesToShow: 2
+        slidesToScroll: 2
+        variableWidth: true
+
+    show: (t) ->
+      @at.css 'top', t - (@at.height() * 0.5)
+      @at.css 'left', -1 * (@at.width() + 25)
+      @at.css 'opacity', 1
+      @at.css 'visibility', 'visible'
+
+    hide: ->
+      @at.css 'left', -1000
+      @at.css 'opacity', 0
+      df = _.bind () =>
+        @at.css 'visibility', 'hidden'
+        @at.css 'top', 0
+      , @
+      _.delay df, 1000
+
   @proxy:
     addTargetAndSources: ->
-      console.log("Fired.")
 
   @fields: {}
   @inputFields: {}
@@ -528,6 +727,8 @@ class Formbuilder
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
     @screenView = new ScreenView args
+    Formbuilder.richtext.init args.endpoints
+    Formbuilder.uploads.init args.endpoints
 
 window.Formbuilder = Formbuilder
 

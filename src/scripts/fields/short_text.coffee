@@ -12,12 +12,10 @@ Formbuilder.registerField 'short_text',
     </div>
   """
 
-  edit: """"""
-
-  ed:  """
-    <%= Formbuilder.templates['edit/min_max_length']() %>
+  edit: """
+    <%= Formbuilder.templates['edit/validation']() %>
   """
 
   addButton: """
-    <span class='symbol'><span class='fa fa-font'></span></span> Short Text
+    <span class='pull-left'><span class='fa fa-font'></span></span> Short Text
   """

@@ -6,7 +6,16 @@ Formbuilder.registerField 'multiple_choice',
     <% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>
     <% for (i = 0; i < lis.length; i += 1) { %>
       <div class="line">
-          <p><%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %></p>
+          <p>
+            <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
+            <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>
+              <i class="fa fa-paperclip"></i>
+            <% } %>
+            <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&
+                   rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>
+              <i class="fa fa-globe"></i>
+            <% } %>
+          </p>
       </div>
     <% } %>
       <button class="target hanging"
@@ -16,11 +25,12 @@ Formbuilder.registerField 'multiple_choice',
   """
 
   edit: """
+    <%= Formbuilder.templates['edit/notify']() %>
     <%= Formbuilder.templates['edit/options']() %>
   """
 
   addButton: """
-    <span class="symbol"><span class="fa fa-square-o"></span></span> Multiple Choice
+    <span class="pull-left"><span class="fa fa-square-o"></span></span> Multiple Choice
   """
 
   defaultAttributes: (attrs) ->

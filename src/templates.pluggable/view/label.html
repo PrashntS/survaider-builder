@@ -12,5 +12,11 @@
     <% } else { %>
     Optional
     <% } %>
+    <% if (rf.get(Formbuilder.options.mappings.VALIDATION)) { %>
+    &bullet; <%= rf.get(Formbuilder.options.mappings.VALIDATION) %>
+    <% } %>
+    <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION)) { %>
+    &bullet; <i class="fa fa-globe"></i>
+    <% } %>
     </small>
 </p>

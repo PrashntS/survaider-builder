@@ -30,7 +30,7 @@ Formbuilder.registerField 'group_rating',
   "
 
   addButton: """
-    <span class="symbol"><span class="fa fa-star"></span></span> Group Rating
+    <span class="pull-left"><i class="fa fa-star"></i></span> Group Rating</span>
   """
 
   defaultAttributes: (attrs) ->

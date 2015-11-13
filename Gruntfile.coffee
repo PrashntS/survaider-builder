@@ -95,22 +95,34 @@ module.exports = (grunt) ->
             'bower_components/rivets/dist/rivets.js'
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
-            'bower_components/svg.js/dist/svg.min.js'
             'bower_components/sweetalert/dist/sweetalert.min.js'
             'bower_components/tether/dist/js/tether.min.js'
             'bower_components/tether-shepherd/dist/js/shepherd.min.js'
             'bower_components/js-schema/js-schema.min.js'
-            'bower_components/jsPlumb/dist/js/jsPlumb-2.0.3.js'
+            'bower_components/slick-carousel/slick/slick.js'
+            'bower_components/opentip/lib/opentip.js'
+            'bower_components/opentip/lib/adapter-jquery.js'
+            'bower_components/dropzone/dist/dropzone.js'
+            'bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js'
           ]
 
     cssmin:
       dist:
         files:
-          '<%= distFolder %>/formbuilder-min.css': '<%= distFolder %>/formbuilder.css'
+          '<%= distFolder %>/formbuilder.vendor.css': [
+            '<%= distFolder %>/formbuilder.css'
+            'bower_components/dropzone/dist/dropzone.css'
+            'bower_components/opentip/css/opentip.css'
+            'bower_components/slick-carousel/slick/slick.css'
+            'bower_components/slick-carousel/slick/slick-theme.css'
+          ]
           '<%= vendorFolder %>/css/vendor.css': [
             'bower_components/font-awesome/css/font-awesome.css'
             'bower_components/sweetalert/dist/sweetalert.css'
             'bower_components/tether-shepherd/dist/css/shepherd-theme-arrows.css'
+            'bower_components/slick-carousel/slick/slick.css'
+            'bower_components/slick-carousel/slick/slick-theme.css'
+            'bower_components/dropzone/dist/dropzone.css'
           ]
 
     sass:
