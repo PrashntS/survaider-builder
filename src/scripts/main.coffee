@@ -155,13 +155,12 @@ class EditFieldView extends Backbone.View
     @forceRender()
 
   optionUpdated: (e) ->
-    # @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}.notify"
     log = _.bind(@forceRender, @);
     _.delay log, 100
 
   attachImage: (e) ->
     target = $(e.currentTarget)
-    t = target.offset().top - (target.outerHeight() * 2.25)
+    t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
     Formbuilder.uploads.show t
 
   forceRender: ->
@@ -700,10 +699,13 @@ class Formbuilder
       @at.css 'visibility', 'visible'
 
     hide: ->
-      @at.css 'top', 0
       @at.css 'left', -1000
       @at.css 'opacity', 0
-      @at.css 'visibility', 'hidden'
+      df = _.bind () =>
+        @at.css 'visibility', 'hidden'
+        @at.css 'top', 0
+      , @
+      _.delay df, 1000
 
   @proxy:
     addTargetAndSources: ->
