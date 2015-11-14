@@ -647,15 +647,46 @@ class Formbuilder
 
   @uploads:
     init: (opt) ->
-      @dz = new Dropzone 'div#sbDropzone',
+      @dzbtn = Ladda.create document.querySelector '#sb-dz-attach'
+      @dzbtnel = $ '#sb-dz-attach'
+      @dz = new Dropzone 'div#sb-attach',
         url: opt.img_upload
         paramName: 'swag'
         maxFilesize: 4
+        acceptedFiles: 'image/*'
         uploadMultiple: false
-        clickable: true
+        clickable: '#sb-dz-attach'
+        previewTemplate: ''
+        previewsContainer: false
+        autoQueue: yes
       @opt = opt
 
-      @dz.on 'complete', (file, e) =>
+      @dz.on 'addedfile', (file, e) =>
+        @dzbtn.start()
+
+      @dz.on 'sending', (file) =>
+        @dzbtnel.attr 'disabled', 'true'
+
+      @dz.on 'totaluploadprogress', (progress) =>
+        @dzbtn.setProgress progress / 100
+
+      @dz.on 'queuecomplete', (progress) =>
+        @dzbtn.setProgress 0
+
+      @dz.on 'error', (file, e, xhr) =>
+        @dzbtn.stop()
+        e = e.message if xhr?
+        swal
+            title: "Upload Error"
+            text: e
+            type: "error"
+            showCancelButton: false
+            confirmButtonColor: "#DD6B55"
+            confirmButtonText: "Okay"
+            closeOnConfirm: true
+
+      @dz.on 'success', (file, e) =>
+        @dzbtn.stop()
         @dz.removeFile(file)
         js = JSON.parse file.xhr.response
         @add_thumbnail
