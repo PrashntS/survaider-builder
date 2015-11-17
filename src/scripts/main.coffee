@@ -171,7 +171,7 @@ class EditFieldView extends Backbone.View
     @model.trigger('change')
 
   prepareLabel: (e) ->
-    $el = $(e.currentTarget).find("input").eq(0)
+    $el = $(e.currentTarget).find("textarea,input").eq(0)
     $el.val("") if $el.val().indexOf("\x1e") > -1
 
 class BuilderView extends Backbone.View

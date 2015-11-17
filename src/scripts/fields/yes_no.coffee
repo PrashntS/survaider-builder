@@ -17,6 +17,7 @@ Formbuilder.registerField 'yes_no',
               <i class="fa fa-globe"></i>
             <% } %>
           </p>
+          <!--span class="skip"><i class="fa fa-level-up"></i><span>11</span></span-->
           <button class="target"
                   data-target = "out"
                   id = "<%= rf.cid %>_<%= i %>"
