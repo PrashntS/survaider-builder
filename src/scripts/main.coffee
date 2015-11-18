@@ -90,10 +90,13 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
+    'change .option-label-input': 'forceRender'
+    'change .check': 'optionUpdated'
     'click .check': 'optionUpdated'
     'click .sb-attach-init': 'attachImage'
     'click .sb-label-description': 'prepareLabel'
     'click .option': 'prepareLabel'
+    'input input[data-uri=container]': 'attachImageProcess'
 
   initialize: (options) ->
     {@parentView} = options
@@ -164,8 +167,21 @@ class EditFieldView extends Backbone.View
 
   attachImage: (e) ->
     target = $(e.currentTarget)
+    ol_val = target.find('input[data-sb-attach=uri]').val()
+
     t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
-    Formbuilder.uploads.show t
+
+    callback = (enable, uridat) ->
+      uri = target.find('input[data-sb-attach=uri]')
+      enb = target.find('input[data-sb-attach=enabled]')
+      if enable
+        uri.val(uridat).trigger('input')
+        enb.attr('checked', yes).trigger('change')
+      else
+        uri.val("").trigger('input')
+        enb.attr('checked', no).trigger('change')
+
+    Formbuilder.uploads.show t, callback, ol_val
 
   forceRender: ->
     @model.trigger('change')
@@ -694,26 +710,43 @@ class Formbuilder
           name: js.access_id
 
       @th_el = $ '#sb-thumbnails'
+
       @load_old()
+      @init_thumbnail()
 
       @at = $ '#sb-attach'
+
+    init_thumbnail: ->
+      $('.sb-images-container').on 'click'
+      ,'img.image_picker_image'
+      ,(e) =>
+        @th_el.data('picker').sync_picker_with_select()
+        v = @th_el.val()
+        unless v is ""
+          @callback true, v
+        else
+          @callback false
 
     load_old: ->
       $.getJSON @opt.img_list, (data) =>
         for i in data.imgs
           @add_thumbnail i
+        @add_thumbnail {}
 
     add_thumbnail: (i) ->
       @th_el.prepend $ '<option>',
         'data-img-src': i.uri
+        'data-img-name': i.name
         value: i.name
       .imagepicker()
 
-    show: (t) ->
+    show: (t, callback, selected) ->
       @at.css 'top', t - (@at.height() * 0.5)
       @at.css 'left', -1 * (@at.width() + 25)
       @at.css 'opacity', 1
       @at.css 'visibility', 'visible'
+      @th_el.val(selected).imagepicker()
+      @callback = callback
 
     hide: ->
       @at.css 'left', -1000

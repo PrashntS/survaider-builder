@@ -722,7 +722,39 @@
   outline: none;
 }
 
-ul.thumbnails.image_picker_selector {
+.sb-images {
+  height: 300px;
+  border: 1px solid;
+  border-radius: 5px;
+  position: relative;
+}
+.sb-images::before {
+  height: 30px;
+  top: 0;
+  content: "";
+  position: absolute;
+  width: 100%;
+  border-radius: 5px;
+  z-index: 100;
+  background: linear-gradient(to bottom, white 0%, rgba(255, 255, 255, 0) 100%);
+}
+.sb-images::after {
+  height: 30px;
+  bottom: 0;
+  content: "";
+  position: absolute;
+  width: 100%;
+  border-radius: 5px;
+  z-index: 100;
+  background: linear-gradient(to top, white 0%, rgba(255, 255, 255, 0) 100%);
+}
+.sb-images .sb-images-container {
+  overflow: scroll;
+  max-height: 100%;
+  padding: 30px 10px;
+  width: 100%;
+}
+.sb-images .sb-images-container ul.thumbnails.image_picker_selector {
   overflow: auto;
   list-style-image: none;
   list-style-position: outside;
@@ -730,7 +762,7 @@ ul.thumbnails.image_picker_selector {
   padding: 0px;
   margin: 0px;
 }
-ul.thumbnails.image_picker_selector ul {
+.sb-images .sb-images-container ul.thumbnails.image_picker_selector ul {
   overflow: auto;
   list-style-image: none;
   list-style-position: outside;
@@ -738,25 +770,25 @@ ul.thumbnails.image_picker_selector ul {
   padding: 0px;
   margin: 0px;
 }
-ul.thumbnails.image_picker_selector li {
+.sb-images .sb-images-container ul.thumbnails.image_picker_selector li {
   margin: 0px 12px 12px 0px;
   float: left;
 }
-ul.thumbnails.image_picker_selector li.group_title {
+.sb-images .sb-images-container ul.thumbnails.image_picker_selector li.group_title {
   float: none;
 }
-ul.thumbnails.image_picker_selector li .thumbnail {
+.sb-images .sb-images-container ul.thumbnails.image_picker_selector li .thumbnail {
   padding: 6px;
   border: 1px solid #dddddd;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
 }
-ul.thumbnails.image_picker_selector li .thumbnail img {
+.sb-images .sb-images-container ul.thumbnails.image_picker_selector li .thumbnail img {
   -webkit-user-drag: none;
   height: 80px;
 }
-ul.thumbnails.image_picker_selector li .thumbnail.selected {
+.sb-images .sb-images-container ul.thumbnails.image_picker_selector li .thumbnail.selected {
   background: #0088cc;
 }
 

@@ -690,36 +690,68 @@ $font: 'Montserrat', sans-serif
     &:focus, &:active
       outline: none
 
-ul.thumbnails.image_picker_selector
-  overflow: auto
-  list-style-image: none
-  list-style-position: outside
-  list-style-type: none
-  padding: 0px
-  margin: 0px
-  ul
-    overflow: auto
-    list-style-image: none
-    list-style-position: outside
-    list-style-type: none
-    padding: 0px
-    margin: 0px
-  li
-    &.group_title
-      float: none
-    margin: 0px 12px 12px 0px
-    float: left
-    .thumbnail
-      padding: 6px
-      border: 1px solid #dddddd
-      -webkit-user-select: none
-      -moz-user-select: none
-      -ms-user-select: none
-      img
-        -webkit-user-drag: none
-        height: 80px
-      &.selected
-        background: #0088cc
+.sb-images
+  height: 300px
+  border: 1px solid
+  border-radius: 5px
+  position: relative
+
+  &::before
+    height: 30px
+    top: 0
+    content: ""
+    position: absolute
+    width: 100%
+    border-radius: 5px
+    z-index: 100
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)
+
+  &::after
+    height: 30px
+    bottom: 0
+    content: ""
+    position: absolute
+    width: 100%
+    border-radius: 5px
+    z-index: 100
+    background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)
+
+  .sb-images-container
+    overflow: scroll
+    max-height: 100%
+    padding: 30px 10px
+    width: 100%
+
+    ul.thumbnails.image_picker_selector
+      overflow: auto
+      list-style-image: none
+      list-style-position: outside
+      list-style-type: none
+      padding: 0px
+      margin: 0px
+      ul
+        overflow: auto
+        list-style-image: none
+        list-style-position: outside
+        list-style-type: none
+        padding: 0px
+        margin: 0px
+      li
+        &.group_title
+          float: none
+        margin: 0px 12px 12px 0px
+        float: left
+        .thumbnail
+          padding: 6px
+          border: 1px solid #dddddd
+          -webkit-user-select: none
+          -moz-user-select: none
+          -ms-user-select: none
+          img
+            -webkit-user-drag: none
+            height: 80px
+          &.selected
+            background: #0088cc
 
 .dropzone
   border: 1px solid #e6e6e6
