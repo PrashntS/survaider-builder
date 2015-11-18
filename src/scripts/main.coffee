@@ -693,7 +693,7 @@ class Formbuilder
           uri: js.temp_uri
           name: js.access_id
 
-      @thumbnails()
+      @th_el = $ '#sb-thumbnails'
       @load_old()
 
       @at = $ '#sb-attach'
@@ -704,19 +704,10 @@ class Formbuilder
           @add_thumbnail i
 
     add_thumbnail: (i) ->
-      @th_el.slick 'slickAdd', """
-      <div class="thumbnail">
-        <img src="#{i.uri}" data-img-name="#{i.name}">
-      </div>
-      """
-
-    thumbnails: ->
-      @th_el = $ '#sb-thumbnails'
-      @th_el.slick
-        infinite: true
-        slidesToShow: 2
-        slidesToScroll: 2
-        variableWidth: true
+      @th_el.prepend $ '<option>',
+        'data-img-src': i.uri
+        value: i.name
+      .imagepicker()
 
     show: (t) ->
       @at.css 'top', t - (@at.height() * 0.5)
