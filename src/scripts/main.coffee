@@ -122,19 +122,32 @@ class EditFieldView extends Backbone.View
     op_len = $el.parent().parent().find('.option').length
 
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
+    routine = _.bind ->
+      if i > -1
+        options.splice(i + 1, 0, newOption)
+      else
+        options.push newOption
+
+      @model.set Formbuilder.options.mappings.OPTIONS, options
+      @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}"
+      @forceRender()
+    , @
 
     if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
-      sweetAlert("", "This question only supports three options." + field_type, "error")
-      return
-
-    if i > -1
-      options.splice(i + 1, 0, newOption)
+      swal
+        title: "Are you sure?"
+        text: "Gamified surveys only support #{op_len} options for '#{field_type}' fields."
+        type: "warning"
+        showCancelButton: true
+        confirmButtonColor: "#DD6B55"
+        confirmButtonText: "Yes, proceed!"
+        closeOnConfirm: true
+      , (ok) ->
+        if ok is yes
+          return routine()
+        return
     else
-      options.push newOption
-
-    @model.set Formbuilder.options.mappings.OPTIONS, options
-    @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}"
-    @forceRender()
+      routine()
 
   removeOption: (e) ->
     $el = $(e.currentTarget)
@@ -144,7 +157,14 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
-      sweetAlert("", "This question only supports three options." + field_type, "error")
+      swal
+        title: "No options!"
+        text: "Minimum two options are required."
+        type: "error"
+        showCancelButton: false
+        confirmButtonColor: "#DD6B55"
+        confirmButtonText: "Okay"
+        closeOnConfirm: true
       return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
@@ -171,15 +191,12 @@ class EditFieldView extends Backbone.View
 
     t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
 
-    callback = _.debounce (enable, uridat) =>
+    callback = _.debounce (uridat) =>
       uri = target.find('input[data-sb-attach=uri]')
-      enb = target.find('input[data-sb-attach=enabled]')
-      if enable
+      unless uridat is ""
         uri.val(uridat).trigger('input')
-        enb.attr('checked', yes).trigger('change')
       else
         uri.val("").trigger('input')
-        enb.attr('checked', no).trigger('change')
     , 500
 
     Formbuilder.uploads.show t, callback, ol_val
@@ -723,10 +740,7 @@ class Formbuilder
       ,(e) =>
         @th_el.data('picker').sync_picker_with_select()
         v = @th_el.val()
-        unless v is ""
-          @callback true, v
-        else
-          @callback false
+        @callback v
 
     load_old: ->
       $.getJSON @opt.img_list, (data) =>
