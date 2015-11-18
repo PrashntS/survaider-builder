@@ -10,7 +10,7 @@ Formbuilder.registerField 'yes_no',
           <p>
             <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
             <% if (rf.get(Formbuilder.options.mappings.RICHTEXT ) &&
-                   rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_enabled) { %>
+                   rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== "") { %>
               <i class="fa fa-paperclip"></i>
             <% } %>
             <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&

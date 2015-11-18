@@ -171,7 +171,7 @@ class EditFieldView extends Backbone.View
 
     t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
 
-    callback = (enable, uridat) ->
+    callback = _.debounce (enable, uridat) =>
       uri = target.find('input[data-sb-attach=uri]')
       enb = target.find('input[data-sb-attach=enabled]')
       if enable
@@ -180,6 +180,7 @@ class EditFieldView extends Backbone.View
       else
         uri.val("").trigger('input')
         enb.attr('checked', no).trigger('change')
+    , 500
 
     Formbuilder.uploads.show t, callback, ol_val
 
@@ -741,20 +742,21 @@ class Formbuilder
       .imagepicker()
 
     show: (t, callback, selected) ->
-      @at.css 'top', t - (@at.height() * 0.5)
-      @at.css 'left', -1 * (@at.width() + 25)
-      @at.css 'opacity', 1
-      @at.css 'visibility', 'visible'
-      @th_el.val(selected).imagepicker()
+      @at.css('top', t - (@at.height() * 0.5)).addClass 'open'
+
+      @th_el
+        .val(selected)
+        .imagepicker()
+
       @callback = callback
+      $(".sb-images-container").scrollTo("div.thumbnail.selected", {duration: 500, offset: -50 })
 
     hide: ->
-      @at.css 'left', -1000
-      @at.css 'opacity', 0
+      @at.removeClass 'open'
       df = _.bind () =>
-        @at.css 'visibility', 'hidden'
         @at.css 'top', 0
       , @
+      @callback = false
       _.delay df, 1000
 
   @proxy:

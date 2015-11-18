@@ -41,6 +41,7 @@
     "bootstrap3-wysihtml5-bower": "~0.3.3",
     "slick-carousel": "~1.5.8",
     "opentip": "~2.4.6",
-    "image-picker": "~0.2.4"
+    "image-picker": "~0.2.4",
+    "jquery.scrollTo": "~2.1.2"
   }
 }

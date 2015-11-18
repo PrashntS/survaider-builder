@@ -761,18 +761,21 @@ $font: 'Montserrat', sans-serif
 
 .sb-attach
   z-index: 2000
-  visibility: hidden
-  @include transition(opacity 0.2s, left 0.2s, right 0.5s)
+  @include transition(opacity 0.2s, transform 0.2s)
 
   position: absolute
   padding: 15px
   width: 550px
+  left: -540px
   opacity: 0
-  top: 0
-  left: -1000px
   background: #FFFCFC
   border: 1px solid #000000
   border-radius: 4px
+  @include transform(translateX(270px) scale(0, 0))
+
+  &.open
+    opacity: 1
+    @include transform(translateX(0) scale(1, 1))
 
   &:before
     content: ''
