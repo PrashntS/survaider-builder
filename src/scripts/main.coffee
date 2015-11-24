@@ -767,6 +767,9 @@ class Formbuilder
       @load_old()
       @init_thumbnail()
 
+      show_bounce = _.bind @show_routine, @
+      @show = _.debounce show_bounce, 100
+
       @at = $ '#sb-attach'
 
     init_thumbnail: ->
@@ -790,7 +793,7 @@ class Formbuilder
         value: i.name
       .imagepicker()
 
-    show: (t, r, delegate, callback, selected) ->
+    show_routine: (t, r, delegate, callback, selected) ->
       @at.removeClass 'top'
       @at.removeClass 'right'
 
@@ -801,7 +804,7 @@ class Formbuilder
           .css 'position', 'fixed'
           .css 'right', r
           .css 'left', 'auto'
-          # .css 'left', @at.width() + 10
+          .css 'z-index', 2000
           .addClass 'open'
 
       else if delegate is 'logo'
@@ -811,6 +814,7 @@ class Formbuilder
           .css 'position', 'absolute'
           .css 'left', r - @at.width() * 0.5 - 90
           .css 'right', 'auto'
+          .css 'z-index', 10
           .addClass 'open'
 
       @th_el
@@ -821,9 +825,9 @@ class Formbuilder
       scroll = _.bind ->
         $ ".sb-images-container"
         .scrollTo "div.thumbnail.selected",
-          duration: 500
+          duration: 200
           offset: -50
-      _.delay scroll, 500
+      _.delay scroll, 100
 
     hide: ->
       @at.removeClass 'open'
