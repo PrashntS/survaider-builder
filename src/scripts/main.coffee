@@ -196,6 +196,7 @@ class EditFieldView extends Backbone.View
     ol_val = target.find('input[data-sb-attach=uri]').val()
 
     t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
+    r = $(window).width() - target.offsetParent().offset().left + 10
 
     callback = _.debounce (uridat) =>
       uri = target.find('input[data-sb-attach=uri]')
@@ -205,7 +206,7 @@ class EditFieldView extends Backbone.View
         uri.val("").trigger('input')
     , 500
 
-    Formbuilder.uploads.show t, callback, ol_val
+    Formbuilder.uploads.show t, r, 'right', callback, ol_val
 
   forceRender: ->
     @model.trigger('change')
@@ -452,6 +453,8 @@ class ScreenView extends Backbone.View
     'input #survey_title': 'update'
     'input #survey_description': 'update'
     'input #survey_thank_you': 'update'
+    'input #survey_image': 'update'
+    'click .screen_img': 'attach_logo'
 
   initialize: (options) ->
     {selector, @formBuilder, screens} = options
@@ -463,21 +466,47 @@ class ScreenView extends Backbone.View
     @render screens
 
   update: _.debounce ->
-      @dat = [
-        $('#survey_title').val(),
-        $('#survey_description').val(),
-        $('#survey_thank_you').val(),
-      ]
-      @formBuilder.mainView.doForceSave()
-    ,500
+    @dat = [
+      $('#survey_title').val(),
+      $('#survey_description').val(),
+      $('#survey_thank_you').val(),
+      $('#survey_image').val(),
+    ]
+    @renderIcon()
+    @formBuilder.mainView.doForceSave()
+  ,500
+
+  attach_logo: (e) ->
+    target = $ e.currentTarget
+    ol_val = $('#survey_image').val()
+    t = target.offset().top + (target.outerHeight()) + 10
+    p = target.offset().left + (target.outerWidth() * 0.5)
+
+    callback = _.debounce (uridat) =>
+      uri = $('#survey_image')
+      unless uridat is ""
+        uri.val(uridat).trigger('input')
+      else
+        uri.val("").trigger('input')
+    , 500
+
+    Formbuilder.uploads.show(t, p, 'logo', callback, ol_val)
 
   toJSON: ->
     @dat
+
+  renderIcon: ->
+    unless $('#survey_image').val() is ""
+      $('#survey_image_status').show()
+    else
+      $('#survey_image_status').hide()
 
   render: (dat) ->
     $('#survey_title').val(dat[0])
     $('#survey_description').val(dat[1])
     $('#survey_thank_you').val(dat[2])
+    $('#survey_image').val(dat[3])
+    @renderIcon()
 
 class Formbuilder
   @helpers:
@@ -761,15 +790,40 @@ class Formbuilder
         value: i.name
       .imagepicker()
 
-    show: (t, callback, selected) ->
-      @at.css('top', t - (@at.height() * 0.5)).addClass 'open'
+    show: (t, r, delegate, callback, selected) ->
+      @at.removeClass 'top'
+      @at.removeClass 'right'
+
+      if delegate is 'right'
+        @at
+          .addClass 'right'
+          .css 'top',   t - (@at.height() * 0.5)
+          .css 'position', 'fixed'
+          .css 'right', r
+          .css 'left', 'auto'
+          # .css 'left', @at.width() + 10
+          .addClass 'open'
+
+      else if delegate is 'logo'
+        @at
+          .addClass 'top'
+          .css 'top', t - 60
+          .css 'position', 'absolute'
+          .css 'left', r - @at.width() * 0.5 - 90
+          .css 'right', 'auto'
+          .addClass 'open'
 
       @th_el
         .val(selected)
         .imagepicker()
 
       @callback = callback
-      $(".sb-images-container").scrollTo("div.thumbnail.selected", {duration: 500, offset: -50 })
+      scroll = _.bind ->
+        $ ".sb-images-container"
+        .scrollTo "div.thumbnail.selected",
+          duration: 500
+          offset: -50
+      _.delay scroll, 500
 
     hide: ->
       @at.removeClass 'open'
