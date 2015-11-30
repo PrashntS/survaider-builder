@@ -72,6 +72,15 @@ var Boner = {
       return Formbuilder.inputFields[this.get(Formbuilder.options.mappings.FIELD_TYPE)] != null;
     };
 
+    FormbuilderModel.prototype.create_uid = function() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r, v;
+        r = crypto.getRandomValues(new Uint8Array(1))[0] % 16 | 0;
+        v = c === 'x' ? r : r & 0x3 | 0x8;
+        return v.toString(16);
+      });
+    };
+
     return FormbuilderModel;
 
   })(Backbone.DeepModel);
@@ -115,7 +124,7 @@ var Boner = {
     };
 
     FormbuilderCollection.prototype.copyCidToModel = function(model) {
-      return model.attributes.cid = model.cid;
+      return model.attributes.cid = model.create_uid();
     };
 
     return FormbuilderCollection;
@@ -213,10 +222,13 @@ var Boner = {
       'click .js-remove-option': 'removeOption',
       'click .js-default-updated': 'defaultUpdated',
       'input .option-label-input': 'forceRender',
+      'change .option-label-input': 'forceRender',
+      'change .check': 'optionUpdated',
       'click .check': 'optionUpdated',
       'click .sb-attach-init': 'attachImage',
       'click .sb-label-description': 'prepareLabel',
-      'click .option': 'prepareLabel'
+      'click .option': 'prepareLabel',
+      'input input[data-uri=container]': 'attachImageProcess'
     };
 
     EditFieldView.prototype.initialize = function(options) {
@@ -241,7 +253,7 @@ var Boner = {
     };
 
     EditFieldView.prototype.addOption = function(e) {
-      var $el, field_type, i, newOption, op_len, options;
+      var $el, field_type, i, newOption, op_len, options, routine;
       $el = $(e.currentTarget);
       i = this.$el.find('.option').index($el.closest('.option'));
       options = this.model.get(Formbuilder.options.mappings.OPTIONS) || [];
@@ -251,18 +263,33 @@ var Boner = {
       };
       op_len = $el.parent().parent().find('.option').length;
       field_type = this.model.get(Formbuilder.options.mappings.FIELD_TYPE);
+      routine = _.bind(function() {
+        if (i > -1) {
+          options.splice(i + 1, 0, newOption);
+        } else {
+          options.push(newOption);
+        }
+        this.model.set(Formbuilder.options.mappings.OPTIONS, options);
+        this.model.trigger("change:" + Formbuilder.options.mappings.OPTIONS);
+        return this.forceRender();
+      }, this);
       if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max) {
-        sweetAlert("", "This question only supports three options." + field_type, "error");
-        return;
-      }
-      if (i > -1) {
-        options.splice(i + 1, 0, newOption);
+        return swal({
+          title: "Are you sure?",
+          text: "Gamified surveys only support " + op_len + " options for '" + field_type + "' fields.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, proceed!",
+          closeOnConfirm: true
+        }, function(ok) {
+          if (ok === true) {
+            return routine();
+          }
+        });
       } else {
-        options.push(newOption);
+        return routine();
       }
-      this.model.set(Formbuilder.options.mappings.OPTIONS, options);
-      this.model.trigger("change:" + Formbuilder.options.mappings.OPTIONS);
-      return this.forceRender();
     };
 
     EditFieldView.prototype.removeOption = function(e) {
@@ -272,7 +299,15 @@ var Boner = {
       op_len = $el.parent().parent().find('.option').length;
       field_type = this.model.get(Formbuilder.options.mappings.FIELD_TYPE);
       if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min) {
-        sweetAlert("", "This question only supports three options." + field_type, "error");
+        swal({
+          title: "No options!",
+          text: "Minimum two options are required.",
+          type: "error",
+          showCancelButton: false,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Okay",
+          closeOnConfirm: true
+        });
         return;
       }
       options = this.model.get(Formbuilder.options.mappings.OPTIONS);
@@ -298,10 +333,23 @@ var Boner = {
     };
 
     EditFieldView.prototype.attachImage = function(e) {
-      var t, target;
+      var callback, ol_val, r, t, target;
       target = $(e.currentTarget);
+      ol_val = target.find('input[data-sb-attach=uri]').val();
       t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop();
-      return Formbuilder.uploads.show(t);
+      r = $(window).width() - target.offsetParent().offset().left + 10;
+      callback = _.debounce((function(_this) {
+        return function(uridat) {
+          var uri;
+          uri = target.find('input[data-sb-attach=uri]');
+          if (uridat !== "") {
+            return uri.val(uridat).trigger('input');
+          } else {
+            return uri.val("").trigger('input');
+          }
+        };
+      })(this), 500);
+      return Formbuilder.uploads.show(t, r, 'right', callback, ol_val);
     };
 
     EditFieldView.prototype.forceRender = function() {
@@ -310,7 +358,7 @@ var Boner = {
 
     EditFieldView.prototype.prepareLabel = function(e) {
       var $el;
-      $el = $(e.currentTarget).find("input").eq(0);
+      $el = $(e.currentTarget).find("textarea,input").eq(0);
       if ($el.val().indexOf("\x1e") > -1) {
         return $el.val("");
       }
@@ -649,7 +697,9 @@ var Boner = {
     ScreenView.prototype.events = {
       'input #survey_title': 'update',
       'input #survey_description': 'update',
-      'input #survey_thank_you': 'update'
+      'input #survey_thank_you': 'update',
+      'input #survey_image': 'update',
+      'click .screen_img': 'attach_logo'
     };
 
     ScreenView.prototype.initialize = function(options) {
@@ -663,18 +713,49 @@ var Boner = {
     };
 
     ScreenView.prototype.update = _.debounce(function() {
-      this.dat = [$('#survey_title').val(), $('#survey_description').val(), $('#survey_thank_you').val()];
+      this.dat = [$('#survey_title').val(), $('#survey_description').val(), $('#survey_thank_you').val(), $('#survey_image').val()];
+      this.renderIcon();
       return this.formBuilder.mainView.doForceSave();
     }, 500);
+
+    ScreenView.prototype.attach_logo = function(e) {
+      var callback, ol_val, p, t, target;
+      target = $(e.currentTarget);
+      ol_val = $('#survey_image').val();
+      t = target.offset().top + (target.outerHeight()) + 10;
+      p = target.offset().left + (target.outerWidth() * 0.5);
+      callback = _.debounce((function(_this) {
+        return function(uridat) {
+          var uri;
+          uri = $('#survey_image');
+          if (uridat !== "") {
+            return uri.val(uridat).trigger('input');
+          } else {
+            return uri.val("").trigger('input');
+          }
+        };
+      })(this), 500);
+      return Formbuilder.uploads.show(t, p, 'logo', callback, ol_val);
+    };
 
     ScreenView.prototype.toJSON = function() {
       return this.dat;
     };
 
+    ScreenView.prototype.renderIcon = function() {
+      if ($('#survey_image').val() !== "") {
+        return $('#survey_image_status').show();
+      } else {
+        return $('#survey_image_status').hide();
+      }
+    };
+
     ScreenView.prototype.render = function(dat) {
       $('#survey_title').val(dat[0]);
       $('#survey_description').val(dat[1]);
-      return $('#survey_thank_you').val(dat[2]);
+      $('#survey_thank_you').val(dat[2]);
+      $('#survey_image').val(dat[3]);
+      return this.renderIcon();
     };
 
     return ScreenView;
@@ -810,17 +891,62 @@ var Boner = {
 
     Formbuilder.uploads = {
       init: function(opt) {
-        this.dz = new Dropzone('div#sbDropzone', {
+        var show_bounce;
+        this.dzbtn = Ladda.create(document.querySelector('#sb-dz-attach'));
+        this.dzbtnel = $('#sb-dz-attach');
+        this.dz = new Dropzone('div#sb-attach', {
           url: opt.img_upload,
           paramName: 'swag',
           maxFilesize: 4,
+          acceptedFiles: 'image/*',
           uploadMultiple: false,
-          clickable: true
+          clickable: '#sb-dz-attach',
+          previewTemplate: '',
+          previewsContainer: false,
+          autoQueue: true
         });
         this.opt = opt;
-        this.dz.on('complete', (function(_this) {
+        this.dz.on('addedfile', (function(_this) {
+          return function(file, e) {
+            return _this.dzbtn.start();
+          };
+        })(this));
+        this.dz.on('sending', (function(_this) {
+          return function(file) {
+            return _this.dzbtnel.attr('disabled', 'true');
+          };
+        })(this));
+        this.dz.on('totaluploadprogress', (function(_this) {
+          return function(progress) {
+            return _this.dzbtn.setProgress(progress / 100);
+          };
+        })(this));
+        this.dz.on('queuecomplete', (function(_this) {
+          return function(progress) {
+            return _this.dzbtn.setProgress(0);
+          };
+        })(this));
+        this.dz.on('error', (function(_this) {
+          return function(file, e, xhr) {
+            _this.dzbtn.stop();
+            if (xhr != null) {
+              e = e.message;
+            }
+            return swal({
+              title: "Upload Error",
+              text: e,
+              type: "error",
+              showCancelButton: false,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Okay",
+              closeOnConfirm: true
+            });
+          };
+        })(this));
+        this.dz.on('success', (function(_this) {
           return function(file, e) {
             var js;
+            _this.dzbtn.stop();
             _this.dz.removeFile(file);
             js = JSON.parse(file.xhr.response);
             return _this.add_thumbnail({
@@ -829,52 +955,71 @@ var Boner = {
             });
           };
         })(this));
-        this.thumbnails();
+        this.th_el = $('#sb-thumbnails');
         this.load_old();
+        this.init_thumbnail();
+        show_bounce = _.bind(this.show_routine, this);
+        this.show = _.debounce(show_bounce, 100);
         return this.at = $('#sb-attach');
+      },
+      init_thumbnail: function() {
+        return $('.sb-images-container').on('click', 'img.image_picker_image', (function(_this) {
+          return function(e) {
+            var v;
+            _this.th_el.data('picker').sync_picker_with_select();
+            v = _this.th_el.val();
+            return _this.callback(v);
+          };
+        })(this));
       },
       load_old: function() {
         return $.getJSON(this.opt.img_list, (function(_this) {
           return function(data) {
-            var i, j, len, ref, results;
+            var i, j, len, ref;
             ref = data.imgs;
-            results = [];
             for (j = 0, len = ref.length; j < len; j++) {
               i = ref[j];
-              results.push(_this.add_thumbnail(i));
+              _this.add_thumbnail(i);
             }
-            return results;
+            return _this.add_thumbnail({});
           };
         })(this));
       },
       add_thumbnail: function(i) {
-        return this.th_el.slick('slickAdd', "<div class=\"thumbnail\">\n  <img src=\"" + i.uri + "\" data-img-name=\"" + i.name + "\">\n</div>");
+        return this.th_el.prepend($('<option>', {
+          'data-img-src': i.uri,
+          'data-img-name': i.name,
+          value: i.name
+        })).imagepicker();
       },
-      thumbnails: function() {
-        this.th_el = $('#sb-thumbnails');
-        return this.th_el.slick({
-          infinite: true,
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          variableWidth: true
+      show_routine: function(t, r, delegate, callback, selected) {
+        var scroll;
+        this.at.removeClass('top');
+        this.at.removeClass('right');
+        if (delegate === 'right') {
+          this.at.addClass('right').css('top', t - (this.at.height() * 0.5)).css('position', 'fixed').css('right', r).css('left', 'auto').css('z-index', 2000).addClass('open');
+        } else if (delegate === 'logo') {
+          this.at.addClass('top').css('top', t - 60).css('position', 'absolute').css('left', r - this.at.width() * 0.5 - 90).css('right', 'auto').css('z-index', 10).addClass('open');
+        }
+        this.th_el.val(selected).imagepicker();
+        this.callback = callback;
+        scroll = _.bind(function() {
+          return $(".sb-images-container").scrollTo("div.thumbnail.selected", {
+            duration: 200,
+            offset: -50
+          });
         });
-      },
-      show: function(t) {
-        this.at.css('top', t - (this.at.height() * 0.5));
-        this.at.css('left', -1 * (this.at.width() + 25));
-        this.at.css('opacity', 1);
-        return this.at.css('visibility', 'visible');
+        return _.delay(scroll, 100);
       },
       hide: function() {
         var df;
-        this.at.css('left', -1000);
-        this.at.css('opacity', 0);
+        this.at.removeClass('open');
         df = _.bind((function(_this) {
           return function() {
-            _this.at.css('visibility', 'hidden');
             return _this.at.css('top', 0);
           };
         })(this), this);
+        this.callback = false;
         return _.delay(df, 1000);
       }
     };
@@ -959,7 +1104,7 @@ var Boner = {
 (function() {
   Formbuilder.registerField('multiple_choice', {
     order: 5,
-    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n      <p>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n  </div>\n<% } %>\n  <button class=\"target hanging\"\n          data-target = \"out\"\n          id = \"<%= rf.cid %>_0\"\n  ></button>",
+    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n      <p>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT ) &&\n               typeof rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"undefined\" &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"\") { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n  </div>\n<% } %>\n  <button class=\"target hanging\"\n          data-target = \"out\"\n          id = \"<%= rf.cid %>_0\"\n  ></button>",
     edit: "<%= Formbuilder.templates['edit/notify']() %>\n<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"pull-left\"><span class=\"fa fa-square-o\"></span></span> Multiple Choice",
     defaultAttributes: function(attrs) {
@@ -992,7 +1137,7 @@ var Boner = {
 (function() {
   Formbuilder.registerField('ranking', {
     order: 6,
-    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n    <label class='sb-option'>\n      <p>\n        <span class=\"digit up\"><i class=\"fa fa-arrow-up\"></i></span><span class=\"digit down\"><i class=\"fa fa-arrow-down\"></i></span>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n    </label>\n  </div>\n<% } %>\n  <button class=\"target hanging\"\n          data-target = \"out\"\n          id = \"<%= rf.cid %>_0\"\n  ></button>",
+    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n    <label class='sb-option'>\n      <p>\n        <span class=\"digit up\"><i class=\"fa fa-arrow-up\"></i></span><span class=\"digit down\"><i class=\"fa fa-arrow-down\"></i></span>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT ) &&\n               typeof rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"undefined\" &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"\") { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n    </label>\n  </div>\n<% } %>\n  <button class=\"target hanging\"\n          data-target = \"out\"\n          id = \"<%= rf.cid %>_0\"\n  ></button>",
     edit: "<%= Formbuilder.templates['edit/notify']() %>\n<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"pull-left\"><span class=\"fa fa-bars\"></span></span> Ranking",
     defaultAttributes: function(attrs) {
@@ -1034,7 +1179,7 @@ var Boner = {
 (function() {
   Formbuilder.registerField('single_choice', {
     order: 4,
-    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n      <span class=\"link\"></span>\n      <p>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n      <button class=\"target\"\n              data-target = \"out\"\n              id = \"<%= rf.cid %>_<%= i %>\"\n              data-target-index = \"<%= i %>\"\n              data-target-value = \"<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\"\n      ></button>\n  </div>\n<% } %>",
+    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n      <span class=\"link\"></span>\n      <p>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT ) &&\n               typeof rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"undefined\" &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"\") { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n      <button class=\"target\"\n              data-target = \"out\"\n              id = \"<%= rf.cid %>_<%= i %>\"\n              data-target-index = \"<%= i %>\"\n              data-target-value = \"<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\"\n      ></button>\n  </div>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/notify']() %>\n<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"pull-left\"><span class=\"fa fa-circle-o\"></span></span> Single Choice",
     defaultAttributes: function(attrs) {
@@ -1056,7 +1201,7 @@ var Boner = {
 (function() {
   Formbuilder.registerField('yes_no', {
     order: 2,
-    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n      <span class=\"link\"></span>\n      <p>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n      <button class=\"target\"\n              data-target = \"out\"\n              id = \"<%= rf.cid %>_<%= i %>\"\n              data-target-index = \"<%= i %>\"\n              data-target-value = \"<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\"\n      ></button>\n  </div>\n<% } %>",
+    view: "<% lis = rf.get(Formbuilder.options.mappings.OPTIONS) || [] %>\n<% for (i = 0; i < lis.length; i += 1) { %>\n  <div class=\"line\">\n      <span class=\"link\"></span>\n      <p>\n        <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n        <% if (rf.get(Formbuilder.options.mappings.RICHTEXT ) &&\n               typeof rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"undefined\" &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== \"\") { %>\n          <i class=\"fa fa-paperclip\"></i>\n        <% } %>\n        <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&\n               rf.get(Formbuilder.options.mappings.OPTIONS)[i].notify) { %>\n          <i class=\"fa fa-globe\"></i>\n        <% } %>\n      </p>\n      <!--span class=\"skip\"><i class=\"fa fa-level-up\"></i><span>11</span></span-->\n      <button class=\"target\"\n              data-target = \"out\"\n              id = \"<%= rf.cid %>_<%= i %>\"\n              data-target-index = \"<%= i %>\"\n              data-target-value = \"<%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\"\n      ></button>\n  </div>\n<% } %>",
     edit: "<%= Formbuilder.templates['edit/notify']() %>\n<%= Formbuilder.templates['edit/options']() %>",
     addButton: "<span class=\"pull-left\"><span class=\"fa fa-dot-circle-o\"></span></span> Yes \/ No",
     defaultAttributes: function(attrs) {
@@ -1191,6 +1336,8 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '\n<div class="form-group form-group-default required">\n<label>Question Label</label>\n<textarea class="form-control" data-rv-input=\'model.' +
 ((__t = ( Formbuilder.options.mappings.LABEL )) == null ? '' : __t) +
+'\'></textarea>\n</div>\n<div class="form-group form-group-default">\n<label>Question Description</label>\n<textarea class="form-control" data-rv-input=\'model.' +
+((__t = ( Formbuilder.options.mappings.DESCRIPTION )) == null ? '' : __t) +
 '\'></textarea>\n</div>\n<p>\n' +
 ((__t = ( Formbuilder.options.dict.FIELDS[rf.get(Formbuilder.options.mappings.FIELD_TYPE)] )) == null ? '' : __t) +
 '\n</p>\n';
@@ -1249,7 +1396,7 @@ __p += '<div class=\'sb-edit-section-header\'>Add Option</div>\n\n<div class="in
 ((__t = ( Formbuilder.options.mappings.OPTIONS )) == null ? '' : __t) +
 '\'>\n  <input type="text" class="form-control option-label-input" data-rv-input="option:label">\n  <a class="input-group-addon sb-attach-init" data-rv-if="model.' +
 ((__t = ( Formbuilder.options.mappings.RICHTEXT )) == null ? '' : __t) +
-'">\n    <i class="fa fa-paperclip"></i>\n    <input type="text" data-rv-input="option:image" class="form-control option-label-input" style="display:none">\n  </a>\n  <a class="input-group-addon" data-rv-if="model.' +
+'">\n    <i class="fa fa-paperclip"></i>\n    <input type="text" data-rv-input="option:img_uri" class="form-control option-label-input" data-sb-attach="uri" style="display:none">\n    <input type="checkbox" class="check" data-sb-attach="enabled" data-rv-checked="option:img_enabled" style="display:none">\n  </a>\n  <a class="input-group-addon" data-rv-if="model.' +
 ((__t = ( Formbuilder.options.mappings.NOTIFICATION )) == null ? '' : __t) +
 '">\n    <input type="checkbox" class="check" data-rv-checked="option:notify">\n  </a>\n  <a class="input-group-addon js-remove-option">\n    <i class="fa fa-times-circle"></i>\n  </a>\n</div>\n\n<button class="btn btn-primary btn-sm m-b-10 js-add-option" type="button">\n  <i class="fa fa-plus-circle"></i> <span class="bold">Add Option</span>\n</button>\n';
 
@@ -1311,7 +1458,7 @@ this["Formbuilder"]["templates"]["page"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row no-margin">\n    <div class="col-xs-3 fixed">\n        <div id="builder-panel"></div>\n        <div class="panel panel-transparent affix" style="position:fixed; width:25%; bottom: 0; overflow: scroll; top: 60px;">\n          <div class="panel-heading">\n            <span class="font-montserrat text-uppercase bold">Project Details</span><br>\n            <span class="h3 font-montserrat" id="builder-project-title"></span>\n            <br>\n            <div class="btn-group btn-group-sm btn-group-justified m-t-10 m-b-10">\n              <a href="#" class="btn btn-primary" onclick="$(\'#survey_export_modal\').modal(\'show\');">\n                <span class="font-montserrat">Share / Preview</span>\n              </a>\n              <a href="#" class="btn btn-default" onclick="$(\'#survey_settings_modal\').modal(\'show\');">\n                <i class="fa fa-cog"></i>\n                <span class="font-montserrat">Settings</span>\n              </a>\n            </div>\n            <button class="btn btn-success font-montserrat btn-sm js-save-form">Save</button>\n          </div>\n          <div class="panel-body">\n            <hr>\n            <span class="font-montserrat text-uppercase bold">Fields</span>\n            <br>\n            ' +
+__p += '<div class="row no-margin">\n    <div class="col-xs-3 fixed">\n        <div id="builder-panel"></div>\n        <div class="panel panel-transparent affix" style="position:fixed; width:25%; bottom: 0; overflow: hidden; top: 60px;">\n          <div class="panel-heading">\n            <span class="font-montserrat text-uppercase bold">Project Details</span><br>\n            <span class="h3 font-montserrat" id="builder-project-title"></span>\n            <br>\n            <div class="btn-group btn-group-sm btn-group-justified m-t-10 m-b-10">\n              <a href="#" class="btn btn-primary" onclick="$(\'#survey_export_modal\').modal(\'show\');">\n                <span class="font-montserrat">Share / Preview</span>\n              </a>\n              <a href="#" class="btn btn-default" onclick="$(\'#survey_settings_modal\').modal(\'show\');">\n                <i class="fa fa-cog"></i>\n                <span class="font-montserrat">Settings</span>\n              </a>\n            </div>\n            <button class="btn btn-success font-montserrat btn-sm js-save-form">Save</button>\n          </div>\n          <div class="panel-body">\n            <hr>\n            <span class="font-montserrat text-uppercase bold">Fields</span>\n            <br>\n            ' +
 ((__t = ( Formbuilder.templates['partials/add_field']() )) == null ? '' : __t) +
 '\n            <hr>\n            <p>Drag and Drop the questions to begin building the survaider.</p>\n          </div>\n        </div>\n\n        <!-- <button class=\'btn btn-success js-save-form\'></button> -->\n    </div>\n    <div class="col-xs-9 no-padding">\n        ' +
 ((__t = ( Formbuilder.templates['partials/right_side']() )) == null ? '' : __t) +
@@ -1356,7 +1503,7 @@ this["Formbuilder"]["templates"]["partials/edit_field"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '\n<div class="modal fade slide-right" id="sb_edit_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-sm">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body col-xs-height col-middle">\n                <div class=\'sb-field-options\' id=\'editField\'>\n                  <div class=\'sb-edit-field-wrapper\'></div>\n                  <div class="sb-field-options-done">\n                      <button onclick=\'$("#sb_edit_model").modal("hide");\' class="btn btn-success font-montserrat btn-block m-t-10">Done</button>\n                  </div>\n                </div>\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class="container sb-attach right" id="sb-attach">\n        <div class="row">\n          <div class="col-xs-8">\n            <span class="font-montserrat text-uppercase bold">Attach an Image</span>\n            <div class="sb-thumbnails" id="sb-thumbnails"></div>\n          </div>\n          <div class="col-xs-4">\n            <div class="dropzone" id="sbDropzone"></div>\n          </div>\n        </div>\n        <div class="row">\n          <div class="col-xs-8 m-t-10 sm-m-t-10">\n            <div class="pull-right">\n              <button type="button" class="btn btn-default font-montserrat btn-sm m-t-5 sb-attach-hide" onclick="Formbuilder.uploads.hide();">Cancel</button>\n            </div>\n          </div>\n          <div class="col-xs-4 m-t-10 sm-m-t-10">\n            <button type="button" class="btn btn-primary font-montserrat btn-sm m-t-5">Apply Changes</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>\n\n<div class="modal fade slide-up sb-rich-input" id="sb_upload_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-md">\n    <div class="modal-content-wrapper">\n      <div class="modal-content p-t-10 p-b-10 p-l-10 p-r-10 ">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i></button>\n        <div class="container-xs-height full-height p-10">\n          <div class="row-xs-height">\n            <div class="col-xs-12">\n              <span class="font-montserrat text-uppercase bold">Field Text</span>\n              <div class="wysiwyg5-wrapper b-a b-grey">\n                <div id="sb-edit-rich"></div>\n              </div>\n            </div>\n          </div>\n          <br>\n          <div class="row-xs-height">\n            <div class="col-xs-8">\n              <span class="font-montserrat text-uppercase bold">Attach an Image</span>\n              <div class="sb-thumbnails" id="sb-thumbnaxxils">\n              </div>\n            </div>\n            <div class="col-xs-4">\n              <div class="dropzone" id="sbDropxxzone"></div>\n            </div>\n          </div>\n\n            <div class="row-xs-height">\n              <div class="col-xs-8">\n                <div class="p-t-20 clearfix p-l-10 p-r-10">\n                  <div class="pull-left">\n                    <p class="bold font-montserrat text-uppercase"></p>\n                  </div>\n                  <div class="pull-right">\n                    <p class="bold font-montserrat text-uppercase"></p>\n                  </div>\n                </div>\n              </div>\n              <div class="col-xs-4 m-t-10 sm-m-t-10">\n                <button type="button" class="btn btn-primary font-montserrat btn-block m-t-5">Apply Changes</button>\n              </div>\n            </div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n</div>\n';
+__p += '\n<div class="modal fade slide-right" id="sb_edit_model" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog modal-sm">\n    <div class="modal-content-wrapper">\n      <div class="modal-content">\n        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>\n        </button>\n        <div class="container-xs-height full-height">\n          <div class="row-xs-height">\n            <div class="modal-body col-xs-height col-middle">\n                <div class=\'sb-field-options\' id=\'editField\'>\n                  <div class=\'sb-edit-field-wrapper\'></div>\n                  <div class="sb-field-options-done">\n                      <button onclick=\'$("#sb_edit_model").modal("hide");\' class="btn btn-success font-montserrat btn-block m-t-10">Done</button>\n                  </div>\n                </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>\n\n      <div class="container sb-attach right" id="sb-attach">\n        <div class="row">\n          <div class="col-xs-12">\n            <span class="font-montserrat text-uppercase bold">Attach an Image</span><br>\n            <div class="sb-images">\n              <div class="sb-images-container">\n                <select class="image-picker show-html" id="sb-thumbnails"></select>\n              </div>\n            </div>\n          </div>\n        </div>\n        <div class="row">\n          <div class="col-xs-12 m-t-10 sm-m-t-10">\n            <a class="btn btn-primary font-montserrat btn-sm ladda-button"\n               id="sb-dz-attach"\n               data-style="expand-left">\n               <span class="ladda-label">Upload</span>\n            </a>\n            <small><span class="font-montserrat text-uppercase bold">You may also Drag and Drop the image here.</span></small>\n            <div class="pull-right">\n              <button type="button" class="btn btn-primary font-montserrat btn-sm m-t-5" onclick="Formbuilder.uploads.hide();">Done</button>\n            </div>\n          </div>\n        </div>\n      </div>\n';
 
 }
 return __p
@@ -1376,7 +1523,7 @@ this["Formbuilder"]["templates"]["partials/right_side"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class=\'sb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="sb-survey-description above">\n      <p class="section">Introduction Screen</p>\n      <div class="screen_head">\n        <input type="text" placeholder="Survey Title" value="" id="survey_title">\n        <textarea id="survey_description"></textarea>\n        <button class="target_O"\n                id = "i"\n                data-target = "top_out"\n                data-target-index = "0"\n        ></button>\n      </div>\n  </div>\n  <div class=\'sb-response-fields\'>\n  </div>\n  <div class="sb-survey-description below">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you"></textarea>\n      <button class="target_O"\n              id = "j"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
+__p += '<div class=\'sb-right\'>\n  <div id=\'svg-canvas\'></div>\n  <div class="sb-survey-description above">\n      <p class="section">Introduction Screen</p>\n      <div class="screen_head">\n        <input type="text" placeholder="Survey Title" value="" id="survey_title">\n        <input type="text" id="survey_image" style="display:none">\n        <button class="screen_img">Logo <i class="fa fa-paperclip" id="survey_image_status"></i></button>\n        <textarea id="survey_description"></textarea>\n        <button class="target_O"\n                id = "i"\n                data-target = "top_out"\n                data-target-index = "0"\n        ></button>\n      </div>\n  </div>\n  <div class=\'sb-response-fields\'>\n  </div>\n  <div class="sb-survey-description below">\n      <p class="section">End Screen</p>\n      <textarea id="survey_thank_you"></textarea>\n      <button class="target_O"\n              id = "j"\n              data-target = "top_in"\n              data-target-index = "0"\n      ></button>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -1471,7 +1618,9 @@ __p += '\n    ';
  if (rf.get(Formbuilder.options.mappings.NOTIFICATION)) { ;
 __p += '\n    &bullet; <i class="fa fa-globe"></i>\n    ';
  } ;
-__p += '\n    </small>\n</p>\n';
+__p += '\n    </small>\n</p>\n<p><small>' +
+((__t = ( Formbuilder.helpers.simple_format(rf.get(Formbuilder.options.mappings.DESCRIPTION)) )) == null ? '' : __t) +
+'</small></p>\n';
 
 }
 return __p

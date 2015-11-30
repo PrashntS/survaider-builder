@@ -6,6 +6,12 @@ class FormbuilderModel extends Backbone.DeepModel
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
 
+  create_uid: ->
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace /[xy]/g, (c) ->
+      r = crypto.getRandomValues(new Uint8Array(1))[0] % 16 | 0
+      v = if c == 'x' then r else r & 0x3 | 0x8
+      v.toString 16
+
 class ScreenModel extends Backbone.DeepModel
   screens:
     intro:
@@ -24,7 +30,7 @@ class FormbuilderCollection extends Backbone.Collection
     model.indexInDOM()
 
   copyCidToModel: (model) ->
-    model.attributes.cid = model.cid
+    model.attributes.cid = model.create_uid()
 
 class ViewFieldView extends Backbone.View
   ###
@@ -90,10 +96,13 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
+    'change .option-label-input': 'forceRender'
+    'change .check': 'optionUpdated'
     'click .check': 'optionUpdated'
     'click .sb-attach-init': 'attachImage'
     'click .sb-label-description': 'prepareLabel'
     'click .option': 'prepareLabel'
+    'input input[data-uri=container]': 'attachImageProcess'
 
   initialize: (options) ->
     {@parentView} = options
@@ -119,19 +128,32 @@ class EditFieldView extends Backbone.View
     op_len = $el.parent().parent().find('.option').length
 
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
+    routine = _.bind ->
+      if i > -1
+        options.splice(i + 1, 0, newOption)
+      else
+        options.push newOption
+
+      @model.set Formbuilder.options.mappings.OPTIONS, options
+      @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}"
+      @forceRender()
+    , @
 
     if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
-      sweetAlert("", "This question only supports three options." + field_type, "error")
-      return
-
-    if i > -1
-      options.splice(i + 1, 0, newOption)
+      swal
+        title: "Are you sure?"
+        text: "Gamified surveys only support #{op_len} options for '#{field_type}' fields."
+        type: "warning"
+        showCancelButton: true
+        confirmButtonColor: "#DD6B55"
+        confirmButtonText: "Yes, proceed!"
+        closeOnConfirm: true
+      , (ok) ->
+        if ok is yes
+          return routine()
+        return
     else
-      options.push newOption
-
-    @model.set Formbuilder.options.mappings.OPTIONS, options
-    @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}"
-    @forceRender()
+      routine()
 
   removeOption: (e) ->
     $el = $(e.currentTarget)
@@ -141,7 +163,14 @@ class EditFieldView extends Backbone.View
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
 
     if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
-      sweetAlert("", "This question only supports three options." + field_type, "error")
+      swal
+        title: "No options!"
+        text: "Minimum two options are required."
+        type: "error"
+        showCancelButton: false
+        confirmButtonColor: "#DD6B55"
+        confirmButtonText: "Okay"
+        closeOnConfirm: true
       return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
@@ -164,14 +193,26 @@ class EditFieldView extends Backbone.View
 
   attachImage: (e) ->
     target = $(e.currentTarget)
+    ol_val = target.find('input[data-sb-attach=uri]').val()
+
     t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
-    Formbuilder.uploads.show t
+    r = $(window).width() - target.offsetParent().offset().left + 10
+
+    callback = _.debounce (uridat) =>
+      uri = target.find('input[data-sb-attach=uri]')
+      unless uridat is ""
+        uri.val(uridat).trigger('input')
+      else
+        uri.val("").trigger('input')
+    , 500
+
+    Formbuilder.uploads.show t, r, 'right', callback, ol_val
 
   forceRender: ->
     @model.trigger('change')
 
   prepareLabel: (e) ->
-    $el = $(e.currentTarget).find("input").eq(0)
+    $el = $(e.currentTarget).find("textarea,input").eq(0)
     $el.val("") if $el.val().indexOf("\x1e") > -1
 
 class BuilderView extends Backbone.View
@@ -412,6 +453,8 @@ class ScreenView extends Backbone.View
     'input #survey_title': 'update'
     'input #survey_description': 'update'
     'input #survey_thank_you': 'update'
+    'input #survey_image': 'update'
+    'click .screen_img': 'attach_logo'
 
   initialize: (options) ->
     {selector, @formBuilder, screens} = options
@@ -423,21 +466,47 @@ class ScreenView extends Backbone.View
     @render screens
 
   update: _.debounce ->
-      @dat = [
-        $('#survey_title').val(),
-        $('#survey_description').val(),
-        $('#survey_thank_you').val(),
-      ]
-      @formBuilder.mainView.doForceSave()
-    ,500
+    @dat = [
+      $('#survey_title').val(),
+      $('#survey_description').val(),
+      $('#survey_thank_you').val(),
+      $('#survey_image').val(),
+    ]
+    @renderIcon()
+    @formBuilder.mainView.doForceSave()
+  ,500
+
+  attach_logo: (e) ->
+    target = $ e.currentTarget
+    ol_val = $('#survey_image').val()
+    t = target.offset().top + (target.outerHeight()) + 10
+    p = target.offset().left + (target.outerWidth() * 0.5)
+
+    callback = _.debounce (uridat) =>
+      uri = $('#survey_image')
+      unless uridat is ""
+        uri.val(uridat).trigger('input')
+      else
+        uri.val("").trigger('input')
+    , 500
+
+    Formbuilder.uploads.show(t, p, 'logo', callback, ol_val)
 
   toJSON: ->
     @dat
+
+  renderIcon: ->
+    unless $('#survey_image').val() is ""
+      $('#survey_image_status').show()
+    else
+      $('#survey_image_status').hide()
 
   render: (dat) ->
     $('#survey_title').val(dat[0])
     $('#survey_description').val(dat[1])
     $('#survey_thank_you').val(dat[2])
+    $('#survey_image').val(dat[3])
+    @renderIcon()
 
 class Formbuilder
   @helpers:
@@ -647,59 +716,125 @@ class Formbuilder
 
   @uploads:
     init: (opt) ->
-      @dz = new Dropzone 'div#sbDropzone',
+      @dzbtn = Ladda.create document.querySelector '#sb-dz-attach'
+      @dzbtnel = $ '#sb-dz-attach'
+      @dz = new Dropzone 'div#sb-attach',
         url: opt.img_upload
         paramName: 'swag'
         maxFilesize: 4
+        acceptedFiles: 'image/*'
         uploadMultiple: false
-        clickable: true
+        clickable: '#sb-dz-attach'
+        previewTemplate: ''
+        previewsContainer: false
+        autoQueue: yes
       @opt = opt
 
-      @dz.on 'complete', (file, e) =>
+      @dz.on 'addedfile', (file, e) =>
+        @dzbtn.start()
+
+      @dz.on 'sending', (file) =>
+        @dzbtnel.attr 'disabled', 'true'
+
+      @dz.on 'totaluploadprogress', (progress) =>
+        @dzbtn.setProgress progress / 100
+
+      @dz.on 'queuecomplete', (progress) =>
+        @dzbtn.setProgress 0
+
+      @dz.on 'error', (file, e, xhr) =>
+        @dzbtn.stop()
+        e = e.message if xhr?
+        swal
+            title: "Upload Error"
+            text: e
+            type: "error"
+            showCancelButton: false
+            confirmButtonColor: "#DD6B55"
+            confirmButtonText: "Okay"
+            closeOnConfirm: true
+
+      @dz.on 'success', (file, e) =>
+        @dzbtn.stop()
         @dz.removeFile(file)
         js = JSON.parse file.xhr.response
         @add_thumbnail
           uri: js.temp_uri
           name: js.access_id
 
-      @thumbnails()
+      @th_el = $ '#sb-thumbnails'
+
       @load_old()
+      @init_thumbnail()
+
+      show_bounce = _.bind @show_routine, @
+      @show = _.debounce show_bounce, 100
 
       @at = $ '#sb-attach'
+
+    init_thumbnail: ->
+      $('.sb-images-container').on 'click'
+      ,'img.image_picker_image'
+      ,(e) =>
+        @th_el.data('picker').sync_picker_with_select()
+        v = @th_el.val()
+        @callback v
 
     load_old: ->
       $.getJSON @opt.img_list, (data) =>
         for i in data.imgs
           @add_thumbnail i
+        @add_thumbnail {}
 
     add_thumbnail: (i) ->
-      @th_el.slick 'slickAdd', """
-      <div class="thumbnail">
-        <img src="#{i.uri}" data-img-name="#{i.name}">
-      </div>
-      """
+      @th_el.prepend $ '<option>',
+        'data-img-src': i.uri
+        'data-img-name': i.name
+        value: i.name
+      .imagepicker()
 
-    thumbnails: ->
-      @th_el = $ '#sb-thumbnails'
-      @th_el.slick
-        infinite: true
-        slidesToShow: 2
-        slidesToScroll: 2
-        variableWidth: true
+    show_routine: (t, r, delegate, callback, selected) ->
+      @at.removeClass 'top'
+      @at.removeClass 'right'
 
-    show: (t) ->
-      @at.css 'top', t - (@at.height() * 0.5)
-      @at.css 'left', -1 * (@at.width() + 25)
-      @at.css 'opacity', 1
-      @at.css 'visibility', 'visible'
+      if delegate is 'right'
+        @at
+          .addClass 'right'
+          .css 'top',   t - (@at.height() * 0.5)
+          .css 'position', 'fixed'
+          .css 'right', r
+          .css 'left', 'auto'
+          .css 'z-index', 2000
+          .addClass 'open'
+
+      else if delegate is 'logo'
+        @at
+          .addClass 'top'
+          .css 'top', t - 60
+          .css 'position', 'absolute'
+          .css 'left', r - @at.width() * 0.5 - 90
+          .css 'right', 'auto'
+          .css 'z-index', 10
+          .addClass 'open'
+
+      @th_el
+        .val(selected)
+        .imagepicker()
+
+      @callback = callback
+      scroll = _.bind ->
+        $ ".sb-images-container"
+        .scrollTo "div.thumbnail.selected",
+          duration: 200
+          offset: -50
+      _.delay scroll, 100
 
     hide: ->
-      @at.css 'left', -1000
-      @at.css 'opacity', 0
+      @at.removeClass 'open'
       df = _.bind () =>
-        @at.css 'visibility', 'hidden'
         @at.css 'top', 0
       , @
+      @callback = false
       _.delay df, 1000
 
   @proxy:

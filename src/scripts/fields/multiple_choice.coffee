@@ -8,7 +8,9 @@ Formbuilder.registerField 'multiple_choice',
       <div class="line">
           <p>
             <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
-            <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>
+            <% if (rf.get(Formbuilder.options.mappings.RICHTEXT ) &&
+                   typeof rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== "undefined" &&
+                   rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== "") { %>
               <i class="fa fa-paperclip"></i>
             <% } %>
             <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&

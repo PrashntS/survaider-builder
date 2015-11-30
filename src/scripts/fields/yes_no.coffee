@@ -9,7 +9,9 @@ Formbuilder.registerField 'yes_no',
           <span class="link"></span>
           <p>
             <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>
-            <% if (rf.get(Formbuilder.options.mappings.RICHTEXT )) { %>
+            <% if (rf.get(Formbuilder.options.mappings.RICHTEXT ) &&
+                   typeof rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== "undefined" &&
+                   rf.get(Formbuilder.options.mappings.OPTIONS)[i].img_uri !== "") { %>
               <i class="fa fa-paperclip"></i>
             <% } %>
             <% if (rf.get(Formbuilder.options.mappings.NOTIFICATION) &&
@@ -17,6 +19,7 @@ Formbuilder.registerField 'yes_no',
               <i class="fa fa-globe"></i>
             <% } %>
           </p>
+          <!--span class="skip"><i class="fa fa-level-up"></i><span>11</span></span-->
           <button class="target"
                   data-target = "out"
                   id = "<%= rf.cid %>_<%= i %>"

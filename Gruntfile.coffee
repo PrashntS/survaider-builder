@@ -103,6 +103,8 @@ module.exports = (grunt) ->
             'bower_components/opentip/lib/opentip.js'
             'bower_components/opentip/lib/adapter-jquery.js'
             'bower_components/dropzone/dist/dropzone.js'
+            'bower_components/jquery.scrollTo/jquery.scrollTo.js'
+            'bower_components/image-picker/image-picker/image-picker.js'
             'bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js'
           ]
 

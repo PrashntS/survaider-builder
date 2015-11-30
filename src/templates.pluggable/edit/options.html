@@ -4,7 +4,8 @@
   <input type="text" class="form-control option-label-input" data-rv-input="option:label">
   <a class="input-group-addon sb-attach-init" data-rv-if="model.<%= Formbuilder.options.mappings.RICHTEXT %>">
     <i class="fa fa-paperclip"></i>
-    <input type="text" data-rv-input="option:image" class="form-control option-label-input" style="display:none">
+    <input type="text" data-rv-input="option:img_uri" class="form-control option-label-input" data-sb-attach="uri" style="display:none">
+    <input type="checkbox" class="check" data-sb-attach="enabled" data-rv-checked="option:img_enabled" style="display:none">
   </a>
   <a class="input-group-addon" data-rv-if="model.<%= Formbuilder.options.mappings.NOTIFICATION %>">
     <input type="checkbox" class="check" data-rv-checked="option:notify">
