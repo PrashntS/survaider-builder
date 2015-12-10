@@ -43,6 +43,7 @@
     "opentip": "~2.4.6",
     "image-picker": "~0.2.4",
     "jquery.scrollTo": "~2.1.2",
-    "Croppie": "croppie#~1.0.2"
+    "Croppie": "croppie#~1.0.2",
+    "cropper": "~2.2.0"
   }
 }

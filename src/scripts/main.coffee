@@ -718,25 +718,67 @@ class Formbuilder
     init: (opt) ->
       @dzbtn = Ladda.create document.querySelector '#sb-dz-attach'
       @dzbtnel = $ '#sb-dz-attach'
+      @cropmodal = $('div#sb-attach').find '.crop'
+      @cropcontainer = $('div#sb-attach').find '.croparea'
+      @cropdone = $('div#sb-attach').find '.sb-crop-done'
+
       @dz = new Dropzone 'div#sb-attach',
         url: opt.img_upload
         paramName: 'swag'
         maxFilesize: 4
         acceptedFiles: 'image/*'
-        uploadMultiple: false
+        uploadMultiple: no
         clickable: '#sb-dz-attach'
         previewTemplate: ''
-        previewsContainer: false
-        autoQueue: yes
+        previewsContainer: no
+        autoProcessQueue: no
+        autoQueue: no
+
       @opt = opt
 
-      @croppie = $('#sb-croppie').croppie
-        viewport:
-          width: 100
-          height: 100
-
       @dz.on 'addedfile', (file, e) =>
+        console.log "added"
+        return unless file.cropped
         @dzbtn.start()
+
+      @dz.on 'thumbnail', (file) =>
+        return if file.cropped
+        @cropcontainer.html ''
+
+        img = $ '<img class="original" />'
+        reader = new FileReader
+
+        cachedName = file.name
+        cachedType = file.type
+        @dz.removeFile file
+
+        reader.onloadend = =>
+          @cropcontainer.html img
+          img.attr 'src', reader.result
+
+          img.cropper
+            aspectRatio: 1
+            autoCropArea: 1
+            movable: yes
+            cropBoxResizable: yes
+
+        reader.readAsDataURL file
+        @cropmodal.addClass 'open'
+
+        click_handler = ->
+          blob = img.cropper('getCroppedCanvas').toDataURL()
+          newfile = new File [@dataURItoBlob(blob, cachedType)],
+          cachedName,
+          type: cachedType
+
+          newfile.cropped = yes
+          # @dz.addFile newfile
+          @dz.processFile(newfile)
+          @cropmodal.removeClass 'open'
+
+        click_bounce = _.bind click_handler, @
+
+        @cropdone.on 'click', _.debounce(click_bounce, 500)
 
       @dz.on 'sending', (file) =>
         @dzbtnel.attr 'disabled', 'true'
@@ -841,6 +883,16 @@ class Formbuilder
       , @
       @callback = false
       _.delay df, 1000
+
+    dataURItoBlob: (dataURI, type) ->
+      byteString = atob(dataURI.split(',')[1])
+      ab = new ArrayBuffer(byteString.length)
+      ia = new Uint8Array(ab)
+      i = 0
+      while i < byteString.length
+        ia[i] = byteString.charCodeAt(i)
+        i++
+      new Blob([ ab ], type: type)
 
   @proxy:
     addTargetAndSources: ->

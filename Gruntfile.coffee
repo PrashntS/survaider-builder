@@ -106,7 +106,7 @@ module.exports = (grunt) ->
             'bower_components/jquery.scrollTo/jquery.scrollTo.js'
             'bower_components/image-picker/image-picker/image-picker.js'
             'bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js'
-            'bower_components/Croppie/croppie.js'
+            'bower_components/cropper/dist/cropper.js'
           ]
 
     cssmin:
@@ -118,7 +118,7 @@ module.exports = (grunt) ->
             'bower_components/opentip/css/opentip.css'
             'bower_components/slick-carousel/slick/slick.css'
             'bower_components/slick-carousel/slick/slick-theme.css'
-            'bower_components/Croppie/croppie.css'
+            'bower_components/cropper/dist/cropper.css'
           ]
           '<%= vendorFolder %>/css/vendor.css': [
             'bower_components/font-awesome/css/font-awesome.css'
@@ -127,7 +127,7 @@ module.exports = (grunt) ->
             'bower_components/slick-carousel/slick/slick.css'
             'bower_components/slick-carousel/slick/slick-theme.css'
             'bower_components/dropzone/dist/dropzone.css'
-            'bower_components/Croppie/croppie.css'
+            'bower_components/cropper/dist/cropper.css'
           ]
 
     sass:
