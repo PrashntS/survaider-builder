@@ -106,6 +106,7 @@ module.exports = (grunt) ->
             'bower_components/jquery.scrollTo/jquery.scrollTo.js'
             'bower_components/image-picker/image-picker/image-picker.js'
             'bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js'
+            'bower_components/canvas-toBlob/index.js'
             'bower_components/cropper/dist/cropper.js'
           ]
 

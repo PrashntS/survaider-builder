@@ -727,30 +727,24 @@ class Formbuilder
         paramName: 'swag'
         maxFilesize: 4
         acceptedFiles: 'image/*'
-        uploadMultiple: no
         clickable: '#sb-dz-attach'
         previewTemplate: ''
         previewsContainer: no
-        autoProcessQueue: no
         autoQueue: no
+        autoProcessQueue: yes
 
       @opt = opt
 
-      @dz.on 'addedfile', (file, e) =>
-        console.log "added"
-        return unless file.cropped
-        @dzbtn.start()
-
-      @dz.on 'thumbnail', (file) =>
+      @dz.on 'addedfile', (file) =>
         return if file.cropped
-        @cropcontainer.html ''
 
         img = $ '<img class="original" />'
         reader = new FileReader
 
         cachedName = file.name
         cachedType = file.type
-        @dz.removeFile file
+
+        @dz.removeFile(file)
 
         reader.onloadend = =>
           @cropcontainer.html img
@@ -758,30 +752,37 @@ class Formbuilder
 
           img.cropper
             aspectRatio: 1
-            autoCropArea: 1
             movable: yes
+            viewMode: 1
             cropBoxResizable: yes
+            autoCropArea: 0.8
+            background: no
 
         reader.readAsDataURL file
         @cropmodal.addClass 'open'
 
         click_handler = ->
-          blob = img.cropper('getCroppedCanvas').toDataURL()
-          newfile = new File [@dataURItoBlob(blob, cachedType)],
-          cachedName,
-          type: cachedType
+          img.cropper('getCroppedCanvas').toBlob (blob) =>
+            newfile = new File [blob], file.name, type: file.type
 
-          newfile.cropped = yes
-          # @dz.addFile newfile
-          @dz.processFile(newfile)
-          @cropmodal.removeClass 'open'
+            newfile.status = file.status
+            newfile.accepted = file.accepted
+            newfile.upload = file.upload
+
+            newfile.cropped = yes
+            @dz.addFile(newfile)
+
+            @dz.enqueueFile(newfile)
+
+            @cropmodal.removeClass 'open'
+            img.cropper('destroy')
+            @cropcontainer.html ''
+            @cropdone.off()
 
         click_bounce = _.bind click_handler, @
+        click_debounce = _.debounce(click_bounce, 100)
 
-        @cropdone.on 'click', _.debounce(click_bounce, 500)
-
-      @dz.on 'sending', (file) =>
-        @dzbtnel.attr 'disabled', 'true'
+        @cropdone.on 'click', click_debounce
 
       @dz.on 'totaluploadprogress', (progress) =>
         @dzbtn.setProgress progress / 100
@@ -791,6 +792,7 @@ class Formbuilder
 
       @dz.on 'error', (file, e, xhr) =>
         @dzbtn.stop()
+        @dz.removeAllFiles()
         e = e.message if xhr?
         swal
             title: "Upload Error"
@@ -803,7 +805,7 @@ class Formbuilder
 
       @dz.on 'success', (file, e) =>
         @dzbtn.stop()
-        @dz.removeFile(file)
+        @dz.removeAllFiles()
         js = JSON.parse file.xhr.response
         @add_thumbnail
           uri: js.temp_uri
