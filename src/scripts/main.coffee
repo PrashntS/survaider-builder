@@ -721,8 +721,9 @@ class Formbuilder
       @cropmodal = $('div#sb-attach').find '.crop'
       @cropcontainer = $('div#sb-attach').find '.croparea'
       @cropdone = $('div#sb-attach').find '.sb-crop-done'
+      @cropcancel = $('div#sb-attach').find '.sb-crop-cancel'
 
-      @dz = new Dropzone 'div#sb-attach',
+      @dz = new Dropzone 'body',
         url: opt.img_upload
         paramName: 'swag'
         maxFilesize: 4
@@ -737,15 +738,10 @@ class Formbuilder
 
       @dz.on 'addedfile', (file) =>
         return if file.cropped
+        @dz.removeFile(file)
 
         img = $ '<img class="original" />'
         reader = new FileReader
-
-        cachedName = file.name
-        cachedType = file.type
-
-        @dz.removeFile(file)
-
         reader.onloadend = =>
           @cropcontainer.html img
           img.attr 'src', reader.result
@@ -761,7 +757,7 @@ class Formbuilder
         reader.readAsDataURL file
         @cropmodal.addClass 'open'
 
-        click_handler = ->
+        done_btn_handler = ->
           img.cropper('getCroppedCanvas').toBlob (blob) =>
             newfile = new File [blob], file.name, type: file.type
 
@@ -779,10 +775,17 @@ class Formbuilder
             @cropcontainer.html ''
             @cropdone.off()
 
-        click_bounce = _.bind click_handler, @
-        click_debounce = _.debounce(click_bounce, 100)
+        cancel_btn_handler = ->
+          @cropmodal.removeClass 'open'
+          img.cropper('destroy')
+          @cropcontainer.html ''
+          @cropdone.off()
 
-        @cropdone.on 'click', click_debounce
+        done_bound_btn = _.bind done_btn_handler, @
+        cancel_bound_btn = _.bind cancel_btn_handler, @
+
+        @cropdone.on 'click', _.debounce(done_bound_btn, 100)
+        @cropcancel.on 'click', _.debounce(cancel_bound_btn, 100)
 
       @dz.on 'totaluploadprogress', (progress) =>
         @dzbtn.setProgress progress / 100
@@ -885,16 +888,6 @@ class Formbuilder
       , @
       @callback = false
       _.delay df, 1000
-
-    dataURItoBlob: (dataURI, type) ->
-      byteString = atob(dataURI.split(',')[1])
-      ab = new ArrayBuffer(byteString.length)
-      ia = new Uint8Array(ab)
-      i = 0
-      while i < byteString.length
-        ia[i] = byteString.charCodeAt(i)
-        i++
-      new Blob([ ab ], type: type)
 
   @proxy:
     addTargetAndSources: ->
