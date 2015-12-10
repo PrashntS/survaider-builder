@@ -738,6 +738,10 @@ class Formbuilder
 
       @dz.on 'addedfile', (file) =>
         return if file.cropped
+
+      @dz.on 'thumbnail', (file) =>
+        return if file.cropped
+
         @dz.removeFile(file)
 
         img = $ '<img class="original" />'
