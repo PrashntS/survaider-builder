@@ -736,8 +736,8 @@ class Formbuilder
 
       @opt = opt
 
-      @dz.on 'addedfile', (file) ->
-        return if file.cropped
+      @dz.on 'addedfile', (file) =>
+        return unless file.cropped
         @dzbtn.start()
 
       @dz.on 'thumbnail', (file) =>
