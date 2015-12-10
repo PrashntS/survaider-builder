@@ -8,43 +8,58 @@
         <div class="container-xs-height full-height">
           <div class="row-xs-height">
             <div class="modal-body col-xs-height col-middle">
-                <div class='sb-field-options' id='editField'>
-                  <div class='sb-edit-field-wrapper'></div>
-                  <div class="sb-field-options-done">
-                      <button onclick='$("#sb_edit_model").modal("hide");' class="btn btn-success font-montserrat btn-block m-t-10">Done</button>
-                  </div>
+              <div class='sb-field-options' id='editField'>
+                <div class='sb-edit-field-wrapper'></div>
+                <div class="sb-field-options-done">
+                  <button onclick='$("#sb_edit_model").modal("hide");' class="btn btn-success font-montserrat btn-block m-t-10">Done</button>
                 </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 
-      <div class="container sb-attach right" id="sb-attach">
-        <div class="row">
-          <div class="col-xs-12">
-            <span class="font-montserrat text-uppercase bold">Attach an Image</span><br>
-            <div class="sb-images">
-              <div class="sb-images-container">
-                <select class="image-picker show-html" id="sb-thumbnails"></select>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 m-t-10 sm-m-t-10">
-            <a class="btn btn-primary font-montserrat btn-sm ladda-button"
-               id="sb-dz-attach"
-               data-style="expand-left">
-               <span class="ladda-label">Upload</span>
-            </a>
-            <small><span class="font-montserrat text-uppercase bold">You may also Drag and Drop the image here.</span></small>
-            <div class="pull-right">
-              <button type="button" class="btn btn-primary font-montserrat btn-sm m-t-5" onclick="Formbuilder.uploads.hide();">Done</button>
-            </div>
-          </div>
+<div class="container sb-attach right" id="sb-attach">
+  <div class="row">
+    <div class="col-xs-12">
+      <span class="font-montserrat text-uppercase bold">Attach an Image</span><br>
+      <div class="sb-images">
+        <div class="sb-images-container">
+          <select class="image-picker show-html" id="sb-thumbnails"></select>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 m-t-10 sm-m-t-10">
+      <a class="btn btn-primary font-montserrat btn-sm ladda-button"
+         id="sb-dz-attach"
+         data-style="expand-left">
+         <span class="ladda-label">Upload</span>
+      </a>
+      <small><span class="font-montserrat text-uppercase bold">You may also Drag and Drop the image here.</span></small>
+      <div class="pull-right">
+        <button type="button" class="btn btn-primary font-montserrat btn-sm m-t-5" onclick="Formbuilder.uploads.hide();">Done</button>
+      </div>
+    </div>
+  </div>
+  <div class="crop">
+    <div class="row">
+      <div class="col-xs-6">
+        <p>Move and adjust the size to resize your picture.</p>
+      </div>
+      <div class="col-xs-6">
+        <div class="pull-right">
+          <button type="button" class="btn btn-dark font-montserrat btn-sm">Cancel</button>
+          <button type="button" class="btn btn-primary font-montserrat btn-sm">Done</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="sb-croppie"></div>
+    </div>
+  </div>
+</div>

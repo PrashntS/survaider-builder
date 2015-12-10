@@ -730,6 +730,11 @@ class Formbuilder
         autoQueue: yes
       @opt = opt
 
+      @croppie = $('#sb-croppie').croppie
+        viewport:
+          width: 100
+          height: 100
+
       @dz.on 'addedfile', (file, e) =>
         @dzbtn.start()
 
