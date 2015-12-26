@@ -115,7 +115,12 @@ class ImagePicker
 class ImagePickerOption
   template: """
     <div class="thumbnail">
-      <img class="image_picker_image" src="<%= url %>">
+      <img class="image_picker_image" src="<%= dat.url %>">
+      <a href="javascript:void(0)"
+         data-target="<%= dat.id %>"
+         class="image_picker_delete">
+        <i class="fa fa-trash"></i>
+      </a>
     </div>
   """
 
@@ -161,11 +166,18 @@ class ImagePickerOption
 
   create_node: () ->
     @node = $("<li/>")
-    image = $("<img class='image_picker_image'/>")
-    image.attr("src", @option.data("img-src"))
-    thumbnail = $("<div class='thumbnail'>")
-    thumbnail.click {option: this}, (event) ->
-      event.data.option.clicked()
-    thumbnail.append(image)
-    @node.append( thumbnail )
+    thumbnail = $ _.template @template, dat:
+      url: @option.data("img-src")
+      id: @option.data("img-id")
+
+    thumbnail.on 'click'
+    ,'img.image_picker_image'
+    , =>
+      @.clicked()
+
+    thumbnail.on 'click'
+    ,'a.image_picker_delete'
+    , =>
+
+    @node.append thumbnail
     @node

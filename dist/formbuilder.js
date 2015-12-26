@@ -243,7 +243,7 @@
   })();
 
   ImagePickerOption = (function() {
-    ImagePickerOption.prototype.template = "<div class=\"thumbnail\">\n  <img class=\"image_picker_image\" src=\"<%= url %>\">\n</div>";
+    ImagePickerOption.prototype.template = "<div class=\"thumbnail\">\n  <img class=\"image_picker_image\" src=\"<%= dat.url %>\">\n  <a href=\"javascript:void(0)\"\n     data-target=\"<%= dat.id %>\"\n     class=\"image_picker_delete\">\n    <i class=\"fa fa-trash\"></i>\n  </a>\n</div>";
 
     function ImagePickerOption(option_element, picker, opts1) {
       this.picker = picker;
@@ -306,17 +306,22 @@
     };
 
     ImagePickerOption.prototype.create_node = function() {
-      var image, thumbnail;
+      var thumbnail;
       this.node = $("<li/>");
-      image = $("<img class='image_picker_image'/>");
-      image.attr("src", this.option.data("img-src"));
-      thumbnail = $("<div class='thumbnail'>");
-      thumbnail.click({
-        option: this
-      }, function(event) {
-        return event.data.option.clicked();
-      });
-      thumbnail.append(image);
+      thumbnail = $(_.template(this.template, {
+        dat: {
+          url: this.option.data("img-src"),
+          id: this.option.data("img-id")
+        }
+      }));
+      thumbnail.on('click', 'img.image_picker_image', (function(_this) {
+        return function() {
+          return _this.clicked();
+        };
+      })(this));
+      thumbnail.on('click', 'a.image_picker_delete', (function(_this) {
+        return function() {};
+      })(this));
       this.node.append(thumbnail);
       return this.node;
     };
@@ -1292,6 +1297,7 @@
             js = JSON.parse(file.xhr.response);
             return _this.add_thumbnail({
               uri: js.temp_uri,
+              id: js.metadata.id,
               name: js.access_id
             });
           };
@@ -1304,7 +1310,7 @@
         return this.at = $('#sb-attach');
       },
       init_thumbnail: function() {
-        return $('.sb-images-container').on('click', 'img.image_picker_image', (function(_this) {
+        $('.sb-images-container').on('click', 'img.image_picker_image', (function(_this) {
           return function(e) {
             var v;
             _this.th_el.data('picker').sync_picker_with_select();
@@ -1312,11 +1318,55 @@
             return _this.callback(v);
           };
         })(this));
+        return $('.sb-images-container').on('click', 'a.image_picker_delete', (function(_this) {
+          return function(e) {
+            var im_id;
+            im_id = $(e.currentTarget).attr('data-target');
+            return swal({
+              title: "Are you sure you want to delete this Image?",
+              text: "As a fail-safe requirement, any existing question which uses this image will continue to access the image until manually changed.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            }, function() {
+              return $.ajax({
+                url: _this.opt.img_delete_uri,
+                method: 'DELETE',
+                data: {
+                  swag: im_id
+                }
+              }).done(function() {
+                var v;
+                swal({
+                  title: "Succesfully Deleted",
+                  type: "success",
+                  confirmButtonText: 'Proceed',
+                  closeOnConfirm: true,
+                  showCancelButton: false
+                }, function() {});
+                _this.th_el.find("option[data-img-id=" + im_id + "]").remove();
+                _this.th_el.imagepicker();
+                _this.th_el.data('picker').sync_picker_with_select();
+                v = _this.th_el.val();
+                return _this.callback(v);
+              }).fail(function() {
+                return swal({
+                  title: "Sorry, something went wrong. Please try again, or contact Support.",
+                  type: "error"
+                });
+              });
+            });
+          };
+        })(this));
       },
       load_old: function() {
         return $.getJSON(this.opt.img_list, (function(_this) {
           return function(data) {
             var i, j, len, ref;
+            console.log(data);
             ref = data.imgs;
             for (j = 0, len = ref.length; j < len; j++) {
               i = ref[j];
@@ -1329,6 +1379,7 @@
       add_thumbnail: function(i) {
         return this.th_el.prepend($('<option>', {
           'data-img-src': i.uri,
+          'data-img-id': i.id,
           'data-img-name': i.name,
           value: i.name
         })).imagepicker();

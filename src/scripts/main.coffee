@@ -817,6 +817,7 @@ class Formbuilder
         js = JSON.parse file.xhr.response
         @add_thumbnail
           uri: js.temp_uri
+          id: js.metadata.id
           name: js.access_id
 
       @th_el = $ '#sb-thumbnails'
@@ -837,8 +838,46 @@ class Formbuilder
         v = @th_el.val()
         @callback v
 
+      $('.sb-images-container').on 'click'
+      ,'a.image_picker_delete'
+      ,(e) =>
+        im_id = $(e.currentTarget).attr('data-target')
+        swal
+            title: "Are you sure you want to delete this Image?"
+            text: "As a fail-safe requirement, any existing question which uses this image will continue to access the image until manually changed."
+            type: "warning"
+            showCancelButton: true
+            confirmButtonColor: "#DD6B55"
+            confirmButtonText: "Yes, delete it!"
+            closeOnConfirm: false
+            showLoaderOnConfirm: true
+          , =>
+            $.ajax
+              url: @opt.img_delete_uri
+              method: 'DELETE'
+              data:
+                swag: im_id
+            .done =>
+              swal
+                  title: "Succesfully Deleted"
+                  type:  "success"
+                  confirmButtonText: 'Proceed'
+                  closeOnConfirm: yes
+                  showCancelButton: false
+                , ->
+                @th_el.find("option[data-img-id=#{im_id}]").remove()
+                @th_el.imagepicker()
+                @th_el.data('picker').sync_picker_with_select()
+                v = @th_el.val()
+                @callback v
+            .fail =>
+              swal
+                title: "Sorry, something went wrong. Please try again, or contact Support."
+                type:  "error"
+
     load_old: ->
       $.getJSON @opt.img_list, (data) =>
+        console.log data
         for i in data.imgs
           @add_thumbnail i
         @add_thumbnail {}
@@ -846,6 +885,7 @@ class Formbuilder
     add_thumbnail: (i) ->
       @th_el.prepend $ '<option>',
         'data-img-src': i.uri
+        'data-img-id': i.id
         'data-img-name': i.name
         value: i.name
       .imagepicker()
