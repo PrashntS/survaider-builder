@@ -760,6 +760,7 @@ $font: 'Montserrat', sans-serif
         .thumbnail
           padding: 6px
           border: 1px solid #dddddd
+          position: relative
           -webkit-user-select: none
           -moz-user-select: none
           -ms-user-select: none
@@ -768,6 +769,24 @@ $font: 'Montserrat', sans-serif
             height: 80px
           &.selected
             background: #0088cc
+          &:hover
+            a.image_picker_delete
+              opacity: 1
+
+        a.image_picker_delete
+          position: absolute
+          opacity: 0
+          bottom: 0
+          right: 0
+          background: #48B0F7
+          padding: 2px
+          color: #FFF
+          font-size: 12px
+          text-align: center
+          width: 21px
+          border-radius: 2px
+          &:hover
+            background: #f00
 
 .dropzone
   border: 1px solid #e6e6e6

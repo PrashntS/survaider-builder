@@ -49,6 +49,7 @@ module.exports = (grunt) ->
           '<%= compiledFolder %>/scripts.js': [
             '<%= srcFolder %>/scripts/underscore_mixins.coffee'
             '<%= srcFolder %>/scripts/rivets-config.coffee'
+            '<%= srcFolder %>/scripts/image-picker.coffee'
             '<%= srcFolder %>/scripts/main.coffee'
             '<%= srcFolder %>/scripts/fields/*.coffee'
           ]
@@ -104,7 +105,6 @@ module.exports = (grunt) ->
             'bower_components/opentip/lib/adapter-jquery.js'
             'bower_components/dropzone/dist/dropzone.js'
             'bower_components/jquery.scrollTo/jquery.scrollTo.js'
-            'bower_components/image-picker/image-picker/image-picker.js'
             'bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js'
             'bower_components/canvas-toBlob/index.js'
             'bower_components/cropper/dist/cropper.js'
