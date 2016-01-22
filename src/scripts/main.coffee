@@ -825,7 +825,6 @@ class Formbuilder
     args = _.extend opts, {formBuilder: @}
     @mainView = new BuilderView args
     @screenView = new ScreenView args
-    Formbuilder.richtext.init args.endpoints
     Formbuilder.uploads.init args.endpoints
 
 window.Formbuilder = Formbuilder

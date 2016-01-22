@@ -1400,7 +1400,6 @@
       });
       this.mainView = new BuilderView(args);
       this.screenView = new ScreenView(args);
-      Formbuilder.richtext.init(args.endpoints);
       Formbuilder.uploads.init(args.endpoints);
     }
 
