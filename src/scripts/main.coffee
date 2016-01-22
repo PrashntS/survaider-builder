@@ -1,7 +1,8 @@
 class FormbuilderModel extends Backbone.DeepModel
   sync: -> # noop
   indexInDOM: ->
-    $wrapper = $(".sb-field-wrapper").filter (_, el) => $(el).data('cid') == @cid
+    $wrapper = $(".sb-field-wrapper").filter (_, el) =>
+      $(el).data('cid') is @cid
     $(".sb-field-wrapper").index $wrapper
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
@@ -54,10 +55,11 @@ class ViewFieldView extends Backbone.View
     # console.log @parentView
 
   render: ->
-    @$el.addClass('response-field-' + @model.get(Formbuilder.options.mappings.FIELD_TYPE))
+    _t = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
+    @$el.addClass("response-field-#{_t}")
         .data('cid', @model.cid)
         .attr('data-cid', @model.cid)
-        .html(Formbuilder.templates["view/base#{if !@model.is_input() then '_non_input' else ''}"]({rf: @model}))
+        .html(Formbuilder.templates["view/base"]({rf: @model}))
     return @
 
   focusEditView: ->
@@ -66,6 +68,17 @@ class ViewFieldView extends Backbone.View
   clear: (e) ->
     e.preventDefault()
     e.stopPropagation()
+
+    if @model.get('field_options.deletable')
+      swal
+        title: "Cannot delete this field"
+        text: "Fields of this type cannot be deleted. You may, however, move."
+        type: "error"
+        showCancelButton: false
+        confirmButtonColor: "#DD6B55"
+        confirmButtonText: "Okay"
+        closeOnConfirm: true
+      return
 
     cb = =>
       @parentView.handleFormUpdate()
@@ -139,21 +152,7 @@ class EditFieldView extends Backbone.View
       @forceRender()
     , @
 
-    if (Formbuilder.options.limit_map[field_type] && op_len >= Formbuilder.options.limit_map[field_type].max)
-      swal
-        title: "Are you sure?"
-        text: "Gamified surveys only support #{op_len} options for '#{field_type}' fields."
-        type: "warning"
-        showCancelButton: true
-        confirmButtonColor: "#DD6B55"
-        confirmButtonText: "Yes, proceed!"
-        closeOnConfirm: true
-      , (ok) ->
-        if ok is yes
-          return routine()
-        return
-    else
-      routine()
+    routine()
 
   removeOption: (e) ->
     $el = $(e.currentTarget)
@@ -161,17 +160,6 @@ class EditFieldView extends Backbone.View
     op_len = $el.parent().parent().find('.option').length
 
     field_type = @model.get(Formbuilder.options.mappings.FIELD_TYPE)
-
-    if (Formbuilder.options.limit_map[field_type] && op_len <= Formbuilder.options.limit_map[field_type].min)
-      swal
-        title: "No options!"
-        text: "Minimum two options are required."
-        type: "error"
-        showCancelButton: false
-        confirmButtonColor: "#DD6B55"
-        confirmButtonText: "Okay"
-        closeOnConfirm: true
-      return
 
     options = @model.get Formbuilder.options.mappings.OPTIONS
     options.splice index, 1
@@ -182,23 +170,26 @@ class EditFieldView extends Backbone.View
   defaultUpdated: (e) ->
     $el = $(e.currentTarget)
 
-    unless @model.get(Formbuilder.options.mappings.FIELD_TYPE) == 'checkboxes' # checkboxes can have multiple options selected
-      @$el.find(".js-default-updated").not($el).attr('checked', false).trigger('change')
+    unless @model.get(Formbuilder.options.mappings.FIELD_TYPE) is'checkboxes'
+      @$el.find(".js-default-updated")
+          .not($el).attr('checked', false).trigger('change')
 
     @forceRender()
 
   optionUpdated: (e) ->
-    log = _.bind(@forceRender, @);
+    log = _.bind(@forceRender, @)
     _.delay log, 100
 
   attachImage: (e) ->
     target = $(e.currentTarget)
     ol_val = target.find('input[data-sb-attach=uri]').val()
 
-    t = target.offset().top + (target.outerHeight() * 0.125) - $(window).scrollTop()
+    t = target.offset().top +
+        (target.outerHeight() * 0.125) - $(window).scrollTop()
+
     r = $(window).width() - target.offsetParent().offset().left + 10
 
-    callback = _.debounce (uridat) =>
+    callback = _.debounce (uridat) ->
       uri = target.find('input[data-sb-attach=uri]')
       unless uridat is ""
         uri.val(uridat).trigger('input')
@@ -253,7 +244,8 @@ class BuilderView extends Backbone.View
   bindSaveEvent: ->
     @formSaved = true
     @saveFormButton = $(".js-save-form")
-    @saveFormButton.attr('disabled', true).text(Formbuilder.options.dict.ALL_CHANGES_SAVED)
+    @saveFormButton.attr('disabled', true)
+      .text(Formbuilder.options.dict.ALL_CHANGES_SAVED)
 
     unless !Formbuilder.options.AUTOSAVE
       setInterval =>
@@ -588,132 +580,6 @@ class Formbuilder
         rating: "This question asks to rate on a scale of 1 to 10.<br>eg. How much do you like the design of our product?"
         group_rating: "Ask users to rate a number of things on a scale of one star to five stars!"
 
-  @richtext:
-    template:
-      "font-styles": -> """
-        <li class="dropdown">
-          <a data-toggle="dropdown" class="btn btn-default dropdown-toggle ">
-            <span class="editor-icon editor-icon-headline">
-            </span>
-            <span class="current-font">
-              Normal
-            </span>
-            <b class="caret">
-            </b>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a tabindex="-1" data-wysihtml5-command-value="p" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
-                Normal
-              </a>
-            </li>
-            <li>
-              <a tabindex="-1" data-wysihtml5-command-value="h1" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
-                1
-              </a>
-            </li>
-            <li>
-              <a tabindex="-1" data-wysihtml5-command-value="h2" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
-                2
-              </a>
-            </li>
-            <li>
-              <a tabindex="-1" data-wysihtml5-command-value="h3" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
-                3
-              </a>
-            </li>
-            <li>
-              <a tabindex="-1" data-wysihtml5-command-value="h4" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
-                4
-              </a>
-            </li>
-            <li>
-              <a tabindex="-1" data-wysihtml5-command-value="h5" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
-                5
-              </a>
-            </li>
-            <li>
-              <a tabindex="-1" data-wysihtml5-command-value="h6" data-wysihtml5-command="formatBlock" href="javascript:;" unselectable="on">
-                6
-              </a>
-            </li>
-          </ul>
-        </li>
-      """
-      emphasis: -> """
-        <li>
-          <div class="btn-group">
-            <a tabindex="-1" title="CTRL+B" data-wysihtml5-command="bold" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-bold">
-              </i>
-            </a>
-            <a tabindex="-1" title="CTRL+I" data-wysihtml5-command="italic" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-italic">
-              </i>
-            </a>
-            <a tabindex="-1" title="CTRL+U" data-wysihtml5-command="underline" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-underline">
-              </i>
-            </a>
-          </div>
-        </li>
-      """
-      blockquote: -> """
-        <li>
-          <a tabindex="-1" data-wysihtml5-display-format-name="false" data-wysihtml5-command-value="blockquote" data-wysihtml5-command="formatBlock" class="btn  btn-default" href="javascript:;" unselectable="on">
-            <i class="editor-icon editor-icon-quote">
-            </i>
-          </a>
-        </li>
-      """
-      lists: -> """
-        <li>
-          <div class="btn-group">
-            <a tabindex="-1" title="Unordered list" data-wysihtml5-command="insertUnorderedList" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-ul">
-              </i>
-            </a>
-            <a tabindex="-1" title="Ordered list" data-wysihtml5-command="insertOrderedList" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-ol">
-              </i>
-            </a>
-            <a tabindex="-1" title="Outdent" data-wysihtml5-command="Outdent" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-outdent">
-              </i>
-            </a>
-            <a tabindex="-1" title="Indent" data-wysihtml5-command="Indent" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-indent">
-              </i>
-            </a>
-          </div>
-        </li>
-      """
-      html: -> """
-        <li>
-          <div class="btn-group">
-            <a tabindex="-1" title="Edit HTML" data-wysihtml5-action="change_view" class="btn  btn-default" href="javascript:;" unselectable="on">
-              <i class="editor-icon editor-icon-html">
-              </i>
-            </a>
-          </div>
-        </li>
-      """
-
-    init: ->
-      $('#sb-edit-rich').wysihtml5
-        html: true
-        customTemplates: @template
-        toolbar:
-          'font-styles': true
-          emphasis: true
-          lists: false
-          html: false
-          link: false
-          image: false
-          color: false
-          blockquote: true
-          size: 'sm'
-
   @uploads:
     init: (opt) ->
       @dzbtn = Ladda.create document.querySelector '#sb-dz-attach'
@@ -803,13 +669,13 @@ class Formbuilder
         @dz.removeAllFiles()
         e = e.message if xhr?
         swal
-            title: "Upload Error"
-            text: e
-            type: "error"
-            showCancelButton: false
-            confirmButtonColor: "#DD6B55"
-            confirmButtonText: "Okay"
-            closeOnConfirm: true
+          title: "Upload Error"
+          text: e
+          type: "error"
+          showCancelButton: false
+          confirmButtonColor: "#DD6B55"
+          confirmButtonText: "Okay"
+          closeOnConfirm: true
 
       @dz.on 'success', (file, e) =>
         @dzbtn.stop()
