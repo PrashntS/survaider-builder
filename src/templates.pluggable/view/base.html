@@ -11,7 +11,7 @@
             <p class="section">Options</p>
             <%= Formbuilder.fields[rf.get(Formbuilder.options.mappings.FIELD_TYPE)].view({rf: rf}) %>
         </div>
-        <% if (!(rf.get('deletable') === false)) { %>
+        <% if (!(rf.get('field_options.deletable') === false)) { %>
         <%= Formbuilder.templates['view/duplicate_remove']({rf: rf}) %>
         <% } %>
     </div>
