@@ -1,0 +1,9 @@
+<div class='sb-edit-section-header' rv-show='model.notifications'>
+  <h3>Notify for following ratings:</h3>
+  <% for(var i=0; i < 10; i++) {%>
+    <label>
+      <%= i+1 %>
+      <input type="checkbox" class="check" data-rv-checked="model.field_options.notifications.<%= i+1 %>">
+    </label>
+  <% } %>
+</div>

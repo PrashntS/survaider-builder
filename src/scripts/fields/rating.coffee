@@ -23,7 +23,11 @@ Formbuilder.registerField 'rating',
       ></button>
   """
 
-  edit: ""
+  edit: """
+    <%= Formbuilder.templates['edit/notify']() %>
+    <%= Formbuilder.templates['edit/notify_rating']() %>
+
+  """
 
   addButton: """
     <span class="pull-left"><span class="fa fa-star"></span></span> Rating
