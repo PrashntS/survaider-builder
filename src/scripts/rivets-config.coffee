@@ -11,6 +11,7 @@ rivets.configure
   adapter:
     subscribe: (obj, keypath, callback) ->
       callback.wrapped = (m, v) -> callback(v)
+      if obj.cid then @_obj = obj
       obj.on('change:' + keypath, callback.wrapped)
 
     unsubscribe: (obj, keypath, callback) ->

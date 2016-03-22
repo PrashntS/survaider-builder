@@ -110,6 +110,8 @@ class EditFieldView extends Backbone.View
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
     'change .option-label-input': 'forceRender'
+    'blur .option-label-input': 'rerender'
+    'click .notify-tick': 'delayedrerender'
     'change .check': 'optionUpdated'
     'click .check': 'optionUpdated'
     'click .sb-attach-init': 'attachImage'
@@ -120,10 +122,11 @@ class EditFieldView extends Backbone.View
   initialize: (options) ->
     {@parentView} = options
     @listenTo @model, "destroy", @remove
+    # @listenTo @model, "change:label",
 
   render: ->
     @$el.html(Formbuilder.templates["edit/base"]({rf: @model}))
-    rivets.bind @$el, { model: @model }
+    @rv = rivets.bind @$el, { model: @model }
     return @
 
   remove: ->
@@ -153,6 +156,15 @@ class EditFieldView extends Backbone.View
     , @
 
     routine()
+
+  rerender: (e) ->
+    @$el.html(Formbuilder.templates["edit/base"]({rf: @model}))
+    @rv.unbind()
+    @rv = rivets.bind @$el, {model: @model}
+
+  delayedrerender: ->
+    log = _.bind(@rerender, @)
+    _.delay log, 100
 
   removeOption: (e) ->
     $el = $(e.currentTarget)
@@ -318,7 +330,9 @@ class BuilderView extends Backbone.View
       forcePlaceholderSize: true
       placeholder: 'sortable-placeholder'
       stop: (e, ui) =>
+        console.log ui, ui.item.attr('data-field-type'), e
         if ui.item.data('field-type')
+          console.log "HERE"
           rf = @collection.create Formbuilder.helpers.defaultFieldAttrs(ui.item.data('field-type')), {$replaceEl: ui.item}
           @createAndShowEditView(rf)
         @handleFormUpdate()
@@ -332,7 +346,7 @@ class BuilderView extends Backbone.View
     @setDraggable()
 
   setDraggable: ->
-    $addFieldButtons = @$el.find("[data-field-type]")
+    $addFieldButtons = @$el.find("[data-field-types]")
 
     $addFieldButtons.draggable
       connectToSortable: @$responseFields

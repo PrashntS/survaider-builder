@@ -1,4 +1,4 @@
-ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'sass:all', 'clean:compiled', 'cssmin:dist']
+ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'sass:all', 'cssmin:dist']
 
 # formbuilder.js must be compiled in this order:
 # 1. rivets-config

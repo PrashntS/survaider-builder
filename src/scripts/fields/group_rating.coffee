@@ -26,7 +26,9 @@ Formbuilder.registerField 'group_rating',
   """
 
   edit: "
+    <%= Formbuilder.templates['edit/notify']() %>
     <%= Formbuilder.templates['edit/options']() %>
+    <%= Formbuilder.templates['edit/notify_group_rating']() %>
   "
 
   addButton: """

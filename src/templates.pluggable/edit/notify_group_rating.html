@@ -1,0 +1,12 @@
+<div class='sb-edit-section-header' data-rv-each-option="model.field_options.options">
+  <div data-rv-show='option:notify'>
+  <p>Notify for <strong data-rv-text="option:label"></strong>:</p>
+  <% for(var i=0; i < 5; i++) {%>
+    <label>
+      <%= i+1 %>
+      <input type="checkbox" class="check"
+        data-rv-checked="option:notify_<%= i+1 %>">
+    </label>
+  <% } %>
+  </div>
+</div>

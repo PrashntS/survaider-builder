@@ -46,5 +46,8 @@
     "Croppie": "croppie#~1.0.2",
     "cropper": "~2.2.0",
     "canvas-toBlob": "https://raw.githubusercontent.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"
+  },
+  "resolutions": {
+    "jquery": "~2.0.3"
   }
 }
